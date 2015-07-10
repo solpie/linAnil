@@ -244,6 +244,7 @@ void layout_window(int w, int h) {
 
 
  */
+#pragma once
 
 // you can override this from the outside to pick
 // the export level you need
