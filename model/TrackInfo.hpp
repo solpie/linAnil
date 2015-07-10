@@ -13,11 +13,11 @@ using namespace std;
 
 class TrackInfo {
 public:
-    TrackInfo(QString name) {
+    TrackInfo(string name) {
         this->name = name;
         trackFrameInfos = new vector<TrackFrameInfo *>();
     };
-    QString name;
+    string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
     int idx;
 

@@ -20,11 +20,11 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "nanovg.h"
+#include "nanovg/nanovg.h"
 
 #define NANOVG_GL3_IMPLEMENTATION
 
-#include "nanovg_gl.h"
+#include "nanovg/nanovg_gl.h"
 
 #define BLENDISH_IMPLEMENTATION
 
