@@ -10,4 +10,4 @@ include_directories(D:/msys64/mingw32/include)
 
 set(SOURCE_FILES main.cpp)
 add_executable(linAnil ${SOURCE_FILES} view/MainWin.hpp model/TrackModel2.hpp view/ui.hpp view/win/FileDialog.hpp)
-#target_link_libraries(linAnil Qt5::Widgets Qt5::Core Qt5::Multimedia)
+file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
