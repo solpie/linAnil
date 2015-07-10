@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.2)
+project(linAnil)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS )
+link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32)
+set(SOURCE_FILES main.cpp)
+add_executable(linAnil ${SOURCE_FILES})
