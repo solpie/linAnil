@@ -88,6 +88,12 @@ void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
 class MainWin {
 public:
+    MainWin(){
+        Evt_add("test",testThread);
+    }
+    void testThread(void *e){
+        cout<<this<<"thread safe"<<endl;
+    }
     int show() {
         GLFWwindow *window;
         UIcontext *uictx;
@@ -208,7 +214,6 @@ private:
         uiInsert(parent, col);
         uiSetMargins(col, 10, 10, 10, 10);
         uiSetLayout(col, UI_TOP | UI_HFILL);
-
         column_append(col, button(BND_ICON_GHOST, "Item 1", demohandler));
 //        if (option3)
         column_append(col, button(BND_ICON_GHOST, "Item 2", demohandler));

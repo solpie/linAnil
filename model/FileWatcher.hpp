@@ -34,8 +34,9 @@ void work(string absPath) {
         }
         else {
 //                QString::fromStdWString()
+            Evt_dis("test", nullptr)
 //                string filename = QString::fromStdWString(strFileNotifyInfo[0].FileName);
-            cout << "File Modified: " << strFileNotifyInfo[0].FileName<<endl;
+            cout << "File Modified: " << strFileNotifyInfo[0].FileName << endl;
 //                emit modified(filename);
 //                cout << "Loop: " << nCounter++;
         }

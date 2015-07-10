@@ -12,6 +12,7 @@
 
 #endif //LINANIL_UI_HPP
 //using namespace std;
+#include "events/Event.hpp"
 typedef enum {
     // label
             ST_LABEL = 0,
