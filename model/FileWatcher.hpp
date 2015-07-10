@@ -7,60 +7,63 @@
 
 #endif //SEQTRUAN_WATCHDOG_HPP
 
-#include "QThread"
-#include "QtCore"
+//#include "QThread"
+//#include "QtCore"
+#include <thread>
 #include "windows.h"
+using namespace std;
+void work(string absPath) {
+    HANDLE hDir = CreateFile(
+            absPath.c_str(),
+            FILE_LIST_DIRECTORY,
+            FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+            NULL,
+            OPEN_EXISTING,
+            FILE_FLAG_BACKUP_SEMANTICS,
+            NULL
+    );
 
-class FileWatcher : public QObject {
-Q_OBJECT
+    int nCounter = 0;
+    FILE_NOTIFY_INFORMATION strFileNotifyInfo[1024];
+    DWORD dwBytesReturned = 0;
+
+    while (TRUE) {
+        if (ReadDirectoryChangesW(hDir, (LPVOID) &strFileNotifyInfo, sizeof(strFileNotifyInfo), FALSE,
+                                  FILE_NOTIFY_CHANGE_LAST_WRITE, &dwBytesReturned, NULL, NULL) == 0) {
+//                ErrorCheck(_T("Reading Directory Change"));
+        }
+        else {
+//                QString::fromStdWString()
+//                string filename = QString::fromStdWString(strFileNotifyInfo[0].FileName);
+            cout << "File Modified: " << strFileNotifyInfo[0].FileName<<endl;
+//                emit modified(filename);
+//                cout << "Loop: " << nCounter++;
+        }
+    }
+}
+class FileWatcher{
+//Q_OBJECT
 public:
     FileWatcher() {
-        moveToThread(&t);
-        t.start();
+//        moveToThread(&t);
+//        t.start();
     }
 
     ~FileWatcher() {
-        t.quit();
-        t.wait();
+//        t.quit();
+//        t.wait();
     }
 
-    void start(QString imagePath){
-        QMetaObject::invokeMethod(this, "work", Q_ARG(QString, imagePath));
-
+    void start(string imagePath){
+//        QMetaObject::invokeMethod(this, "work", Q_ARG(QString, imagePath));
+        std::thread t(work, imagePath);
+        t.detach();
+//        t.join();
     }
-public slots:
-    void work(QString absPath) {
-        HANDLE hDir = CreateFile(
-                absPath.toStdString().c_str(),
-                FILE_LIST_DIRECTORY,
-                FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-                NULL,
-                OPEN_EXISTING,
-                FILE_FLAG_BACKUP_SEMANTICS,
-                NULL
-        );
 
-        int nCounter = 0;
-        FILE_NOTIFY_INFORMATION strFileNotifyInfo[1024];
-        DWORD dwBytesReturned = 0;
+//signals:
+//    void modified(QString imagePath);
 
-        while (TRUE) {
-            if (ReadDirectoryChangesW(hDir, (LPVOID) &strFileNotifyInfo, sizeof(strFileNotifyInfo), FALSE,
-                                      FILE_NOTIFY_CHANGE_LAST_WRITE, &dwBytesReturned, NULL, NULL) == 0) {
-//                ErrorCheck(_T("Reading Directory Change"));
-            }
-            else {
-//                QString::fromStdWString()
-                QString filename = QString::fromStdWString(strFileNotifyInfo[0].FileName);
-                qDebug() << "File Modified: " << filename;
-                emit modified(filename);
-                qDebug() << "Loop: " << nCounter++;
-            }
-        }
-    }
-signals:
-    void modified(QString imagePath);
-
-private:
-    QThread t;
+//private:
+//    QThread t;
 };

@@ -20,6 +20,7 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <c++/4.9.2/thread>
 #include "nanovg/nanovg.h"
 
 #define NANOVG_GL3_IMPLEMENTATION
@@ -190,7 +191,10 @@ public:
             glfwPollEvents();
         }
     }
-
+    void start(){
+        std::thread t([this]{this->show();});
+        t.detach();
+    }
 private:
     struct NVGcontext *_vg = nullptr;
 
