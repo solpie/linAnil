@@ -1,4 +1,4 @@
-#include "view/VsRoot.hpp"
+#include "view/MainWin.hpp"
 #include "model/App.hpp"
 #include "model/FileWatcher.hpp"
 
@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
     App()._().start(argc, argv);
     FileWatcher *f = new FileWatcher();
     f->start("c:\\test");
-    VsRoot *m = new VsRoot();
+    MainWin *m = new MainWin();
     m->show();
 //    m->start();
 //    App()._().test();
