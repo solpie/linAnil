@@ -11,7 +11,8 @@
 #include <c++/4.9.2/exception>
 #include "nanovg/nanovg.h"
 
-#define VS_CONTEXT  VsContext::_().getContext()
+#define VG_CONTEXT  VsContext::_().getContext()
+#define VS_CONTEXT VsContext::_()
 using namespace std;
 
 template<typename T>
@@ -21,15 +22,20 @@ public:
         static T instance;
         return instance;
     }
+};
 
+struct pos {
+    int x;
+    int y;
 };
 
 class VsContext : public S<VsContext> {
 public:
+    NVGcontext *init() {
 
-
-    void init(NVGcontext *vg) {
-        nvgContext = vg;
+        //_vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+        nvgContext = nvgCreateGL3(NVG_ANTIALIAS);
+        return nvgContext;
     }
 
     NVGcontext *getContext() {
@@ -37,11 +43,22 @@ public:
             return nvgContext;
         else {
             string e = "call init() first!";
-            cout<<this<<e<<endl;
+            cout << this << e << endl;
             throw runtime_error(e.c_str());
         }
     }
 
+    void setMouseButton(unsigned int button, unsigned int mod, int enabled) {
+        buttons = button;
+    }
+
+    void setCursor(int x, int y) {
+        cursor.x = x;
+        cursor.y = y;
+    }
+    pos cursor;
+
 protected:
     NVGcontext *nvgContext = nullptr;
+    unsigned int buttons;
 };

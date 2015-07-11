@@ -23,4 +23,4 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/ui.hpp
-view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp)
+view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp vs/Sprite.hpp)

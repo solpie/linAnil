@@ -64,12 +64,14 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
             button = 1;
             break;
     }
+    VsContext::_().setMouseButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
     uiSetButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
 }
 
 void cursorpos(GLFWwindow *window, double x, double y) {
     NVG_NOTUSED(window);
     uiSetCursor((int) x, (int) y);
+    VsContext::_().setCursor(x, y);
 }
 
 void scrollevent(GLFWwindow *window, double x, double y) {
@@ -145,8 +147,8 @@ public:
         glGetError();
 #endif
         ////////////////////////vg
-        //_vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-        _vg = nvgCreateGL3(NVG_ANTIALIAS);
+
+        _vg = VsContext::_().init();
         if (_vg == NULL) {
             printf("Could not init nanovg.\n");
             return -1;
@@ -304,14 +306,12 @@ private:
         bndSetFont(nvgCreateFont(vg, "system", "oui/DejaVuSans.ttf"));
         bndSetIconImage(nvgCreateImage(vg, "oui/blender_icons16.png", 0));
 //        DemoData data;
-//        if (loadDemoData(VS_CONTEXT, &data) == -1);
+//        if (loadDemoData(VG_CONTEXT, &data) == -1);
 //        {
 //            cout << this << "no ttf" << endl;
 //        }
         //////////////////////////////////////////////
-        VsContext::_().init(vg);
         vsRoot = new VsRoot();
-
     }
 
 

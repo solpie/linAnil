@@ -18,7 +18,7 @@
 class VsObj : public EventDispatcher<VsObj> {
 public:
     VsObj() {
-        nvgContext = VS_CONTEXT;
+        nvgContext = VG_CONTEXT;
     }
 
     ~VsObj() { }
@@ -50,9 +50,9 @@ public:
         return _y;
     }
 
-    virtual void render() { }
+    virtual void render() {
 
-    virtual void aftRender() { }
+    }
 
     VsObj *parent = nullptr;
 protected:
