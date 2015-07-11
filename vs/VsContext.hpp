@@ -10,6 +10,7 @@
 
 #include <c++/4.9.2/exception>
 #include "nanovg/nanovg.h"
+#include "EventDispatcher.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
@@ -48,17 +49,35 @@ public:
         }
     }
 
-    void setMouseButton(unsigned int button, unsigned int mod, int enabled) {
+    unsigned int buttons;
+    int mods;
+    int enabeld;
+    int action;
+//    EventDispatcher *top;
+    int renderIdx;
+
+    void beginFrame() {
+        renderIdx = 0;
+    }
+
+    void endFrame() {
+
+    }
+
+    void setMouseButton(unsigned int button, unsigned int mod, int act) {
         buttons = button;
+        mods = mod;
+        action = act;
+        enabeld = 1;
     }
 
     void setCursor(int x, int y) {
         cursor.x = x;
         cursor.y = y;
     }
+
     pos cursor;
 
 protected:
     NVGcontext *nvgContext = nullptr;
-    unsigned int buttons;
 };

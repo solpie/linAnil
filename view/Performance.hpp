@@ -46,7 +46,7 @@ public:
     }
 
     void onMove(MouseEvent *e) {
-        cout << this << "move" << endl;
+//        cout << this << "move" << endl;
     }
 
     void initGraph(int style, const char *name) {
@@ -152,7 +152,6 @@ public:
         dt = cur - last;
         last = cur;
         updateGraph(dt);
-
     }
 
 protected:

@@ -32,7 +32,7 @@ public:
         addChild(perfFps);
 
         perfCpu = new Performance();
-        perfCpu->setX(perfFps->gX() + perfFps->width + 5);
+        perfCpu->setX(perfFps->gX() + perfFps->width -50);
         perfCpu->setY(5);
         perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
         addChild(perfCpu);

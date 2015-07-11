@@ -64,7 +64,8 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
             button = 1;
             break;
     }
-    VsContext::_().setMouseButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
+    cout<<"button:"<<button<<"action:"<<action<<"mods:"<<mods<<endl;
+    VsContext::_().setMouseButton(button, mods, action);
     uiSetButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
 }
 
@@ -183,13 +184,16 @@ public:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             double t = glfwGetTime();
+
+
             nvgBeginFrame(_vg, winWidth, winHeight, pxRatio);
+            VS_CONTEXT.beginFrame();
             //ui here
             render(_vg, winWidth, winHeight);
             peak_items = (peak_items > uiGetItemCount()) ? peak_items : uiGetItemCount();
             peak_alloc = (peak_alloc > uiGetAllocSize()) ? peak_alloc : uiGetAllocSize();
-
             nvgEndFrame(_vg);
+            VS_CONTEXT.endFrame();
 
             glfwSwapBuffers(window);
             glfwPollEvents();

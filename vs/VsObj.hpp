@@ -53,9 +53,16 @@ public:
         return _y;
     }
 
-    virtual void render() { }
+    void updateZDepth() {
+        zdepth = VS_CONTEXT.renderIdx++;
+    }
+
+    virtual void render() {
+        updateZDepth();
+    }
 
     VsObj *parent = nullptr;
+    int zdepth = -1;
 protected:
     NVGcontext *nvgContext = nullptr;
 };

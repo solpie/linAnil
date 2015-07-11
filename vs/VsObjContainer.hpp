@@ -35,6 +35,7 @@ public:
     }
 
     virtual void render() override {
+        VsObj::updateZDepth();
         vector<VsObj *>::iterator child;
         for (child = vsobjs->begin(); child != vsobjs->end(); child++) {
             VsObj *c = *child;

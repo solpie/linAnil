@@ -17,14 +17,13 @@ using namespace std;
 class Sprite : public VsObjContainer {
 public:
     Sprite() {
-
     }
-
-
-    template<typename Observer>
-    virtual void add(const string &event, Observer &&observer) override;
+    void onAdd(const string &event) override {
+        isInteractive = (event == MouseEvent::MOVE || event == MouseEvent::DOWN || event == MouseEvent::UP);
+    };
 
     virtual void render() override {
+        VsObjContainer::updateZDepth();
         onDrawBegin();
         onDraw();
         onDrawEnd();
@@ -37,20 +36,36 @@ public:
             if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
                 MouseEvent e;
                 disEvent(MouseEvent::MOVE, &e);
+                if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
+                    VS_CONTEXT.enabeld;
+                    cout << this << "zdepth:" << zdepth << endl;
+                    VS_CONTEXT.enabeld = 0;
+                }
+//                if(VS_CONTEXT.b)
             }
         }
     }
 
     virtual void onDraw() { }
 
-    virtual void onDrawEnd() { }
+    virtual void onDrawEnd() {
+//        if (isInteractive) {
+//            int mx = VS_CONTEXT.cursor.x;
+//            int my = VS_CONTEXT.cursor.y;
+//            if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
+//                MouseEvent e;
+//                disEvent(MouseEvent::MOVE, &e);
+//                if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
+//                    VS_CONTEXT.enabeld;
+//                    cout << this << "zdepth:" << zdepth << endl;
+//                    VS_CONTEXT.enabeld = 0;
+//                }
+////                if(VS_CONTEXT.b)
+//            }
+//        }
+    }
 
 private:
     bool isInteractive;
 };
 
-template<typename Observer>
-void Sprite::add(const string &event, Observer &&observer) {
-    EventDispatcher::add(event, observer);
-    isInteractive = (event == MouseEvent::MOVE || event == MouseEvent::DOWN || event == MouseEvent::UP)
-}

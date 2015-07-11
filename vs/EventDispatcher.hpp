@@ -17,9 +17,12 @@ template<class VsEventDispatcher>
 class EventDispatcher {
 public:
 
-    virtual template<typename Observer>
-    void add(const string &event, Observer &&observer) {
-        _funcs[event].push_back(forward<function<void(void *)>>(observer));
+    template<typename Observer>
+    void add(const string &type, Observer &&observer) {
+        _funcs[type].push_back(forward<function<void(void *)>>(observer));
+        onAdd(type);
+    }
+    virtual void onAdd(const string &event){
     }
 
     void disEvent(const string event, void *e = nullptr) const {
