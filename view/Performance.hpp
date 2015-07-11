@@ -75,19 +75,19 @@ public:
         h = height;
 
         nvgBeginPath(vg);
-        nvgRect(vg, x(), y(), w, h);
+        nvgRect(vg, gX(), gY(), w, h);
         nvgFillColor(vg, nvgRGBA(0, 0, 0, 128));
         nvgFill(vg);
 
         nvgBeginPath(vg);
-        nvgMoveTo(vg, x(), y() + h);
+        nvgMoveTo(vg, gX(), gY() + h);
         if (fps->style == GRAPH_RENDER_FPS) {
             for (i = 0; i < GRAPH_HISTORY_COUNT; i++) {
                 float v = 1.0f / (0.00001f + fps->values[(fps->head + i) % GRAPH_HISTORY_COUNT]);
                 float vx, vy;
                 if (v > 80.0f) v = 80.0f;
-                vx = x() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
-                vy = y() + h - ((v / 80.0f) * h);
+                vx = gX() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
+                vy = gY() + h - ((v / 80.0f) * h);
                 nvgLineTo(vg, vx, vy);
             }
         } else if (fps->style == GRAPH_RENDER_PERCENT) {
@@ -95,8 +95,8 @@ public:
                 float v = fps->values[(fps->head + i) % GRAPH_HISTORY_COUNT] * 1.0f;
                 float vx, vy;
                 if (v > 100.0f) v = 100.0f;
-                vx = x() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
-                vy = y() + h - ((v / 100.0f) * h);
+                vx = gX() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
+                vy = gY() + h - ((v / 100.0f) * h);
                 nvgLineTo(vg, vx, vy);
             }
         } else {
@@ -104,12 +104,12 @@ public:
                 float v = fps->values[(fps->head + i) % GRAPH_HISTORY_COUNT] * 1000.0f;
                 float vx, vy;
                 if (v > 20.0f) v = 20.0f;
-                vx = x() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
-                vy = y() + h - ((v / 20.0f) * h);
+                vx = gX() + ((float) i / (GRAPH_HISTORY_COUNT - 1)) * w;
+                vy = gY() + h - ((v / 20.0f) * h);
                 nvgLineTo(vg, vx, vy);
             }
         }
-        nvgLineTo(vg, x() + w, y() + h);
+        nvgLineTo(vg, gX() + w, gY() + h);
         nvgFillColor(vg, nvgRGBA(255, 192, 0, 128));
         nvgFill(vg);
 
@@ -119,7 +119,7 @@ public:
             nvgFontSize(vg, 14.0f);
             nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
-            nvgText(vg, x() + 3, y() + 1, fps->name, nullptr);
+            nvgText(vg, gX() + 3, gY() + 1, fps->name, nullptr);
         }
 
         if (fps->style == GRAPH_RENDER_FPS) {
@@ -127,26 +127,26 @@ public:
             nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 255));
             sprintf(str, "%.2f FPS", 1.0f / avg);
-            nvgText(vg, x() + w - 3, y() + 1, str, NULL);
+            nvgText(vg, gX() + w - 3, gY() + 1, str, NULL);
 
             nvgFontSize(vg, 15.0f);
             nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_BOTTOM);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 160));
             sprintf(str, "%.2f ms", avg * 1000.0f);
-            nvgText(vg, x() + w - 3, y() + h - 1, str, NULL);
+            nvgText(vg, gX() + w - 3, gY() + h - 1, str, NULL);
         }
         else if (fps->style == GRAPH_RENDER_PERCENT) {
             nvgFontSize(vg, 18.0f);
             nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 255));
             sprintf(str, "%.1f %%", avg * 1.0f);
-            nvgText(vg, x() + w - 3, y() + 1, str, NULL);
+            nvgText(vg, gX() + w - 3, gY() + 1, str, NULL);
         } else {
             nvgFontSize(vg, 18.0f);
             nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 255));
             sprintf(str, "%.2f ms", avg * 1000.0f);
-            nvgText(vg, x() + w - 3, y() + 1, str, NULL);
+            nvgText(vg, gX() + w - 3, gY() + 1, str, NULL);
         }
         float cur = glfwGetTime();
         dt = cur - last;

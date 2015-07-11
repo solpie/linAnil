@@ -28,31 +28,32 @@ public:
     bool visible = true;
     //0~255
     float alpha = 255;
+
     float _x = 0;
 
     void setX(float x) { _x = x; }
 
-    float x() {
-        if (parent) {
-            return parent->x() + _x;
-        }
+    float x() { return _x; }
+
+    float gX() {
+        if (parent)
+            return parent->gX() + _x;
         return _x;
     }
 
     float _y = 0;
 
+    float y() { return _y; }
+
     void setY(float y) { _y = y; }
 
-    float y() {
-        if (parent) {
-            return parent->y() + _y;
-        }
+    float gY() {
+        if (parent)
+            return parent->gY() + _y;
         return _y;
     }
 
-    virtual void render() {
-
-    }
+    virtual void render() { }
 
     VsObj *parent = nullptr;
 protected:

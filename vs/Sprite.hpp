@@ -34,7 +34,7 @@ public:
         if (isInteractive) {
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
-            if (mx >= x() && my >= y() && mx <= x() + width && my <= y() + height) {
+            if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
                 MouseEvent e;
                 disEvent(MouseEvent::MOVE, &e);
             }
@@ -47,7 +47,6 @@ public:
 
 private:
     bool isInteractive;
-
 };
 
 template<typename Observer>
