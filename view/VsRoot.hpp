@@ -26,16 +26,19 @@ public:
 
 
         perfFps = new Performance();
-        perfFps->x = 5;
-        perfFps->y = 5;
+        perfFps->setX(5);
+        perfFps->setY(5);
         perfFps->initGraph(GRAPH_RENDER_FPS, "Frame Time");
         addChild(perfFps);
 
         perfCpu = new Performance();
-        perfCpu->x = perfFps->x + perfFps->width + 5;
-        perfCpu->y = 5;
+        perfCpu->setX(perfFps->x() + perfFps->width + 5);
+        perfCpu->setY(5);
         perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
         addChild(perfCpu);
+
+//        removeChild(perfCpu);
+        setX(500);
     }
 
     virtual void render() override;

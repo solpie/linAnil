@@ -82,6 +82,8 @@ void drawThumbnails(NVGcontext *vg, float x, float y, float w, float h, const in
     nvgScissor(vg, x, y, w, h);
     nvgTranslate(vg, 0, -(stackh - h) * u);
 
+//    nvgTranslate(vg, 0, -50);
+
     dv = 1.0f / (float) (nimages - 1);
 
     for (i = 0; i < nimages; i++) {

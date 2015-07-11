@@ -23,16 +23,38 @@ public:
 
     ~VsObj() { }
 
-    float x = 0;
-    float y = 0;
     float width = 0;
     float height = 0;
     bool visible = true;
+    //0~255
+    float alpha = 255;
+    float _x = 0;
+
+    void setX(float x) { _x = x; }
+
+    float x() {
+        if (parent) {
+            return parent->x() + _x;
+        }
+        return _x;
+    }
+
+    float _y = 0;
+
+    void setY(float y) { _y = y; }
+
+    float y() {
+        if (parent) {
+            return parent->y() + _y;
+        }
+        return _y;
+    }
 
     virtual void render() { }
 
     virtual void aftRender() { }
 
+    VsObj *parent = nullptr;
 protected:
     NVGcontext *nvgContext = nullptr;
 };

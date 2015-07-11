@@ -18,7 +18,20 @@ public:
     }
 
     void addChild(VsObj *vsObj) {
+        vsObj->parent = this;
         vsobjs->push_back(vsObj);
+    }
+
+    void removeChild(VsObj *vsobj) {
+        vsobj->parent = nullptr;
+        vector<VsObj *>::iterator i = vsobjs->begin();
+        while (i != vsobjs->end()) {
+            if (*i == vsobj) {
+                i = vsobjs->erase(i);
+            } else {
+                i++;
+            }
+        }
     }
 
     virtual void render() override {
