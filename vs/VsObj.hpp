@@ -10,11 +10,12 @@
 
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
+#include "EventDispatcher.hpp"
 
 /*
  * VsObj visible object
  * */
-class VsObj {
+class VsObj : public EventDispatcher<VsObj> {
 public:
     VsObj() {
         nvgContext = VS_CONTEXT;
@@ -27,7 +28,10 @@ public:
     float width = 0;
     float height = 0;
     bool visible = true;
+
     virtual void render() { }
+
+    virtual void aftRender() { }
 
 protected:
     NVGcontext *nvgContext = nullptr;

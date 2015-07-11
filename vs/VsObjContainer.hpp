@@ -25,7 +25,9 @@ public:
         vector<VsObj *>::iterator child;
         for (child = vsobjs->begin(); child != vsobjs->end(); child++) {
             VsObj *c = *child;
-            c->render();
+            if (c->visible) {
+                c->render();
+            }
         }
     }
 

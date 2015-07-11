@@ -9,9 +9,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #include_directories(SYSTEM mingw32/include)
 include_directories(view/ui)
 
-
 set(SOURCE_FILES main.cpp)
+file(GLOB FONTS "vs/fonts/*.ttf")
 file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
+file(COPY ${FONTS} DESTINATION fonts)
 add_executable(linAnil ${SOURCE_FILES}
 view/VsRoot.hpp
 events/Event.hpp
@@ -20,4 +21,4 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/ui.hpp
-view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp)
+view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/EventDispatcher.hpp)

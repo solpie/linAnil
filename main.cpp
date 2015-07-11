@@ -7,7 +7,8 @@ int main(int argc, char *argv[]) {
     FileWatcher *f = new FileWatcher();
     f->start("c:\\test");
     VsRoot *m = new VsRoot();
-    m->start();
-    App()._().test();
-    while (!m->isClose){}
+    m->show();
+//    m->start();
+//    App()._().test();
+//    while (!m->isClose){}
 }

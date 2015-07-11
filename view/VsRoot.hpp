@@ -38,6 +38,7 @@
 #include "Performance.hpp"
 #include "vs/VsContext.hpp"
 #include "vs/VsObjContainer.hpp"
+
 using namespace std;
 
 
@@ -186,19 +187,13 @@ public:
             peak_alloc = (peak_alloc > uiGetAllocSize()) ? peak_alloc : uiGetAllocSize();
 
             nvgEndFrame(_vg);
-            double t2 = glfwGetTime();
-            c += (t2 - t);
-            total++;
-            if (total > 60) {
-//                double
-//                cout << (c / (double) total) * 1000.0 << "ms" << endl;
-                total = 0;
-                c = 0.0;
-            }
 
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
+//        freeDemoData(_vg, &data);
+
+        nvgDeleteGL3(_vg);
         glfwTerminate();
         isClose = true;
         return 0;
@@ -272,85 +267,99 @@ private:
 
     struct NVGcontext *_vg = nullptr;
     VsObjContainer *vsRoot = nullptr;
+    struct DemoData {
+        int fontNormal, fontBold, fontIcons;
+        int images[12];
+    };
+    typedef struct DemoData DemoData;
+
+    int loadDemoData(NVGcontext *vg, DemoData *data) {
+        int i;
+
+        data->fontIcons = nvgCreateFont(vg, "icons", "../example/entypo.ttf");
+        if (data->fontIcons == -1) {
+            printf("Could not add font icons.\n");
+            return -1;
+        }
+        data->fontNormal = nvgCreateFont(vg, "sans", "../example/Roboto-Regular.ttf");
+        if (data->fontNormal == -1) {
+            printf("Could not add font italic.\n");
+            return -1;
+        }
+        data->fontBold = nvgCreateFont(vg, "sans-bold", "../example/Roboto-Bold.ttf");
+        if (data->fontBold == -1) {
+            printf("Could not add font bold.\n");
+            return -1;
+        }
+
+        return 0;
+    }
+
     void init(NVGcontext *vg) {
+        //// init font icons
+        nvgCreateFont(vg, "icons", "fonts/entypo.ttf");
+        nvgCreateFont(vg, "sans", "fonts/Roboto-Regular.ttf");
+        nvgCreateFont(vg, "sans-bold", "fonts/Roboto-Bold.ttf");
         bndSetFont(nvgCreateFont(vg, "system", "oui/DejaVuSans.ttf"));
         bndSetIconImage(nvgCreateImage(vg, "oui/blender_icons16.png", 0));
+//        DemoData data;
+//        if (loadDemoData(VS_CONTEXT, &data) == -1);
+//        {
+//            cout << this << "no ttf" << endl;
+//        }
+        //////////////////////////////////////////////
         VsContext::_().init(vg);
         vsRoot = new VsObjContainer();
-        perf = new Performance();
-        perf->x = 5;
-        perf->y = 5;
-        vsRoot->addChild(perf);
+        perfFps = new Performance();
+        perfFps->x = 5;
+        perfFps->y = 5;
+        perfFps->initGraph(GRAPH_RENDER_FPS, "Frame Time");
+        vsRoot->addChild(perfFps);
+
+        perfCpu = new Performance();
+        perfCpu->x = perfFps->x + perfFps->width + 5;
+        perfCpu->y = 5;
+        perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
+        vsRoot->addChild(perfCpu);
+
     }
 
 
     void render(NVGcontext *vg, int w, int h) {
         bndBackground(vg, 0, 0, w, h);
-
-        // some OUI stuff
-        uiBeginLayout();
-        int root = panel();
-        // position root element
-        uiSetSize(0, w, h);
-        ((UIData *) uiGetHandle(root))->handler = roothandler;
-        uiSetEvents(root, UI_SCROLL | UI_BUTTON0_DOWN);
-        uiSetBox(root, UI_COLUMN);
-
-//        static int choice = -1;
-
-//        int menu = uiItem();
-//        uiSetLayout(menu, UI_HFILL | UI_TOP);
-//        uiSetBox(menu, UI_ROW);
-//        uiInsert(root, menu);
-
-//        int opt_oui_demo = add_menu_option(menu, "OUI Demo", &choice);
-
-        int content = uiItem();
-        uiSetLayout(content, UI_FILL);
-        uiInsert(root, content);
-//        uiSetScroll(50, 50);
-
-//    if (choice == opt_blendish_demo) {
-//        int democontent = uiItem();
-//        uiSetLayout(democontent, UI_FILL);
-//        uiInsert(content, democontent);
 //
-//        UIData *data = (UIData *)uiAllocHandle(democontent, sizeof(UIData));
-//        data->handler = 0;
-//        data->subtype = ST_DEMOSTUFF;
-//    }
-//    else
-//        if (choice == opt_oui_demo) {
-        int democontent = uiItem();
-        uiSetLayout(democontent, UI_TOP);
-        uiSetSize(democontent, 250, 0);
-        uiInsert(content, democontent);
-        build_democontent(democontent);
-//        }
-
-        uiEndLayout();
-
-        drawUI(vg, 0, BND_CORNER_NONE);
-#if 0
-    for (int i = 0; i < uiGetLastItemCount(); ++i) {
-        if (uiRecoverItem(i) == -1) {
-            UIitem *pitem = uiLastItemPtr(i);
-            nvgBeginPath(vg);
-            nvgRect(vg,pitem->margins[0],pitem->margins[1],pitem->size[0],pitem->size[1]);
-            nvgStrokeWidth(vg, 2);
-            nvgStrokeColor(vg, nvgRGBAf(1.0f,0.0f,0.0f,0.5f));
-            nvgStroke(vg);
-        }
-    }
-#endif
-
-
-        uiProcess((int) (glfwGetTime() * 1000.0));
+//        // some OUI stuff
+//        uiBeginLayout();
+//        int root = panel();
+//        // position root element
+//        uiSetSize(0, w, h);
+//        ((UIData *) uiGetHandle(root))->handler = roothandler;
+//        uiSetEvents(root, UI_SCROLL | UI_BUTTON0_DOWN);
+//        uiSetBox(root, UI_COLUMN);
+//
+//
+//        int content = uiItem();
+//        uiSetLayout(content, UI_FILL);
+//        uiInsert(root, content);
+//
+//        int democontent = uiItem();
+//        uiSetLayout(democontent, UI_TOP);
+//        uiSetSize(democontent, 250, 0);
+//        uiInsert(content, democontent);
+//        build_democontent(democontent);
+//
+//        uiEndLayout();
+//
+//        drawUI(vg, 0, BND_CORNER_NONE);
+//
+//        uiProcess((int) (glfwGetTime() * 1000.0));
 
         vsRoot->render();
 
     }
 
 private:
-    Performance *perf;
+    Performance *perfFps;
+    Performance *perfCpu;
+
 };
