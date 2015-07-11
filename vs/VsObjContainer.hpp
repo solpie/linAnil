@@ -17,7 +17,7 @@ public:
         vsobjs = new vector<VsObj *>();
     }
 
-    void addChild(VsObj *vsObj) {
+    virtual void addChild(VsObj *vsObj) {
         vsObj->parent = this;
         vsobjs->push_back(vsObj);
     }

@@ -12,11 +12,17 @@
 
 using namespace std;
 
+#include "events/MouseEvent.hpp"
+
 class Sprite : public VsObjContainer {
 public:
     Sprite() {
 
     }
+
+
+    template<typename Observer>
+    virtual void add(const string &event, Observer &&observer) override;
 
     virtual void render() override {
         onDrawBegin();
@@ -25,10 +31,13 @@ public:
     }
 
     virtual void onDrawBegin() {
-        int mx = VS_CONTEXT.cursor.x;
-        int my = VS_CONTEXT.cursor.y;
-        if (mx >= x() && my >= y() && mx <= x() + width && my <= y() + height) {
-            cout << this << "hover" << endl;
+        if (isInteractive) {
+            int mx = VS_CONTEXT.cursor.x;
+            int my = VS_CONTEXT.cursor.y;
+            if (mx >= x() && my >= y() && mx <= x() + width && my <= y() + height) {
+                MouseEvent e;
+                disEvent(MouseEvent::MOVE, &e);
+            }
         }
     }
 
@@ -36,4 +45,13 @@ public:
 
     virtual void onDrawEnd() { }
 
+private:
+    bool isInteractive;
+
 };
+
+template<typename Observer>
+void Sprite::add(const string &event, Observer &&observer) {
+    EventDispatcher::add(event, observer);
+    isInteractive = (event == MouseEvent::MOVE || event == MouseEvent::DOWN || event == MouseEvent::UP)
+}

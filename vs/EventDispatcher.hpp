@@ -10,21 +10,29 @@
 #define LINANIL_VSEVENTDISPATCHER_HPP
 
 #endif //LINANIL_VSEVENTDISPATCHER_HPP
+#define addEvent(type,func) add(type, [this](void* e) { func(e); });
 using namespace std;
 
 template<class VsEventDispatcher>
 class EventDispatcher {
 public:
-    template<typename Observer>
-    void addEvent(const string &event, Observer &&func) {
-        _funcs[event] = forward<function<void(void *)>>(func);
+
+    virtual template<typename Observer>
+    void add(const string &event, Observer &&observer) {
+        _funcs[event].push_back(forward<function<void(void *)>>(observer));
     }
 
-    void disEvent(const string event, void *e = nullptr) {
+    void disEvent(const string event, void *e = nullptr) const {
         if (_funcs.find(event) != _funcs.end())
-            _funcs.at(event)(e);
+            for (const auto &obs : _funcs.at(event)) {
+                if (e)
+                    obs(e);
+                else
+                    obs(nullptr);
+            }
     }
 
 protected:
-    map<string, function<void(void *)>> _funcs;
+    map<string, vector<function<void(void *)>>> _funcs;
+
 };

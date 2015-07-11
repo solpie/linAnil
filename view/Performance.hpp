@@ -42,8 +42,11 @@ public:
         fps = new PerfGraph();
         width = 200;
         height = 35;
-//        cpuGraph = new PerfGraph();
-//        gpuGraph = new PerfGraph();
+        addEvent(MouseEvent::MOVE, onMove);
+    }
+
+    void onMove(MouseEvent *e) {
+        cout << this << "move" << endl;
     }
 
     void initGraph(int style, const char *name) {
@@ -58,7 +61,7 @@ public:
         fps->values[fps->head] = frameTime;
     }
 
-    PerfGraph *fps, *cpuGraph, *gpuGraph;
+    PerfGraph *fps;
 
     virtual void onDraw() override {
         ///
