@@ -35,7 +35,7 @@
 
 #include "oui/oui.h"
 #include "ui.hpp"
-
+#include "Performance.hpp"
 using namespace std;
 
 
@@ -47,7 +47,6 @@ void ui_handler(int item, UIevent event) {
 }
 
 void errorcb(int error, const char *desc) {
-//    printf("GLFW error %d: %s\n", error, desc);
     cout << "GLFW error " << error << ": " << desc << endl;
 }
 
@@ -81,19 +80,22 @@ void charevent(GLFWwindow *window, unsigned int value) {
 
 void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
     NVG_NOTUSED(scancode);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
+    }
     uiSetKey(key, mods, action);
 }
 
-class MainWin {
+class VsRoot {
 public:
-    MainWin(){
-        Evt_add("test",testThread);
+    VsRoot() {
+        Evt_add("test", testThread);
     }
-    void testThread(void *e){
-        cout<<this<<"thread safe"<<endl;
+
+    void testThread(void *e) {
+        cout << this << "thread safe" << endl;
     }
+
     int show() {
         GLFWwindow *window;
         UIcontext *uictx;
@@ -109,12 +111,12 @@ public:
 //        glfwSetErrorCallback([this](int error, const char *desc) { this->errorcb(error, desc); });
         glfwSetErrorCallback(errorcb);
 
-#ifndef _WIN32 // don't require this on win32, and works with more cards
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif
+//#ifndef _WIN32 // don't require this on win32, and works with more cards
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+//	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
 
         window = glfwCreateWindow(1440, 920, "linAnil", nullptr, nullptr);
@@ -176,8 +178,8 @@ public:
 
             double t = glfwGetTime();
             nvgBeginFrame(_vg, winWidth, winHeight, pxRatio);
-
-            draw(_vg, winWidth, winHeight);
+            //ui here
+            render(_vg, winWidth, winHeight);
             peak_items = (peak_items > uiGetItemCount()) ? peak_items : uiGetItemCount();
             peak_alloc = (peak_alloc > uiGetAllocSize()) ? peak_alloc : uiGetAllocSize();
 
@@ -185,8 +187,9 @@ public:
             double t2 = glfwGetTime();
             c += (t2 - t);
             total++;
-            if (total > (60)) {
-                cout << (c / (double) total) * 1000.0 << "ms" << endl;
+            if (total > 60) {
+//                double
+//                cout << (c / (double) total) * 1000.0 << "ms" << endl;
                 total = 0;
                 c = 0.0;
             }
@@ -194,6 +197,9 @@ public:
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
+        glfwTerminate();
+        isClose = true;
+        return 0;
     }
 
     void start() {
@@ -201,6 +207,7 @@ public:
         t.detach();
     }
 
+    bool isClose;
 private:
     void build_democontent(int parent) {
         // some persistent variables for demonstration
@@ -266,15 +273,17 @@ private:
     void init(NVGcontext *vg) {
         bndSetFont(nvgCreateFont(vg, "system", "oui/DejaVuSans.ttf"));
         bndSetIconImage(nvgCreateImage(vg, "oui/blender_icons16.png", 0));
+        perf = new Performance(vg);
+        perf->x = 5;
+        perf->y = 5;
     }
 
 
-    void draw(NVGcontext *vg, int w, int h) {
+    void render(NVGcontext *vg, int w, int h) {
         bndBackground(vg, 0, 0, w, h);
 
         // some OUI stuff
         uiBeginLayout();
-
         int root = panel();
         // position root element
         uiSetSize(0, w, h);
@@ -282,18 +291,19 @@ private:
         uiSetEvents(root, UI_SCROLL | UI_BUTTON0_DOWN);
         uiSetBox(root, UI_COLUMN);
 
-        static int choice = -1;
+//        static int choice = -1;
 
-        int menu = uiItem();
-        uiSetLayout(menu, UI_HFILL | UI_TOP);
-        uiSetBox(menu, UI_ROW);
-        uiInsert(root, menu);
+//        int menu = uiItem();
+//        uiSetLayout(menu, UI_HFILL | UI_TOP);
+//        uiSetBox(menu, UI_ROW);
+//        uiInsert(root, menu);
 
 //        int opt_oui_demo = add_menu_option(menu, "OUI Demo", &choice);
 
         int content = uiItem();
         uiSetLayout(content, UI_FILL);
         uiInsert(root, content);
+//        uiSetScroll(50, 50);
 
 //    if (choice == opt_blendish_demo) {
 //        int democontent = uiItem();
@@ -331,5 +341,11 @@ private:
 
 
         uiProcess((int) (glfwGetTime() * 1000.0));
+
+        perf->render();
+
     }
+
+private:
+    Performance *perf;
 };

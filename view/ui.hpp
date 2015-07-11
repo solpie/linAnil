@@ -233,7 +233,7 @@ void roothandler(int parent, UIevent event) {
 int button(int iconid, const char *label, UIhandler handler) {
     // create new ui item
     int item = uiItem();
-    // set size of wiget; horizontal size is dynamic, vertical is fixed
+    // set size of widget; horizontal size is dynamic, vertical is fixed
     uiSetSize(item, 0, BND_WIDGET_HEIGHT);
     uiSetEvents(item, UI_BUTTON0_HOT_UP);
     // store some custom data with the button that we use for styling

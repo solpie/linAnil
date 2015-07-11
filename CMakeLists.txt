@@ -7,16 +7,17 @@ link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32 -lboost_filesystem-mt -lboos
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #include_directories(D:/msys64/mingw32/include)
 #include_directories(SYSTEM mingw32/include)
+include_directories(view/ui)
 
 
 set(SOURCE_FILES main.cpp)
 file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
 add_executable(linAnil ${SOURCE_FILES}
-view/MainWin.hpp
+view/VsRoot.hpp
 events/Event.hpp
 model/TrackModel2.hpp
 model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/ui.hpp
-view/win/FileDialog.hpp)
+view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp)
