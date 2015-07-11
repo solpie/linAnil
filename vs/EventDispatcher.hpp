@@ -13,7 +13,6 @@
 #define addEvent(type,func) add(type, [this](void* e) { func(e); });
 using namespace std;
 
-template<class VsEventDispatcher>
 class EventDispatcher {
 public:
 

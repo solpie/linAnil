@@ -11,6 +11,7 @@
 #include <c++/4.9.2/exception>
 #include "nanovg/nanovg.h"
 #include "EventDispatcher.hpp"
+#include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
@@ -53,7 +54,7 @@ public:
     int mods;
     int enabeld;
     int action;
-//    EventDispatcher *top;
+    void *top= nullptr;
     int renderIdx;
 
     void beginFrame() {
@@ -61,7 +62,8 @@ public:
     }
 
     void endFrame() {
-
+        VS_CONTEXT.top = nullptr;
+//        top->disEvent();
     }
 
     void setMouseButton(unsigned int button, unsigned int mod, int act) {

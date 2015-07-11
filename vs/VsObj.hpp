@@ -15,7 +15,7 @@
 /*
  * VsObj visible object
  * */
-class VsObj : public EventDispatcher<VsObj> {
+class VsObj : public EventDispatcher {
 public:
     VsObj() {
         nvgContext = VG_CONTEXT;

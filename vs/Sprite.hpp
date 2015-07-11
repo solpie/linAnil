@@ -18,6 +18,7 @@ class Sprite : public VsObjContainer {
 public:
     Sprite() {
     }
+
     void onAdd(const string &event) override {
         isInteractive = (event == MouseEvent::MOVE || event == MouseEvent::DOWN || event == MouseEvent::UP);
     };
@@ -31,16 +32,21 @@ public:
 
     virtual void onDrawBegin() {
         if (isInteractive) {
+
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
             if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
                 MouseEvent e;
                 disEvent(MouseEvent::MOVE, &e);
-                if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
-                    VS_CONTEXT.enabeld;
-                    cout << this << "zdepth:" << zdepth << endl;
-                    VS_CONTEXT.enabeld = 0;
+                if (VS_CONTEXT.top) {
+                    if (zdepth >= ((VsObj *) (VS_CONTEXT.top))->zdepth) {
+                        VS_CONTEXT.top = this;
+                    }
                 }
+                else {
+                    VS_CONTEXT.top = this;
+                }
+
 //                if(VS_CONTEXT.b)
             }
         }
@@ -49,20 +55,15 @@ public:
     virtual void onDraw() { }
 
     virtual void onDrawEnd() {
-//        if (isInteractive) {
-//            int mx = VS_CONTEXT.cursor.x;
-//            int my = VS_CONTEXT.cursor.y;
-//            if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
-//                MouseEvent e;
-//                disEvent(MouseEvent::MOVE, &e);
-//                if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
+        if (isInteractive && VS_CONTEXT.top == this) {
+            if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
 //                    VS_CONTEXT.enabeld;
-//                    cout << this << "zdepth:" << zdepth << endl;
-//                    VS_CONTEXT.enabeld = 0;
-//                }
-////                if(VS_CONTEXT.b)
-//            }
-//        }
+                cout << this << "zdepth:" << zdepth << endl;
+                VS_CONTEXT.top = this;
+                    VS_CONTEXT.enabeld = 0;
+            }
+        }
+
     }
 
 private:
