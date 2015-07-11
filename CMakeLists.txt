@@ -20,4 +20,4 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/ui.hpp
-view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp)
+view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp)

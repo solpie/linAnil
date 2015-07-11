@@ -9,14 +9,15 @@
 #endif //KIUITEST_DISPLAYOBJ_HPP
 
 #include "nanovg/nanovg.h"
+#include "VsContext.hpp"
 
 /*
  * VsObj visible object
  * */
 class VsObj {
 public:
-    VsObj(NVGcontext *vg) {
-        nvgContext = vg;
+    VsObj() {
+        nvgContext = VS_CONTEXT;
     }
 
     ~VsObj() { }
@@ -25,11 +26,9 @@ public:
     float y = 0;
     float width = 0;
     float height = 0;
-
+    bool visible = true;
     virtual void render() { }
 
 protected:
-
-
     NVGcontext *nvgContext = nullptr;
 };

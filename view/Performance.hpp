@@ -37,7 +37,7 @@ float getGraphAverage(PerfGraph *fps) {
 
 class Performance : public VsObj {
 public:
-    Performance(NVGcontext *vg) : VsObj(vg) {
+    Performance() : VsObj() {
         fps = new PerfGraph();
         width = 200;
         height = 35;

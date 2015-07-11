@@ -36,6 +36,8 @@
 #include "oui/oui.h"
 #include "ui.hpp"
 #include "Performance.hpp"
+#include "vs/VsContext.hpp"
+#include "vs/VsObjContainer.hpp"
 using namespace std;
 
 
@@ -269,13 +271,16 @@ private:
     }
 
     struct NVGcontext *_vg = nullptr;
-
+    VsObjContainer *vsRoot = nullptr;
     void init(NVGcontext *vg) {
         bndSetFont(nvgCreateFont(vg, "system", "oui/DejaVuSans.ttf"));
         bndSetIconImage(nvgCreateImage(vg, "oui/blender_icons16.png", 0));
-        perf = new Performance(vg);
+        VsContext::_().init(vg);
+        vsRoot = new VsObjContainer();
+        perf = new Performance();
         perf->x = 5;
         perf->y = 5;
+        vsRoot->addChild(perf);
     }
 
 
@@ -342,7 +347,7 @@ private:
 
         uiProcess((int) (glfwGetTime() * 1000.0));
 
-        perf->render();
+        vsRoot->render();
 
     }
 
