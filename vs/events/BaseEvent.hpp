@@ -28,7 +28,5 @@ public:
 
     void *target = nullptr;
     string type;
-//    BaseEvent(const BaseEvent &) = delete;
-//
-//    BaseEvent &operator=(const BaseEvent &) = delete;
+    bool isAccept= false;
 };

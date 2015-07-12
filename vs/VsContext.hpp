@@ -88,10 +88,11 @@ public:
     void popUIEvent() {
         for (const auto &obs : _uiEvents) {
             BaseEvent *event = &obs.second;
-            ((EventDispatcher *) event->target)->disEvent(*event);
+            if (!event->isAccept) {
+                ((EventDispatcher *) event->target)->disEvent(*event);
+                event->isAccept = true;
+            }
         }
-        _uiEvents.clear();
-
         enabeld = 0;
     }
 
