@@ -3,7 +3,7 @@
 // Created by manoyuria on 2015/6/21.
 //
 
-#include <QtGui/qimage.h>
+//#include <QtGui/qimage.h>
 
 #ifndef SEQTRUAN_TRACKFRAMEINFO_HPP
 #define SEQTRUAN_TRACKFRAMEINFO_HPP
@@ -14,17 +14,17 @@
 #include "utils/Sh1tMacro.hpp"
 #include "ImageLoader.hpp"
 
-class ImageSlot : public QObject {
-Q_OBJECT
-public:
-    ImageSlot() : QObject() { };
-    QImage *payLoad;
-public slots:
-
-    void onLoaded(QImage *img) {
-        this->payLoad = img;
-    }
-};
+//class ImageSlot :  {
+//
+//public:
+//    ImageSlot() : QObject() { };
+//    QImage *payLoad;
+//public slots:
+//
+//    void onLoaded(QImage *img) {
+//        this->payLoad = img;
+//    }
+//};
 
 class TrackFrameInfo : public OneLinker<TrackFrameInfo> {
 public:
