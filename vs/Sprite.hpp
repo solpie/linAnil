@@ -36,9 +36,8 @@ public:
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
             if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
-//                VS_CONTEXT.push(MouseEvent::MOVE, mouseMove);
-                if (_mx !=mx || _my != my) {
-                    _mx =mx;
+                if (_mx != mx || _my != my) {
+                    _mx = mx;
                     _my = my;
                     VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::MOVE));
                 }

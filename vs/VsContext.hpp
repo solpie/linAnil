@@ -64,7 +64,7 @@ public:
     int renderIdx;
 
     void beginFrame() {
-        renderIdx = 0;
+//        renderIdx = 0;
     }
 
     void endFrame() {

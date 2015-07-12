@@ -66,12 +66,12 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
     }
     cout<<"button:"<<button<<"action:"<<action<<"mods:"<<mods<<endl;
     VsContext::_().setMouseButton(button, mods, action);
-    uiSetButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
+//    uiSetButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
 }
 
 void cursorpos(GLFWwindow *window, double x, double y) {
     NVG_NOTUSED(window);
-    uiSetCursor((int) x, (int) y);
+//    uiSetCursor((int) x, (int) y);
     VsContext::_().setCursor(x, y);
 }
 
@@ -125,6 +125,8 @@ public:
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 //#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+        //no title bar no border
+//        glfwWindowHint(GLFW_DECORATED, false);
 
         window = glfwCreateWindow(1440, 920, "linAnil", nullptr, nullptr);
         if (!window) {

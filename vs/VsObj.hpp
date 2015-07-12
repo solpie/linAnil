@@ -54,7 +54,7 @@ public:
     }
 
     void updateZDepth() {
-        zdepth = VS_CONTEXT.renderIdx++;
+//        zdepth = VS_CONTEXT.renderIdx++;
     }
 
     virtual void render() {
