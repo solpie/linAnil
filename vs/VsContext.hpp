@@ -100,7 +100,6 @@ public:
     void pushUIEvent(BaseEvent event) {
         _uiEvents[event.type] = event;
     }
-
 protected:
     map<string, BaseEvent> _uiEvents;
 

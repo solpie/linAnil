@@ -64,7 +64,7 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
             button = 1;
             break;
     }
-    cout<<"button:"<<button<<"action:"<<action<<"mods:"<<mods<<endl;
+    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
     VsContext::_().setMouseButton(button, mods, action);
 //    uiSetButton(button, mods, (action == GLFW_PRESS) ? 1 : 0);
 }
@@ -349,7 +349,13 @@ private:
 //        drawUI(vg, 0, BND_CORNER_NONE);
 //
 //        uiProcess((int) (glfwGetTime() * 1000.0));
+        if(vsRoot->width!=w||vsRoot->height!=h)
+        {
 
+            vsRoot->width = w;
+            vsRoot->height = h;
+            vsRoot->resize(w, h);
+        }
         vsRoot->render();
     }
 };

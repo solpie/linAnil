@@ -52,7 +52,7 @@ public:
             return parent->gY() + _y;
         return _y;
     }
-
+    void move(int x,int y){_x =x;_y=y;}
     void updateZDepth() {
 //        zdepth = VS_CONTEXT.renderIdx++;
     }

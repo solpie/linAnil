@@ -9,18 +9,23 @@
 #endif //LINANIL_TIMELINE_HPP
 
 
-#include "vs/VsObjContainer.hpp"
+#include "vs/Slider.hpp"
 
 class Timeline : public VsObjContainer {
 public:
     Timeline() {
-
+        vSlider = new Slider();
+        addChild(vSlider);
     }
 
     virtual void render() override;
+
+private:
+    Slider *vSlider;
 };
 
 void Timeline::render() {
-    VsObjContainer::render();
 
+
+    VsObjContainer::render();
 }

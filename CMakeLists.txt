@@ -1,14 +1,13 @@
 cmake_minimum_required(VERSION 3.2)
 project(linAnil)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -pthread -fpermissive")
-add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS )
-link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32 -lboost_filesystem-mt -lboost_system-mt)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -s -std=c++11 -fpermissive")
+add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS)
+link_libraries(-lnanovg -lglfw3 -lglew32.dll -lopengl32 -lboost_filesystem-mt -lboost_system-mt)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #include_directories(D:/msys64/mingw32/include)
 #include_directories(SYSTEM mingw32/include)
 include_directories(view/ui)
-
 set(SOURCE_FILES main.cpp)
 file(GLOB FONTS "vs/fonts/*.ttf")
 file(GLOB THUMBS "test/thumb/*.jpg")
@@ -23,4 +22,4 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/ui.hpp
-view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/events/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp vs/Sprite.hpp vs/events/MouseEvent.hpp vs/events/BaseEvent.hpp)
+view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/events/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp vs/Sprite.hpp vs/events/MouseEvent.hpp vs/events/BaseEvent.hpp vs/Slider.hpp)

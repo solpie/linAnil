@@ -11,19 +11,20 @@
 #include "vs/VsObjContainer.hpp"
 #include "Performance.hpp"
 #include "view/TrackArea.hpp"
+#include "view/timeline/Timeline.hpp"
+
 class VsRoot : public VsObjContainer {
 public:
     VsRoot() {
         for (int i = 0; i < 12; i++) {
             char file[128];
-            snprintf(file, 128, "test/thumb/image%d.jpg", i+1);
+            snprintf(file, 128, "test/thumb/image%d.jpg", i + 1);
             images[i] = nvgCreateImage(VG_CONTEXT, file, 0);
             if (images[i] == 0) {
                 printf("Could not load %s.\n", file);
 //                return -1;
             }
         }
-
 
         perfFps = new Performance();
         perfFps->setX(5);
@@ -32,21 +33,27 @@ public:
         addChild(perfFps);
 
         perfCpu = new Performance();
-        perfCpu->setX(perfFps->gX() + perfFps->width -50);
+        perfCpu->setX(perfFps->gX() + perfFps->width - 50);
         perfCpu->setY(5);
         perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
         addChild(perfCpu);
-
-//        removeChild(perfCpu);
-        setX(500);
+//        setX(500);
+        timeline = new Timeline();
+//        timeline->setY(width - 630);
+        addChild(timeline);
     }
 
     virtual void render() override;
+
+    void resize(int w, int h) {
+        timeline->setY(h - 360);
+    }
 
 private:
     Performance *perfFps;
     int images[12];
     Performance *perfCpu;
+    Timeline *timeline;
 };
 
 void VsRoot::render() {
