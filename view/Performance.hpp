@@ -44,6 +44,7 @@ public:
         height = 35;
         addEvent(MouseEvent::MOVE, onMove);
         addEvent(MouseEvent::DOWN, onDown);
+        addEvent(MouseEvent::UP, onUp);
     }
 
     void onDown(MouseEvent *e) {
@@ -51,9 +52,14 @@ public:
         cout << this << " down: " << t << endl;
     }
 
+    void onUp(MouseEvent *e) {
+        void *t = e->target;
+        cout << this << " : " << e->type << endl;
+    }
+
     void onMove(MouseEvent *e) {
-//        void * t = e->target;
-//        cout << this << "move" <<t<< endl;
+        void * t = e->target;
+        cout << this << "move" <<t<< endl;
     }
 
     void initGraph(int style, const char *name) {
