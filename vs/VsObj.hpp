@@ -10,7 +10,7 @@
 
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
-#include "EventDispatcher.hpp"
+#include "events/EventDispatcher.hpp"
 
 /*
  * VsObj visible object

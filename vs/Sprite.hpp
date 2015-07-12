@@ -46,13 +46,10 @@ public:
 //                VS_CONTEXT.push(MouseEvent::MOVE, mouseMove);
                 if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1 && VS_CONTEXT.enabeld) {
 //                    VS_CONTEXT.enabeld;
-                    cout << this << "zdepth:" << zdepth << endl;
-                    VS_CONTEXT.push(MouseEvent::DOWN, [this] {
-                        MouseEvent e;
-                        e.type = MouseEvent::DOWN;
-                        disEvent(e);
-                    });
-
+//                    VS_CONTEXT.push(MouseEvent::DOWN, [this] {
+//                        disEvent(MouseEvent::create(MouseEvent::DOWN));
+//                    });
+                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::DOWN));
                 }
 //
 //                if (VS_CONTEXT.top) {

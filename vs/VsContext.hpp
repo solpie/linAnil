@@ -10,12 +10,14 @@
 
 #include <c++/4.9.2/exception>
 #include "nanovg/nanovg.h"
-#include "EventDispatcher.hpp"
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
 using namespace std;
+
+#include "events/EventDispatcher.hpp"
+#include "events/BaseEvent.hpp"
 
 template<typename T>
 class S {
@@ -29,6 +31,10 @@ public:
 struct pos {
     int x;
     int y;
+};
+struct disp {
+    EventDispatcher *target;
+    BaseEvent *e;
 };
 
 class VsContext : public S<VsContext> {
@@ -62,9 +68,6 @@ public:
     }
 
     void endFrame() {
-//        cout << "endFrame" << VS_CONTEXT.top << endl;
-//        VS_CONTEXT.top = nullptr;
-//        top->disEvent();
         popUIEvent();
     }
 
@@ -83,23 +86,22 @@ public:
     pos cursor;
 
     void popUIEvent() {
-        int count = _uiEvents.size();
         for (const auto &obs : _uiEvents) {
-            obs.second();
+            BaseEvent *event = &obs.second;
+            ((EventDispatcher *) event->target)->disEvent(*event);
         }
         _uiEvents.clear();
-        count = _uiEvents.size();
 
         enabeld = 0;
     }
 
-    template<typename Observer>
-    void push(const string &event, Observer &&observer) {
-        _uiEvents[event] = forward<function<void()>>(observer);
+
+    void pushUIEvent(BaseEvent event) {
+        _uiEvents[event.type] = event;
     }
 
 protected:
-    map<string, function<void()>> _uiEvents;
+    map<string, BaseEvent> _uiEvents;
 
     NVGcontext *nvgContext = nullptr;
 };

@@ -27,8 +27,8 @@ public:
     virtual void onAdd(const string &event) {
     }
 
-    template<typename BaseEvent>
 
+    template<typename BaseEvent>
     void disEvent(BaseEvent e) {
         disEvent(e.type, e);
     }
@@ -42,7 +42,6 @@ public:
                 obs(&e);
             }
     }
-
 protected:
     map<string, vector<function<void(void *)>>> _funcs;
 

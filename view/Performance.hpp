@@ -47,8 +47,10 @@ public:
     }
 
     void onDown(MouseEvent *e) {
-
+        void *t = e->target;
+        cout << this << " down: " << t << endl;
     }
+
     void onMove(MouseEvent *e) {
 //        void * t = e->target;
 //        cout << this << "move" <<t<< endl;

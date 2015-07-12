@@ -14,8 +14,12 @@ class BaseEvent {
 public:
     BaseEvent() { }
 
-    BaseEvent(string t) { type = t; }
-
+    static BaseEvent create(void* dispatcher,string t) {
+        BaseEvent e;
+        e.type = t;
+        e.target = dispatcher;
+        return e;
+    }
 
     ~BaseEvent() {
 //        delete target;
