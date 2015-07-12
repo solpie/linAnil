@@ -10,5 +10,6 @@ int main(int argc, char *argv[]) {
     m->show();
 //    m->start();
 //    App()._().test();
-//    while (!m->isClose){}
+//    while (1) { }
+//    while (!m->isClose) { }
 }

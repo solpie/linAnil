@@ -7,7 +7,9 @@
 #define LINANIL_MOUSEEVENT_HPP
 
 #endif //LINANIL_MOUSEEVENT_HPP
-class MouseEvent{
+
+#include "BaseEvent.hpp"
+class MouseEvent:public BaseEvent{
 public:
     static constexpr const char *MOVE = "MOVE";
     static constexpr const char *DOWN = "DOWN";

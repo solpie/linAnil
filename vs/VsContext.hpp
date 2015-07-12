@@ -54,7 +54,7 @@ public:
     int mods;
     int enabeld;
     int action;
-    void *top= nullptr;
+    void *top = nullptr;
     int renderIdx;
 
     void beginFrame() {
@@ -62,8 +62,10 @@ public:
     }
 
     void endFrame() {
-        VS_CONTEXT.top = nullptr;
+//        cout << "endFrame" << VS_CONTEXT.top << endl;
+//        VS_CONTEXT.top = nullptr;
 //        top->disEvent();
+        popUIEvent();
     }
 
     void setMouseButton(unsigned int button, unsigned int mod, int act) {
@@ -80,6 +82,24 @@ public:
 
     pos cursor;
 
+    void popUIEvent() {
+        int count = _uiEvents.size();
+        for (const auto &obs : _uiEvents) {
+            obs.second();
+        }
+        _uiEvents.clear();
+        count = _uiEvents.size();
+
+        enabeld = 0;
+    }
+
+    template<typename Observer>
+    void push(const string &event, Observer &&observer) {
+        _uiEvents[event] = forward<function<void()>>(observer);
+    }
+
 protected:
+    map<string, function<void()>> _uiEvents;
+
     NVGcontext *nvgContext = nullptr;
 };

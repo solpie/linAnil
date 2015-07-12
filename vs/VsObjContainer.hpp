@@ -27,7 +27,8 @@ public:
         vector<VsObj *>::iterator i = vsobjs->begin();
         while (i != vsobjs->end()) {
             if (*i == vsobj) {
-                i = vsobjs->erase(i);
+                vsobjs->erase(i);
+                break;
             } else {
                 i++;
             }
