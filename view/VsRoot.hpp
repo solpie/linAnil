@@ -26,17 +26,7 @@ public:
             }
         }
 
-        perfFps = new Performance();
-        perfFps->setX(5);
-        perfFps->setY(5);
-        perfFps->initGraph(GRAPH_RENDER_FPS, "Frame Time");
-        addChild(perfFps);
 
-        perfCpu = new Performance();
-        perfCpu->setX(perfFps->gX() + perfFps->width - 50);
-        perfCpu->setY(5);
-        perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
-        addChild(perfCpu);
 //        setX(500);
         timeline = new Timeline();
 //        timeline->setY(width - 630);
@@ -52,9 +42,8 @@ public:
     }
 
 private:
-    Performance *perfFps;
+
     int images[12];
-    Performance *perfCpu;
     Timeline *timeline;
 };
 

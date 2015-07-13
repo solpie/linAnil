@@ -36,17 +36,17 @@ float getGraphAverage(PerfGraph *fps) {
     return avg / (float) GRAPH_HISTORY_COUNT;
 }
 
-class Performance : public Sprite {
+class Performance : public VsObj {
 public:
-    Performance() {
+    Performance():VsObj(false) {
         fps = new PerfGraph();
         width = 200;
         height = 35;
-        addEvent(MouseEvent::MOVE, onMove);
-        addEvent(MouseEvent::DOWN, onDown);
-        addEvent(MouseEvent::UP, onUp);
-        addEvent(MouseEvent::ROLL_OVER, onRoll);
-        addEvent(MouseEvent::ROLL_OUT, onRoll);
+//        addEvent(MouseEvent::MOVE, onMove);
+//        addEvent(MouseEvent::DOWN, onDown);
+//        addEvent(MouseEvent::UP, onUp);
+//        addEvent(MouseEvent::ROLL_OVER, onRoll);
+//        addEvent(MouseEvent::ROLL_OUT, onRoll);
     }
 
     void onRoll(MouseEvent *e) {
@@ -83,12 +83,12 @@ public:
 
     PerfGraph *fps;
 
-    virtual void onDraw() override {
+    virtual void render() override {
         ///
         int i;
         float avg, w, h;
         char str[64];
-        NVGcontext *vg = this->nvgContext;
+        NVGcontext *vg = VG_CONTEXT;
         avg = getGraphAverage(fps);
 
         w = width;
@@ -168,10 +168,6 @@ public:
             sprintf(str, "%.2f ms", avg * 1000.0f);
             nvgText(vg, gX() + w - 3, gY() + 1, str, NULL);
         }
-        float cur = glfwGetTime();
-        dt = cur - last;
-        last = cur;
-        updateGraph(dt);
     }
 
 protected:

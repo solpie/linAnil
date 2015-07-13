@@ -78,7 +78,21 @@ void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
 class MainWin {
 public:
+    Performance *perfFps;
+    Performance *perfCpu;
+
     MainWin() {
+        perfFps = new Performance();
+        perfFps->setX(5);
+        perfFps->setY(5);
+        perfFps->initGraph(GRAPH_RENDER_FPS, "Frame Time");
+//        addChild(perfFps);
+
+        perfCpu = new Performance();
+        perfCpu->setX(perfFps->gX() + perfFps->width + 5);
+        perfCpu->setY(5);
+        perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
+//        addChild(perfCpu);
         Evt_add("test", testThread);
     }
 
@@ -103,6 +117,8 @@ public:
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 //#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+//        glfwWindowHint(GLFW_REFRESH_RATE, 60);
+//        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
         //no title bar no border
 //        glfwWindowHint(GLFW_DECORATED, false);
 
@@ -136,19 +152,33 @@ public:
         }
 
         init(_vg);
-        glfwSwapInterval(0);
+        //limit fps to monitor on=1 off=0
+        glfwSwapInterval(1);
 
         glfwSetTime(0);
 
         double c = 0.0;
         int total = 0;
-
+        bool isPerf = true;
+//        if (isPerf) {
+        double prevt = 0, cpuTime = 0;
+//        }
 
         while (!glfwWindowShouldClose(window)) {
             double mx, my;
+
+
             int winWidth, winHeight;
             int fbWidth, fbHeight;
             float pxRatio;
+
+            double t, dt;
+            if (isPerf) {
+                t = glfwGetTime();
+                dt = t - prevt;
+                prevt = t;
+            }
+
 
             glfwGetCursorPos(window, &mx, &my);
             glfwGetWindowSize(window, &winWidth, &winHeight);
@@ -161,15 +191,22 @@ public:
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            double t = glfwGetTime();
+//            double t = glfwGetTime();
 
 
             nvgBeginFrame(_vg, winWidth, winHeight, pxRatio);
             VS_CONTEXT.beginFrame();
             //ui here
             render(_vg, winWidth, winHeight);
+            perfFps->render();
+            perfCpu->render();
             nvgEndFrame(_vg);
             VS_CONTEXT.endFrame();
+            if (isPerf) {
+                cpuTime = glfwGetTime() - t;
+                perfFps->updateGraph(dt);
+                perfCpu->updateGraph(cpuTime);
+            }
 
             glfwSwapBuffers(window);
             glfwPollEvents();

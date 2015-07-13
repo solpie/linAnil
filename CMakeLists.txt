@@ -13,11 +13,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(view/ui)
 set(SOURCE_FILES main.cpp)
-file(GLOB FONTS "vs/fonts/*.ttf")
-file(GLOB THUMBS "test/thumb/*.jpg")
-file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
-file(COPY ${FONTS} DESTINATION fonts)
-file(COPY ${THUMBS} DESTINATION test/thumb)
 
 add_executable(linAnil ${SOURCE_FILES}
 view/MainWin.hpp
@@ -35,9 +30,16 @@ target_link_libraries(linAnil :libboost_system-mt.a)
 #target_link_libraries(linAnil :libglew32.a)
 #target_link_libraries(linAnil :libglfw3.dll.a)
 #target_link_libraries(linAnil :libnanovg.a)
-target_link_libraries (linAnil ${CMAKE_THREAD_LIBS_INIT})
+#target_link_libraries (linAnil ${CMAKE_THREAD_LIBS_INIT})
 #COPY dll
 set(BIN_DIR ${CMAKE_CXX_COMPILER}/../../bin)
 file(COPY ${BIN_DIR}/libwinpthread-1.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glew32.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glfw3.dll DESTINATION .)
+
+#copy res
+file(GLOB FONTS "vs/fonts/*.ttf")
+file(COPY ${FONTS} DESTINATION fonts)
+file(GLOB THUMBS "test/thumb/*.jpg")
+file(COPY ${THUMBS} DESTINATION test/thumb)
+file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
