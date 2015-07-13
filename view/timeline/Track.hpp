@@ -8,6 +8,7 @@
 #endif //LINANIL_TRACK_HPP
 
 #include <vs/Slider.hpp>
+#include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
 
 class Track : public Sprite {
@@ -15,6 +16,12 @@ public:
     Track() {
         width = 1024;
         height = 62;
+
+        trackVisibleBox = new CheckBox();
+        trackVisibleBox->isChecked = true;
+        trackVisibleBox->setX(200);
+        trackVisibleBox->setY(10);
+        addChild(trackVisibleBox);
 
         vSlider = new Slider();
         vSlider->setX(200);
@@ -32,6 +39,8 @@ public:
 //        Sprite::onDraw();
         VsObjContainer::render();
     }
+
 private:
     Slider *vSlider;
+    CheckBox *trackVisibleBox;
 };

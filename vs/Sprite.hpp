@@ -27,12 +27,14 @@ public:
     virtual void render() override {
         VsObjContainer::updateZDepth();
         onDrawBegin();
+        nvgSave(nvgContext);
         onDraw();
+        nvgRestore(nvgContext);
         onDrawEnd();
     }
 
     virtual void onDrawBegin() {
-        if (mouseEnabled&&isInteractive) {
+        if (mouseEnabled && isInteractive) {
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
             bool isIn = false;
@@ -70,6 +72,11 @@ public:
 
     virtual void onDrawEnd() {
 
+    }
+
+    void setSize(int w, int h) {
+        width = w;
+        height = h;
     }
 
     bool mouseEnabled = true;
