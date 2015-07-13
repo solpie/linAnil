@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
 project(linAnil)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -s -std=c++11 -fpermissive")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -fpermissive")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -s -std=c++11 -fpermissive")
 add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
 #dynamic link
 #link_libraries(-lnanovg -lglfw3 -lglew32.dll -lopengl32)
 
 link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32)
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
+#set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
 #find_package(Threads REQUIRED)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -22,6 +23,7 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 view/UI.hpp
+events/ActionEvent.hpp
 view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/events/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp vs/Sprite.hpp vs/events/MouseEvent.hpp vs/events/BaseEvent.hpp vs/Slider.hpp view/timeline/Track.hpp view/timeline/TrackToolBar.hpp view/Theme.hpp vs/CheckBox.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)

@@ -32,10 +32,8 @@ struct pos {
     int x;
     int y;
 };
-struct disp {
-    EventDispatcher *target;
-    BaseEvent *e;
-};
+
+#include "events/ActionEvent.hpp"
 
 class VsContext : public S<VsContext> {
 public:
@@ -76,6 +74,10 @@ public:
         mods = mod;
         action = act;
         enabeld = 1;
+        if (act == GLFW_PRESS)
+            Evt_dis(ActionEvent::STAGE_MOUSE_DOWN, nullptr)
+        else if (act == GLFW_RELEASE)
+            Evt_dis(ActionEvent::STAGE_MOUSE_UP, nullptr)
     }
 
     void setCursor(int x, int y) {
@@ -100,8 +102,8 @@ public:
     void pushUIEvent(BaseEvent event) {
         _uiEvents[event.type] = event;
     }
+
 protected:
     map<string, BaseEvent> _uiEvents;
-
     NVGcontext *nvgContext = nullptr;
 };

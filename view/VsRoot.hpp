@@ -26,11 +26,11 @@ public:
             }
         }
 
-
 //        setX(500);
         timeline = new Timeline();
 //        timeline->setY(width - 630);
         addChild(timeline);
+        cout << this << "init root" << endl;
     }
 
     virtual void render() override;

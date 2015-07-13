@@ -22,6 +22,7 @@ public:
         t = new Track();
         t->setY(trackToolBar->height);
         addChild(t);
+        cout << this << "init Timeline" << endl;
     }
 
     virtual void render() override;

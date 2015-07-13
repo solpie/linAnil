@@ -9,6 +9,7 @@
 
 #include "Sprite.hpp"
 
+
 class Slider : public Sprite {
 public:
     Slider(bool isHorizontal = true) {
@@ -16,31 +17,24 @@ public:
         height = 15;
         addEvent(MouseEvent::DOWN, onDown);
         addEvent(MouseEvent::UP, onUp);
-        addEvent(MouseEvent::MOVE, onMove);
-//        addEvent(MouseEvent::ROLL_OUT, onRollOut);
+        Evt_add(ActionEvent::STAGE_MOUSE_UP, onUp);
     }
 
-    void onMove(MouseEvent *e) {
-        if (isPress)
-            updateValueByPos();
-    }
 
-    void onRollOut(MouseEvent *e) {
+    void onUp(void *e) {
         if (isPress)
             isPress = false;
     }
 
-    void onUp(MouseEvent *e) {
-        isPress = false;
-    }
 
     void onDown(MouseEvent *e) {
         isPress = true;
         updateValueByPos();
     }
 
-
     virtual void onDraw() override {
+        if (isPress)
+            updateValueByPos();
         NVGcontext *vg = this->nvgContext;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
@@ -91,6 +85,10 @@ private:
 
     void updateValueByPos() {
         int px = VS_CONTEXT.cursor.x - gX();
+        if (px < 0)
+            px = 0;
+        else if (px > width)
+            px = width;
         _value = px * (maxValue - minValue + 1) / width;
     }
 

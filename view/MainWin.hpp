@@ -117,8 +117,6 @@ public:
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 //#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
-//        glfwWindowHint(GLFW_REFRESH_RATE, 60);
-//        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
         //no title bar no border
 //        glfwWindowHint(GLFW_DECORATED, false);
 
@@ -166,8 +164,6 @@ public:
 
         while (!glfwWindowShouldClose(window)) {
             double mx, my;
-
-
             int winWidth, winHeight;
             int fbWidth, fbHeight;
             float pxRatio;
@@ -228,11 +224,6 @@ private:
 
     struct NVGcontext *_vg = nullptr;
     VsRoot *vsRoot = nullptr;
-    struct DemoData {
-        int fontNormal, fontBold, fontIcons;
-        int images[12];
-    };
-    typedef struct DemoData DemoData;
 
     void init(NVGcontext *vg) {
         //// init font icons
