@@ -45,8 +45,15 @@ public:
         addEvent(MouseEvent::MOVE, onMove);
         addEvent(MouseEvent::DOWN, onDown);
         addEvent(MouseEvent::UP, onUp);
+        addEvent(MouseEvent::ROLL_OVER, onRoll);
+        addEvent(MouseEvent::ROLL_OUT, onRoll);
     }
 
+    void onRoll(MouseEvent *e) {
+//        Sprite *t = (Sprite *)e->target;
+        cout << this << " Roll: " << e->type << endl;
+        printf("roll");
+    }
     void onDown(MouseEvent *e) {
         void *t = e->target;
         cout << this << " down: " << t << endl;

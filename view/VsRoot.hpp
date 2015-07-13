@@ -47,6 +47,8 @@ public:
 
     void resize(int w, int h) {
         timeline->setY(h - 360);
+        timeline->width = w;
+        timeline->height = h;
     }
 
 private:

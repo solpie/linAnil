@@ -32,10 +32,12 @@ public:
     }
 
     virtual void onDrawBegin() {
-        if (isInteractive) {
+        if (mouseEnabled&&isInteractive) {
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
+            bool isIn = false;
             if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
+                isIn = true;
                 if (_mx != mx || _my != my) {
                     _mx = mx;
                     _my = my;
@@ -50,6 +52,16 @@ public:
                     }
                 }
             }
+
+            if (!_isHover && isIn) {
+                _isHover = true;
+                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OVER));
+
+            }
+            else if (_isHover && !isIn) {
+                _isHover = false;
+                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OUT));
+            }
         }
     }
 
@@ -60,7 +72,10 @@ public:
 
     }
 
+    bool mouseEnabled = true;
 private:
+
+    bool _isHover = false;
     int _mx;
     int _my;
     bool isInteractive;

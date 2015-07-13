@@ -10,22 +10,32 @@
 
 
 #include "vs/Slider.hpp"
+#include "TrackToolBar.hpp"
+#include "Track.hpp"
 
 class Timeline : public VsObjContainer {
 public:
     Timeline() {
-        vSlider = new Slider();
-        addChild(vSlider);
+        trackToolBar = new TrackToolBar();
+        addChild(trackToolBar);
+
+        t = new Track();
+        t->setY(trackToolBar->height);
+        addChild(t);
     }
 
     virtual void render() override;
 
 private:
-    Slider *vSlider;
+    TrackToolBar *trackToolBar;
+    Track *t;
 };
 
 void Timeline::render() {
-
-
+    NVGcontext *vg = nvgContext;
+    nvgBeginPath(vg);
+    nvgRect(vg, gX(), gY(), width, height);
+    nvgFillColor(vg, nvgRGBA(72, 72, 72, 255));
+    nvgFill(vg);
     VsObjContainer::render();
 }
