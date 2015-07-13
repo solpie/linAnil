@@ -26,7 +26,7 @@ model/TrackModel2.hpp
 model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
-view/ui.hpp
+view/UII.hpp
 view/win/FileDialog.hpp view/Input.hpp view/Performance.hpp vs/VsObj.hpp vs/VsObjContainer.hpp vs/VsContext.hpp vs/events/EventDispatcher.hpp view/VsRoot.hpp view/TrackArea.hpp view/timeline/Timeline.hpp vs/Sprite.hpp vs/events/MouseEvent.hpp vs/events/BaseEvent.hpp vs/Slider.hpp view/timeline/Track.hpp view/timeline/TrackToolBar.hpp view/Theme.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
