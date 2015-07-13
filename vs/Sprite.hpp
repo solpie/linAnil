@@ -47,7 +47,6 @@ public:
                             VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::DOWN));
                         else if (VS_CONTEXT.action == GLFW_RELEASE)
                             VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::UP));
-
                     }
                 }
             }
