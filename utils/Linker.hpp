@@ -40,6 +40,13 @@ public:
         return this;
     }
 
+    CLS *getTail() {
+        if (next)
+            return next->getTail();
+        else
+            return this;
+    }
+
     void dispose() {
 
     }

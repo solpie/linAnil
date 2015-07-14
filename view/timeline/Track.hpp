@@ -11,7 +11,7 @@
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
 
-class Track : public Sprite {
+class Track : public OneLinker<Track>, public Sprite {
 public:
     Track() {
         width = 1024;

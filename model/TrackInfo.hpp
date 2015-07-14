@@ -11,7 +11,7 @@
 #endif //SEQTRUAN_TRACKINFO_HPP
 using namespace std;
 
-class TrackInfo {
+class TrackInfo : public OneLinker<TrackInfo> {
 public:
     TrackInfo(string name) {
         this->name = name;

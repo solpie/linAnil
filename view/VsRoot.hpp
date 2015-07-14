@@ -12,6 +12,7 @@
 #include "Performance.hpp"
 #include "view/TrackArea.hpp"
 #include "view/timeline/Timeline.hpp"
+#include "vs/events/VsEvent.hpp"
 
 class VsRoot : public VsObjContainer {
 public:
@@ -31,6 +32,8 @@ public:
 //        timeline->setY(width - 630);
         addChild(timeline);
         cout << this << "init root" << endl;
+        Evt_dis(VsEvent::INITED, nullptr)
+
     }
 
     virtual void render() override;

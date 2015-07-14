@@ -18,7 +18,7 @@
 using namespace boost;
 
 #include <stack>
-
+#include "events/TrackModelEvent.hpp"
 class TrackModel {
 public:
     TrackModel() {
@@ -40,6 +40,8 @@ public:
         TrackInfo *trackInfo = new TrackInfo(name);
         trackInfo->idx = _trackInfos->size();
         _trackInfos->push_back(trackInfo);
+        if (_trackInfo == nullptr)
+            _trackInfo = trackInfo;
         TrackFrameInfo *pre = nullptr;
         if (dirname != "") {
 //            QDir dir(dirname);
@@ -73,13 +75,18 @@ public:
 //                    }
 //                }
         }
+        else {//empty frame
+
+        }
         cout << this << "trackInfo frame count:" << trackInfo->getFrameCount();
 //        if (sizeof(trackInfo->trackFrameInfos) > sequencePlayback->endFrameIdx) {
 //            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
 //        }
-//        Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
+        Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
     };
 private:
+
+    TrackInfo *_trackInfo = nullptr;
     vector<TrackInfo *> *_trackInfos;
 
 };
