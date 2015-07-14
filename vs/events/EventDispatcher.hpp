@@ -42,6 +42,14 @@ public:
                 obs(&e);
             }
     }
+
+    void disEvent1(const string event) {
+        if (_funcs.find(event) != _funcs.end())
+            for (const auto &obs : _funcs.at(event)) {
+                obs(nullptr);
+            }
+    }
+
 protected:
     map<string, vector<function<void(void *)>>> _funcs;
 

@@ -13,21 +13,37 @@
 
 class App : public Singleton<App> {
 public:
+    VsRoot *vsRoot = nullptr;
 
     void start(int argc, char *argv[]) {
-        init();
-        initUI();
+        VS_CONTEXT.add(VsEvent::INITED, [this](void*e){onInitContext();});
     }
 
     TrackModel *trackModel;
 
     void init() {
         trackModel = new TrackModel();
-        Evt_add(VsEvent::INITED, onInitRoot)
+        vsRoot = new VsRoot();
+        VS_CONTEXT.add(VsEvent::RENDER, [this](void*e){onRender();});
+        VS_CONTEXT.add(VsEvent::RESIZE, [this](void*e){onResize();});
+//        Evt_add(VsEvent::INITED, onInitRoot)
     }
 
-    void onInitRoot(void *e) {
+    void onInitContext() {
+        init();
+        initUI();
         test();
+    }
+    void onRender() {
+        vsRoot->render();
+//        test();
+    }
+    void onResize() {
+        vsRoot->resize(VS_CONTEXT.width,VS_CONTEXT.height);
+//        test();
+    }
+    void onInitRoot(void *e) {
+//        test();
     }
 
     void initUI() {

@@ -31,7 +31,7 @@ public:
 //        timeline->setY(width - 630);
         addChild(timeline);
         cout << this << "init root" << endl;
-        Evt_dis(VsEvent::INITED, nullptr)
+//        Evt_dis(VsEvent::INITED, nullptr)
 
     }
 

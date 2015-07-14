@@ -57,7 +57,10 @@ public:
     float gY() {
         return _y;
     }
-    Performance() {
+    NVGcontext *vg = nullptr;
+
+    Performance(NVGcontext *vg1) {
+        vg = vg1;
         fps = new PerfGraph();
         width = 200;
         height = 35;
@@ -83,7 +86,6 @@ public:
         int i;
         float avg, w, h;
         char str[64];
-        NVGcontext *vg = VG_CONTEXT;
         avg = getGraphAverage(fps);
 
         w = width;

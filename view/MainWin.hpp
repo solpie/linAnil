@@ -35,46 +35,46 @@
 using namespace std;
 
 
-void errorcb(int error, const char *desc) {
-    cout << "GLFW error " << error << ": " << desc << endl;
-}
-
-void mousebutton(GLFWwindow *window, int button, int action, int mods) {
-    NVG_NOTUSED(window);
-    switch (button) {
-        case 1:
-            button = 2;
-            break;
-        case 2:
-            button = 1;
-            break;
-    }
-    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
-    VsContext::_().setMouseButton(button, mods, action);
-}
-
-void cursorpos(GLFWwindow *window, double x, double y) {
-    NVG_NOTUSED(window);
-    VsContext::_().setCursor(x, y);
-}
-
-void scrollevent(GLFWwindow *window, double x, double y) {
-    NVG_NOTUSED(window);
-//    uiSetScroll((int) x, (int) y);
-}
-
-void charevent(GLFWwindow *window, unsigned int value) {
-    NVG_NOTUSED(window);
-//    uiSetChar(value);
-}
-
-void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    NVG_NOTUSED(scancode);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-//    uiSetKey(key, mods, action);
-}
+//void errorcb(int error, const char *desc) {
+//    cout << "GLFW error " << error << ": " << desc << endl;
+//}
+//
+//void mousebutton(GLFWwindow *window, int button, int action, int mods) {
+//    NVG_NOTUSED(window);
+//    switch (button) {
+//        case 1:
+//            button = 2;
+//            break;
+//        case 2:
+//            button = 1;
+//            break;
+//    }
+//    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
+//    VsContext::_().setMouseButton(button, mods, action);
+//}
+//
+//void cursorpos(GLFWwindow *window, double x, double y) {
+//    NVG_NOTUSED(window);
+//    VsContext::_().setCursor(x, y);
+//}
+//
+//void scrollevent(GLFWwindow *window, double x, double y) {
+//    NVG_NOTUSED(window);
+////    uiSetScroll((int) x, (int) y);
+//}
+//
+//void charevent(GLFWwindow *window, unsigned int value) {
+//    NVG_NOTUSED(window);
+////    uiSetChar(value);
+//}
+//
+//void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
+//    NVG_NOTUSED(scancode);
+//    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+//        glfwSetWindowShouldClose(window, GL_TRUE);
+//    }
+////    uiSetKey(key, mods, action);
+//}
 
 class MainWin {
 public:
@@ -82,13 +82,13 @@ public:
     Performance *perfCpu;
 
     MainWin() {
-        perfFps = new Performance();
+        perfFps = new Performance(VG_CONTEXT);
         perfFps->setX(5);
         perfFps->setY(5);
         perfFps->initGraph(GRAPH_RENDER_FPS, "Frame Time");
 //        addChild(perfFps);
 
-        perfCpu = new Performance();
+        perfCpu = new Performance(VG_CONTEXT);
         perfCpu->setX(perfFps->gX() + perfFps->width + 5);
         perfCpu->setY(5);
         perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
