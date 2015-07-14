@@ -10,8 +10,6 @@
 
 #include <stdio.h>
 #include "nanovg/nanovg.h"
-#include "vs/VsObj.hpp"
-#include "vs/Sprite.hpp"
 
 enum GraphrenderStyle {
     GRAPH_RENDER_FPS,
@@ -36,38 +34,35 @@ float getGraphAverage(PerfGraph *fps) {
     return avg / (float) GRAPH_HISTORY_COUNT;
 }
 
-class Performance : public VsObj {
+class Performance  {
 public:
-    Performance():VsObj(false) {
+    int width;
+    int height;
+    float _x = 0;
+
+    void setX(float x) { _x = x; }
+
+    float x() { return _x; }
+
+    float gX() {
+        return _x;
+    }
+
+    float _y = 0;
+
+    float y() { return _y; }
+
+    void setY(float y) { _y = y; }
+
+    float gY() {
+        return _y;
+    }
+    Performance() {
         fps = new PerfGraph();
         width = 200;
         height = 35;
-//        addEvent(MouseEvent::MOVE, onMove);
-//        addEvent(MouseEvent::DOWN, onDown);
-//        addEvent(MouseEvent::UP, onUp);
-//        addEvent(MouseEvent::ROLL_OVER, onRoll);
-//        addEvent(MouseEvent::ROLL_OUT, onRoll);
     }
 
-    void onRoll(MouseEvent *e) {
-//        Sprite *t = (Sprite *)e->target;
-        cout << this << " Roll: " << e->type << endl;
-        printf("roll");
-    }
-    void onDown(MouseEvent *e) {
-        void *t = e->target;
-        cout << this << " down: " << t << endl;
-    }
-
-    void onUp(MouseEvent *e) {
-        void *t = e->target;
-        cout << this << " : " << e->type << endl;
-    }
-
-    void onMove(MouseEvent *e) {
-        void * t = e->target;
-        cout << this << "move" <<t<< endl;
-    }
 
     void initGraph(int style, const char *name) {
         memset(fps, 0, sizeof(PerfGraph));
@@ -83,7 +78,7 @@ public:
 
     PerfGraph *fps;
 
-    virtual void render() override {
+     void render()  {
         ///
         int i;
         float avg, w, h;

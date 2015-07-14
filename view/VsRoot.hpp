@@ -9,7 +9,6 @@
 #endif //LINANIL_VSROOT_HPP
 
 #include "vs/VsObjContainer.hpp"
-#include "Performance.hpp"
 #include "view/TrackArea.hpp"
 #include "view/timeline/Timeline.hpp"
 #include "vs/events/VsEvent.hpp"

@@ -29,7 +29,7 @@ events/ActionEvent.hpp
 events/TrackModelEvent.hpp
 view/win/FileDialog.hpp
 view/Input.hpp
-view/Performance.hpp
+vs/Performance.hpp
 vs/VsObj.hpp
 vs/VsObjContainer.hpp
 vs/VsContext.hpp

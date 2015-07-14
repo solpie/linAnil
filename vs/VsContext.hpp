@@ -34,7 +34,6 @@ struct pos {
     int y;
 };
 
-#include "events/ActionEvent.hpp"
 
 class VsContext : public S<VsContext> {
 public:

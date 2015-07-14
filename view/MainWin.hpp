@@ -27,7 +27,7 @@
 
 #include "nanovg/nanovg_gl.h"
 #include "UI.hpp"
-#include "Performance.hpp"
+#include "vs/Performance.hpp"
 #include "vs/VsContext.hpp"
 #include "vs/VsObjContainer.hpp"
 #include "VsRoot.hpp"
