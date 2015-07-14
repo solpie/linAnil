@@ -9,6 +9,7 @@
 #endif //LINANIL_VSCONTEXT_HPP
 
 #include <c++/4.9.2/exception>
+#include <vs/events/VsEvent.hpp>
 #include "nanovg/nanovg.h"
 #include "VsObj.hpp"
 
@@ -75,9 +76,9 @@ public:
         action = act;
         enabeld = 1;
         if (act == GLFW_PRESS)
-            Evt_dis(ActionEvent::STAGE_MOUSE_DOWN, nullptr)
+            Evt_dis(VsEvent::STAGE_MOUSE_DOWN, nullptr)
         else if (act == GLFW_RELEASE)
-            Evt_dis(ActionEvent::STAGE_MOUSE_UP, nullptr)
+            Evt_dis(VsEvent::STAGE_MOUSE_UP, nullptr)
     }
 
     void setCursor(int x, int y) {

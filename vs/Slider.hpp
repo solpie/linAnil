@@ -17,15 +17,13 @@ public:
         height = 15;
         addEvent(MouseEvent::DOWN, onDown);
         addEvent(MouseEvent::UP, onUp);
-        Evt_add(ActionEvent::STAGE_MOUSE_UP, onUp);
+        Evt_add(VsEvent::STAGE_MOUSE_UP, onUp);
     }
-
 
     void onUp(void *e) {
         if (isPress)
             isPress = false;
     }
-
 
     void onDown(MouseEvent *e) {
         isPress = true;

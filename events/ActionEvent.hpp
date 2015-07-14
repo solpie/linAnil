@@ -17,7 +17,5 @@ public:
 
     static constexpr const char *POPUP_MENU = "POPUP_MENU";
     static constexpr const char *SCROLL_TIMELINE_HBAR = "SCROLL_TIMELINE_HBAR";
-    static constexpr const char *STAGE_MOUSE_UP = "STAGE_MOUSE_UP";
-    static constexpr const char *STAGE_MOUSE_DOWN = "STAGE_MOUSE_DOWN";
     int param1;
 };

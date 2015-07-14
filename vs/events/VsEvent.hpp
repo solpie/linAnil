@@ -10,5 +10,6 @@
 class VsEvent:public BaseEvent{
 public:
     static constexpr const char *INITED = "INITED";
-
+    static constexpr const char *STAGE_MOUSE_UP = "STAGE_MOUSE_UP";
+    static constexpr const char *STAGE_MOUSE_DOWN = "STAGE_MOUSE_DOWN";
 };
