@@ -50,7 +50,5 @@ public:
     }
 
 protected:
-
     map<string, vector<function<void(void *)>>> _funcs;
-
 };
