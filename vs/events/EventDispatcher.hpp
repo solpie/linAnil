@@ -13,6 +13,7 @@
 #endif //LINANIL_VSEVENTDISPATCHER_HPP
 #define addEvent(type, func) add(type, [this](void* e) { func(e); });
 
+#include "BaseEvent.hpp"
 
 using namespace std;
 
@@ -29,12 +30,9 @@ public:
     }
 
 
-    template<typename BaseEvent>
     void disEvent(BaseEvent e) {
         disEvent(e.type, e);
     }
-
-    template<typename BaseEvent>
 
     void disEvent(const string event, BaseEvent e) {
         if (_funcs.find(event) != _funcs.end())
@@ -44,7 +42,7 @@ public:
             }
     }
 
-    void disEvent1(const string event) {
+    void disEvent(const string event) {
         if (_funcs.find(event) != _funcs.end())
             for (const auto &obs : _funcs.at(event)) {
                 obs(nullptr);
@@ -52,6 +50,7 @@ public:
     }
 
 protected:
+
     map<string, vector<function<void(void *)>>> _funcs;
 
 };

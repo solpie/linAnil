@@ -102,7 +102,7 @@ public:
         perfCpu->setX(perfFps->gX() + perfFps->width + 5);
         perfCpu->setY(5);
         perfCpu->initGraph(GRAPH_RENDER_MS, "CPU Time");
-        disEvent1(VsEvent::INITED);
+        disEvent(VsEvent::INITED);
     }
 
     void run() {
@@ -231,7 +231,6 @@ public:
     int mods;
     int enabeld;
     int action;
-    void *top = nullptr;
     int renderIdx;
 
     void beginFrame() {
@@ -243,10 +242,10 @@ public:
         if (this->width != w || this->height != h) {
             this->width = w;
             this->height = h;
-            disEvent1(VsEvent::RESIZE);
+            disEvent(VsEvent::RESIZE);
 
         }
-        disEvent1(VsEvent::RENDER);
+        disEvent(VsEvent::RENDER);
     }
 
     void endFrame() {
