@@ -9,6 +9,9 @@
 #define SEQTRUAN_TRACKINFO_HPP
 
 #endif //SEQTRUAN_TRACKINFO_HPP
+
+#include "vs/VsColor.hpp"
+
 using namespace std;
 
 class TrackInfo : public OneLinker<TrackInfo> {
@@ -16,10 +19,13 @@ public:
     TrackInfo(string name) {
         this->name = name;
         trackFrameInfos = new vector<TrackFrameInfo *>();
+        color = VsColor();
+        color.setColor(99);
     };
     string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
     int idx;
+    VsColor color;
 
     int getEndFrame() {
         return _endFrame;

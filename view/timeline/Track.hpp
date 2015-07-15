@@ -13,7 +13,8 @@
 
 class Track : public OneLinker<Track>, public Sprite {
 public:
-    Track() {
+    Track(TrackInfo *trackInfo) {
+        _trackInfo = trackInfo;
         width = 1024;
         height = 62;
 
@@ -34,13 +35,14 @@ public:
         NVGcontext *vg = nvgContext;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
-        nvgFillColor(vg, nvgRGBA(99, 99, 99, 255));
+        nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
         nvgFill(vg);
 //        Sprite::onDraw();
         VsObjContainer::render();
     }
 
 private:
+    TrackInfo *_trackInfo;
     Slider *vSlider;
     CheckBox *trackVisibleBox;
 };

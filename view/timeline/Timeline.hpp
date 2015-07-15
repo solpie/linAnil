@@ -31,7 +31,7 @@ public:
     }
 
     void onNewTrack(TrackInfo *trackInfo) {
-        Track *newTrack = new Track();
+        Track *newTrack = new Track(trackInfo);
         addChild(newTrack);
         if (!headTrack) {
             headTrack = newTrack;
@@ -49,7 +49,7 @@ public:
         Track *trk;
         Track *preTrack = nullptr;
         while (t) {
-            trk = new Track();
+            trk = new Track(trackInfo);
             if (preTrack)
                 trk->setY(preTrack->gY() + preTrack->height);
             else

@@ -44,7 +44,7 @@ view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
 vs/CheckBox.hpp
-vs/events/VsEvent.hpp)
+vs/events/VsEvent.hpp vs/VsColor.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 #target_link_libraries(linAnil :libwinpthread.a)
