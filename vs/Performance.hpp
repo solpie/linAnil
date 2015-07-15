@@ -34,7 +34,7 @@ float getGraphAverage(PerfGraph *fps) {
     return avg / (float) GRAPH_HISTORY_COUNT;
 }
 
-class Performance  {
+class Performance {
 public:
     int width;
     int height;
@@ -57,6 +57,7 @@ public:
     float gY() {
         return _y;
     }
+
     NVGcontext *vg = nullptr;
 
     Performance(NVGcontext *vg1) {
@@ -81,7 +82,7 @@ public:
 
     PerfGraph *fps;
 
-     void render()  {
+    void render() {
         ///
         int i;
         float avg, w, h;
@@ -129,7 +130,6 @@ public:
         nvgLineTo(vg, gX() + w, gY() + h);
         nvgFillColor(vg, nvgRGBA(255, 192, 0, 128));
         nvgFill(vg);
-
         nvgFontFace(vg, "sans");
 
         if (fps->name[0] != '\0') {
@@ -166,7 +166,4 @@ public:
             nvgText(vg, gX() + w - 3, gY() + 1, str, NULL);
         }
     }
-
-protected:
-    float mx, my, last, dt;
 };

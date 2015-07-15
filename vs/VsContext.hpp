@@ -21,24 +21,24 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <c++/4.9.2/thread>
+#include <thread>
 #include "nanovg/nanovg.h"
 
 #define NANOVG_GL3_IMPLEMENTATION
 
 #include "nanovg/nanovg_gl.h"
-#include <c++/4.9.2/exception>
+#include <exception>
 #include <vs/events/VsEvent.hpp>
 #include <events/Event.hpp>
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
-using namespace std;
 
 #include "events/EventDispatcher.hpp"
 #include "events/BaseEvent.hpp"
 #include "Performance.hpp"
+using namespace std;
 
 template<typename T>
 class S {
@@ -81,12 +81,6 @@ void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
 class VsContext : public EventDispatcher, public S<VsContext> {
 public:
-    NVGcontext *init() {
-
-        //_vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-        nvgContext = nvgCreateGL3(NVG_ANTIALIAS);
-        return nvgContext;
-    }
     Performance *perfFps;
     Performance *perfCpu;
 
@@ -95,8 +89,8 @@ public:
         nvgCreateFont(nvgContext, "icons", "fonts/entypo.ttf");
         nvgCreateFont(nvgContext, "sans", "fonts/Roboto-Regular.ttf");
         nvgCreateFont(nvgContext, "sans-bold", "fonts/Roboto-Bold.ttf");
-        (nvgCreateFont(nvgContext, "system", "oui/DejaVuSans.ttf"));
-        (nvgCreateImage(nvgContext, "oui/blender_icons16.png", 0));
+        nvgCreateFont(nvgContext, "system", "oui/DejaVuSans.ttf");
+        nvgCreateImage(nvgContext, "oui/blender_icons16.png", 0);
 
         perfFps = new Performance(nvgContext);
         perfFps->setX(5);
@@ -111,7 +105,7 @@ public:
         disEvent1(VsEvent::INITED);
     }
 
-    void initGLFW() {
+    void run() {
         GLFWwindow *window;
 
         if (!glfwInit()) {

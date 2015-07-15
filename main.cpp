@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]) {
     App()._().start(argc, argv);
-    VS_CONTEXT.initGLFW();
+    VS_CONTEXT.run();
 //    FileWatcher *f = new FileWatcher();
 //    f->start("c:\\test");
 //    MainWin *m = new MainWin();
