@@ -5,6 +5,7 @@
 
 #include <functional>
 #include "map"
+#include "vector"
 
 #ifndef LINANIL_VSEVENTDISPATCHER_HPP
 #define LINANIL_VSEVENTDISPATCHER_HPP

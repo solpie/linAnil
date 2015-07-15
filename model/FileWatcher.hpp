@@ -11,6 +11,7 @@
 //#include "QtCore"
 #include <thread>
 #include "windows.h"
+#include "events/Event.hpp"
 using namespace std;
 void work(string absPath) {
     HANDLE hDir = CreateFile(

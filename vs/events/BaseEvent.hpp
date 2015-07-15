@@ -8,7 +8,7 @@
 
 #endif //LINANIL_BASEEVENT_HPP
 
-//using namespace std;
+using namespace std;
 //template<class str>
 class BaseEvent {
 public:

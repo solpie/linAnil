@@ -1,4 +1,4 @@
-#include "view/MainWin.hpp"
+//#include "view/MainWin.hpp"
 #include "model/App.hpp"
 #include "model/FileWatcher.hpp"
 

@@ -8,9 +8,28 @@
 
 #endif //LINANIL_VSCONTEXT_HPP
 
+#include <stdio.h>
+
+#ifdef NANOVG_GLEW
+
+#include <GL/glew.h>
+
+#endif
+#ifdef __APPLE__
+#	define GLFW_INCLUDE_GLCOREARB
+#endif
+
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <c++/4.9.2/thread>
+#include "nanovg/nanovg.h"
+
+#define NANOVG_GL3_IMPLEMENTATION
+
+#include "nanovg/nanovg_gl.h"
 #include <c++/4.9.2/exception>
 #include <vs/events/VsEvent.hpp>
-#include "nanovg/nanovg.h"
+#include <events/Event.hpp>
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()

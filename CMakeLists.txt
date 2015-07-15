@@ -16,7 +16,6 @@ include_directories(view/ui)
 set(SOURCE_FILES main.cpp)
 
 add_executable(linAnil ${SOURCE_FILES}
-view/MainWin.hpp
 events/Event.hpp
 model/TrackModel2.hpp
 model/TrackInfo.hpp

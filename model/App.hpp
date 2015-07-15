@@ -7,6 +7,7 @@
 
 #endif //SEQTRUAN_APP_H
 
+#include <view/VsRoot.hpp>
 #include "utils/Singleton.hpp"
 #include "model/TrackModel2.hpp"
 #include "vs/events/VsEvent.hpp"
