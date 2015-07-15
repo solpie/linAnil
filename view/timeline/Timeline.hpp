@@ -11,6 +11,7 @@
 
 #include <model/TrackInfo.hpp>
 #include <events/TrackModelEvent.hpp>
+#include <vs/ScrollBar.hpp>
 #include "vs/Slider.hpp"
 #include "TrackToolBar.hpp"
 #include "Track.hpp"
@@ -25,14 +26,26 @@ public:
 //        t->setY(trackToolBar->height);
 //        addChild(t);
 //        cout << this << "init Timeline" << endl;
+        hScrollBar = new ScrollBar(Direction::Horizontal);
+        hScrollBar->move(250, 300);
+        hScrollBar->width = 250;
+        hScrollBar->height = 15;
+        addChild(hScrollBar);
 
+//        Direction::Vertical;
+        vScrollBar = new ScrollBar(Direction::Vertical);
+        vScrollBar->move(250, trackToolBar->height);
+        vScrollBar->width = 15;
+        vScrollBar->height = 250;
+        addChild(vScrollBar);
 
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
-        addChild(newTrack);
+//        addChild(newTrack);
+        addChildAt(newTrack, 0);
         if (!headTrack) {
             headTrack = newTrack;
             newTrack->setY(trackToolBar->height);
@@ -68,7 +81,8 @@ private:
     Track *t;
     Track *headTrack = nullptr;
     TrackInfo *_trackInfo = nullptr;
-
+    ScrollBar *hScrollBar;
+    ScrollBar *vScrollBar;
     void renderTrackInfo(TrackInfo *trackInfo) {
         NVGcontext *vg = nvgContext;
 

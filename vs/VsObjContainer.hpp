@@ -22,6 +22,11 @@ public:
         vsobjs->push_back(vsObj);
     }
 
+    void addChildAt(VsObj *vsObj, int idx) {
+        vsObj->parent =this;
+        vsobjs->insert(vsobjs->begin() + idx, vsObj);
+    }
+
     void removeChild(VsObj *vsobj) {
         vsobj->parent = nullptr;
         vector<VsObj *>::iterator i = vsobjs->begin();

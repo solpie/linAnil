@@ -15,6 +15,11 @@ using namespace std;
 
 #include "events/MouseEvent.hpp"
 
+enum  Direction:int {
+     Horizontal = 1,
+    Vertical
+};
+
 class Sprite : public VsObjContainer {
 public:
     Sprite() {
