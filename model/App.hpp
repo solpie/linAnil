@@ -9,7 +9,7 @@
 
 #include <view/VsRoot.hpp>
 #include "utils/Singleton.hpp"
-#include "model/TrackModel2.hpp"
+#include "TrackModel.hpp"
 #include "vs/events/VsEvent.hpp"
 
 class App : public Singleton<App> {

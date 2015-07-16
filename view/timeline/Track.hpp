@@ -53,7 +53,7 @@ public:
         _trackInfo->color.b = b;
         float h, s, v;
         RGBtoHSV(r, g, b, h, s, v);
-        limit(v,v+30,255)
+        limit(v, v + 30, 255)
         float lightR, lightG, lightB;
         HSVtoRGB(h, s, v, lightR, lightG, lightB);
         selColor.r = lightR;
