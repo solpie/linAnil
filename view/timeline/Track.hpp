@@ -33,6 +33,7 @@ public:
 
 //        addEvent(MouseEvent::UP, onUp);
         addEvent(MouseEvent::DOWN, onUp);
+        setColor(99, 138, 20);
     };
 
     void onUp(void *e) {
@@ -46,25 +47,40 @@ public:
         _trackInfo->isSelected = v;
     }
 
+    void setColor(int r, int g, int b) {
+        _trackInfo->color.r = r;
+        _trackInfo->color.g = g;
+        _trackInfo->color.b = b;
+        float h, s, v;
+        RGBtoHSV(r, g, b, h, s, v);
+        limit(v,v+30,255)
+        float lightR, lightG, lightB;
+        HSVtoRGB(h, s, v, lightR, lightG, lightB);
+        selColor.r = lightR;
+        selColor.g = lightG;
+        selColor.b = lightB;
+    }
+
     virtual void onDraw() override {
         NVGcontext *vg = nvgContext;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
         if (_trackInfo->isSelected)
-            nvgFillColor(vg, nvgRGBA(colorSelect.r, colorSelect.g, colorSelect.b, 255));
+            nvgFillColor(vg, nvgRGBA(selColor.r, selColor.g, selColor.b, 255));
         else
             nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
         nvgFill(vg);
 
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGBA(52, 52, 52, 255));
-        nvgRect(vg, gX(), gY()+ height-1, width, 1);
+        nvgRect(vg, gX(), gY() + height - 1, width, 1);
         nvgFill(vg);
 
         VsObjContainer::render();
     }
 
 private:
+    VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
     CheckBox *trackVisibleBox;

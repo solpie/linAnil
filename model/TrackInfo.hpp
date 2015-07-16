@@ -21,7 +21,6 @@ public:
     TrackInfo(string name) {
         this->name = name;
         trackFrameInfos = new vector<TrackFrameInfo *>();
-        color.setColor(99);
     };
     string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
