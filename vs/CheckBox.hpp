@@ -12,7 +12,7 @@
 class CheckBox : public Sprite {
 public:
     CheckBox() {
-        addEvent(MouseEvent::DOWN, onUp)
+        add_event(MouseEvent::DOWN, onUp)
         setSize(14, 14);
     }
 

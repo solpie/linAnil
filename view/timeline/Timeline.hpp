@@ -47,14 +47,14 @@ public:
     void onSelTrack(void *e) {
         if (selectTrack)
             selectTrack->setSelected(false);
-        selectTrack = getTarget(VsEvent,Track);
+        selectTrack = get_dispatcher(VsEvent,Track);
 
     }
 
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
 //        addChild(newTrack);
-        addEventOn(newTrack,VsEvent::SELECTED,onSelTrack)
+        add_event_on(newTrack,VsEvent::SELECTED,onSelTrack)
 
         addChildAt(newTrack, 0);
         if (!headTrack) {

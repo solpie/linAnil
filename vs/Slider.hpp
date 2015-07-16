@@ -15,8 +15,8 @@ public:
     Slider(bool isHorizontal = true) {
         width = 80;
         height = 15;
-        addEvent(MouseEvent::DOWN, onDown);
-        addEvent(MouseEvent::UP, onUp);
+        add_event(MouseEvent::DOWN, onDown);
+        add_event(MouseEvent::UP, onUp);
         Evt_add(VsEvent::STAGE_MOUSE_UP, onUp);
     }
 

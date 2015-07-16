@@ -31,8 +31,8 @@ public:
         addChild(vSlider);
 
 
-//        addEvent(MouseEvent::UP, onUp);
-        addEvent(MouseEvent::DOWN, onUp);
+//        add_event(MouseEvent::UP, onUp);
+        add_event(MouseEvent::DOWN, onUp);
         setColor(99, 138, 20);
     };
 
