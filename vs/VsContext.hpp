@@ -83,6 +83,7 @@ class VsContext : public EventDispatcher, public S<VsContext> {
 public:
     Performance *perfFps;
     Performance *perfCpu;
+    GLFWwindow *window;
 
     void initVsContext() {
         nvgContext = nvgCreateGL3(NVG_ANTIALIAS);
@@ -106,7 +107,6 @@ public:
     }
 
     void run() {
-        GLFWwindow *window;
 
         if (!glfwInit()) {
             printf("Failed to init GLFW.");

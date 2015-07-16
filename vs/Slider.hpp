@@ -21,13 +21,26 @@ public:
     }
 
     void onUp(void *e) {
-        if (isPress)
+        if (isPress) {
             isPress = false;
+            int px = VS_CONTEXT.cursor.x;
+            if (px > gX() + width)
+                px = gX() + width;
+            else if (px < gX())
+                px = gX();
+            glfwSetCursorPos(VS_CONTEXT.window, px, gY() + 5);
+            glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+
+
     }
 
+//    pos hidePos;
     void onDown(void *e) {
         isPress = true;
         updateValueByPos();
+//        hidePos = VS_CONTEXT.cursor;
+        glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     }
 
     virtual void onDraw() override {
@@ -41,20 +54,12 @@ public:
 
         //thumb
         int tx = _value * width / maxValue;
-        nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
-        nvgFillColor(vg, nvgRGBA(44, 44, 44, 255));
-        nvgFill(vg);
 
         nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx + 1, gY(), 3, height);
+        nvgRect(vg, gX(), gY(), tx, height);
         nvgFillColor(vg, nvgRGBA(207, 207, 207, 255));
         nvgFill(vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
-        nvgFillColor(vg, nvgRGBA(182, 182, 182, 255));
-        nvgFill(vg);
         ////
 
         //value hint
@@ -77,6 +82,8 @@ public:
     int getValue() {
         return _value;
     }
+
+    void setValue(int v) { _value = v; }
 
 private:
     bool isPress = false;
