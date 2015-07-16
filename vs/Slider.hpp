@@ -24,10 +24,7 @@ public:
         if (isPress) {
             isPress = false;
             int px = VS_CONTEXT.cursor.x;
-            if (px > gX() + width)
-                px = gX() + width;
-            else if (px < gX())
-                px = gX();
+            limit(px,gX(),gX()+width)
             glfwSetCursorPos(VS_CONTEXT.window, px, gY() + 5);
             glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
@@ -39,7 +36,6 @@ public:
     void onDown(void *e) {
         isPress = true;
         updateValueByPos();
-//        hidePos = VS_CONTEXT.cursor;
         glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     }
 
@@ -47,13 +43,16 @@ public:
         if (isPress)
             updateValueByPos();
         NVGcontext *vg = this->nvgContext;
+        int tx = _value * width / maxValue;
+
         nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), width, height);
+//        nvgRect(vg, gX(), gY(), width, height);
+        nvgRect(vg, gX()+tx-1, gY(), width-tx-1, height);
+//        nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
         nvgFillColor(vg, nvgRGBA(62, 62, 62, 255));
         nvgFill(vg);
 
         //thumb
-        int tx = _value * width / maxValue;
 
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), tx, height);
@@ -61,7 +60,6 @@ public:
         nvgFill(vg);
 
         ////
-
         //value hint
         char str[4];
         if (isPress) {
@@ -72,7 +70,6 @@ public:
             sprintf(str, "%d%%", _value * 100 / (maxValue - minValue + 1));
             nvgText(vg, gX() + tx, gY() - 20, str, nullptr);
         }
-
     }
 
     int maxValue = 100;
@@ -90,10 +87,7 @@ private:
 
     void updateValueByPos() {
         int px = VS_CONTEXT.cursor.x - gX();
-        if (px < 0)
-            px = 0;
-        else if (px > width)
-            px = width;
+        limit(px,0,width)
         _value = px * (maxValue - minValue + 1) / width;
     }
 

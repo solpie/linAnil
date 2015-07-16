@@ -15,8 +15,9 @@ using namespace std;
 
 #include "events/MouseEvent.hpp"
 
-enum  Direction:int {
-     Horizontal = 1,
+#define limit(value, min, max) if(value<min)value=min;else if(value>max)value=max;
+enum Direction : int {
+    Horizontal = 1,
     Vertical
 };
 

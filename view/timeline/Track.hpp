@@ -55,13 +55,12 @@ public:
         else
             nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
         nvgFill(vg);
-//        Sprite::onDraw();
+
         nvgBeginPath(vg);
-        nvgStrokeColor(vg, nvgRGBA(0xff, 0x00, 0x00, 255));
-//        nvgStrokeWidth(vg, 1);
-        nvgMoveTo(vg, gX(), gY() + height);
-        nvgLineTo(vg, gX() + width, gY() + height - 1);
-        nvgStroke(vg);
+        nvgFillColor(vg, nvgRGBA(52, 52, 52, 255));
+        nvgRect(vg, gX(), gY()+ height-1, width, 1);
+        nvgFill(vg);
+
         VsObjContainer::render();
     }
 
