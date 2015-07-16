@@ -25,7 +25,7 @@ public:
             isPress = false;
     }
 
-    void onDown(MouseEvent *e) {
+    void onDown(void *e) {
         isPress = true;
         updateValueByPos();
     }

@@ -28,14 +28,30 @@ public:
         vSlider->setX(200);
         vSlider->setY(40);
         addChild(vSlider);
+
+
+        addEvent(MouseEvent::UP, onUp);
     };
 
+    void onUp(void *e) {
+        bool isSelected = !_trackInfo->isSelected;
+        foreach([this](Track *t) { t->setSelected(false); });
+        setSelected(isSelected);
+    }
+
+    void setSelected(bool v) {
+        cout << this << " setSelected() " << _trackInfo->name << endl;
+        _trackInfo->isSelected = v;
+    }
 
     virtual void onDraw() override {
         NVGcontext *vg = nvgContext;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
-        nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
+        if (_trackInfo->isSelected)
+            nvgFillColor(vg, nvgRGBA(colorSelect.r, colorSelect.g, colorSelect.b, 255));
+        else
+            nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
         nvgFill(vg);
 //        Sprite::onDraw();
         VsObjContainer::render();

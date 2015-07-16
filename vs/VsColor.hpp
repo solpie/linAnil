@@ -13,6 +13,9 @@
 class VsColor {
 public:
     VsColor() { }
+    VsColor(int col) {
+        setColor(col);
+    }
 
     unsigned char r, g, b;
 

@@ -53,6 +53,7 @@ public:
         else {
             Track *tail = headTrack->getTail();
             newTrack->setY(tail->gY() + tail->height);
+            newTrack->setPre(tail);
         }
     }
 

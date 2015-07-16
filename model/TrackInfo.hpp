@@ -14,6 +14,8 @@
 
 using namespace std;
 
+VsColor colorSelect(0xff);
+
 class TrackInfo : public OneLinker<TrackInfo> {
 public:
     TrackInfo(string name) {
@@ -67,6 +69,7 @@ public:
         _head = tf;
     }
 
+    bool isSelected = false;
 protected:
     TrackFrameInfo *_head = nullptr;
 

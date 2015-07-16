@@ -47,6 +47,23 @@ public:
             return this;
     }
 
+    CLS *getHead() {
+        if (pre)
+            return pre->getHead();
+        else
+            return this;
+    }
+
+    template<typename func>
+
+    void foreach(func &&f) {
+        CLS *h = getHead();
+        while (h) {
+            f(h);
+            h = h->next;
+        }
+    }
+
     void dispose() {
 
     }
