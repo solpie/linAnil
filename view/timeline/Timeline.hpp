@@ -47,7 +47,7 @@ public:
     void onSelTrack(void *e) {
         if (selectTrack)
             selectTrack->setSelected(false);
-        selectTrack = (Track *) ((VsEvent *) e)->target;
+        selectTrack = getTarget(VsEvent,Track);
 
     }
 
