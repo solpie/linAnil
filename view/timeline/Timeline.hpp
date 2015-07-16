@@ -47,7 +47,7 @@ public:
     void onSelTrack(void *e) {
         if (selectTrack)
             selectTrack->setSelected(false);
-        selectTrack = get_dispatcher(VsEvent,Track);
+        selectTrack = get_dispatcher(Track);
 
     }
 
