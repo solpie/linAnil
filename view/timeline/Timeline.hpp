@@ -42,9 +42,20 @@ public:
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
+    Track *selectTrack = nullptr;
+
+    void onSelTrack(void *e) {
+        if (selectTrack)
+            selectTrack->setSelected(false);
+        selectTrack = (Track *) ((VsEvent *) e)->target;
+
+    }
+
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
 //        addChild(newTrack);
+        addEventOn(newTrack,VsEvent::SELECTED,onSelTrack)
+
         addChildAt(newTrack, 0);
         if (!headTrack) {
             headTrack = newTrack;
@@ -84,6 +95,7 @@ private:
     TrackInfo *_trackInfo = nullptr;
     ScrollBar *hScrollBar;
     ScrollBar *vScrollBar;
+
     void renderTrackInfo(TrackInfo *trackInfo) {
         NVGcontext *vg = nvgContext;
 

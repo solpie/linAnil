@@ -9,8 +9,8 @@
 
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
+//#include <model/App.hpp>
 #include "vs/Sprite.hpp"
-
 class Track : public OneLinker<Track>, public Sprite {
 public:
     Track(TrackInfo *trackInfo) {
@@ -37,9 +37,18 @@ public:
     };
 
     void onUp(void *e) {
-        bool isSelected = !_trackInfo->isSelected;
-        foreach([this](Track *t) { t->setSelected(false); });
-        setSelected(isSelected);
+//        Track * st = (Track*)selectedTrack;
+//        if(st) {
+//            st->setSelected(false);
+//        }
+//        selectedTrack = this;
+        setSelected(true);
+        VsEvent se;
+        disEvent(VsEvent::SELECTED, se);
+//        App()._().trackModel
+//        bool isSelected = !_trackInfo->isSelected;
+//        foreach([this](Track *t) { t->setSelected(false); });
+//        setSelected(isSelected);
     }
 
     void setSelected(bool v) {

@@ -11,7 +11,6 @@
 #include "utils/Singleton.hpp"
 #include "TrackModel.hpp"
 #include "vs/events/VsEvent.hpp"
-
 class App : public Singleton<App> {
 public:
     VsRoot *vsRoot = nullptr;
@@ -65,3 +64,5 @@ public:
     }
 
 };
+
+#define _app App()._()

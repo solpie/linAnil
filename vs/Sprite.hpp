@@ -27,11 +27,12 @@ public:
     }
 
     void onAdd(const string &event) override {
-        isInteractive = (event == MouseEvent::MOVE
-                         || event == MouseEvent::DOWN
-                         || event == MouseEvent::ROLL_OVER
-                         || event == MouseEvent::ROLL_OUT
-                         || event == MouseEvent::UP);
+//        isInteractive = (event == MouseEvent::MOVE
+//                         || event == MouseEvent::DOWN
+//                         || event == MouseEvent::ROLL_OVER
+//                         || event == MouseEvent::ROLL_OUT
+//                         || event == MouseEvent::UP);
+        isInteractive = true;
     };
 
     virtual void render() override {
