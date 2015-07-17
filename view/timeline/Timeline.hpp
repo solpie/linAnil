@@ -16,6 +16,7 @@
 #include "vs/Slider.hpp"
 #include "TrackToolBar.hpp"
 #include "Track.hpp"
+#include "TimestampBar.hpp"
 
 class Timeline : public VsObjContainer {
 public:
@@ -39,6 +40,10 @@ public:
         vScrollBar->width = 15;
         vScrollBar->height = 250;
         addChild(vScrollBar);
+
+        timestampBar = new TimestampBar();
+        timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        addChild(timestampBar);
 
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
@@ -94,6 +99,7 @@ public:
         width = w;
         height = h;
         vScrollBar->setX(w - vScrollBar->width);
+        timestampBar->resize(w, h);
     }
 
 private:
@@ -103,7 +109,7 @@ private:
     TrackInfo *_trackInfo = nullptr;
     ScrollBar *hScrollBar;
     ScrollBar *vScrollBar;
-
+    TimestampBar *timestampBar;
     void renderTrackInfo(TrackInfo *trackInfo) {
 //        NVGcontext *vg = vg;
 
@@ -116,7 +122,9 @@ void Timeline::render() {
 //    NVGcontext *vg = vg;
     nvgBeginPath(vg);
     nvgRect(vg, gX(), gY(), width, height);
-    nvgFillColor(vg, nvgRGBA(72, 72, 72, 255));
+    nvgFillColor(vg, nvgRGB(29, 29, 29));
+    //
+//    nvgFillColor(vg, nvgRGBA(72, 72, 72, 255));
     nvgFill(vg);
     if (_trackInfo)
         renderTrackInfo(_trackInfo);
