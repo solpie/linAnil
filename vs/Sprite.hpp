@@ -61,11 +61,11 @@ public:
             bool isIn = false;
             if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
                 isIn = true;
-                if (_mx != mx || _my != my) {
-                    _mx = mx;
-                    _my = my;
-//                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::MOVE));
-                }
+//                if (_mx != mx || _my != my) {
+//                    _mx = mx;
+//                    _my = my;
+////                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::MOVE));
+//                }
                 if (VS_CONTEXT.enabeld) {
                     if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1) {
                         if (VS_CONTEXT.action == GLFW_PRESS)
@@ -109,8 +109,7 @@ public:
 private:
     bool _ignoreRollOut = true;
     bool _ignoreRollOver = true;
-
-    int _mx;
-    int _my;
+//    int _mx;
+//    int _my;
 };
 
