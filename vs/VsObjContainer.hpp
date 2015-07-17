@@ -47,9 +47,9 @@ public:
         for (child = vsobjs->begin(); child != vsobjs->end(); child++) {
             VsObj *c = *child;
             if (c->visible) {
-                nvgSave(nvgContext);
+                nvgSave(vg);
                 c->render();
-                nvgRestore(nvgContext);
+                nvgRestore(vg);
             }
         }
     }

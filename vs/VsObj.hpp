@@ -11,6 +11,7 @@
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
+
 #define _nvgcontext nvgContext
 
 
@@ -19,9 +20,8 @@
  * */
 class VsObj : public EventDispatcher {
 public:
-    VsObj(bool isInit = true) {
-        if (isInit)
-            nvgContext = VG_CONTEXT;
+    VsObj() {
+        vg = VG_CONTEXT;
     }
 
     ~VsObj() { }
@@ -72,5 +72,5 @@ public:
     VsObj *parent = nullptr;
     int zdepth = -1;
 protected:
-    NVGcontext *nvgContext = nullptr;
+    NVGcontext *vg = nullptr;
 };

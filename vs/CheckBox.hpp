@@ -24,7 +24,7 @@ protected:
     }
 
     virtual void onDraw() override {
-        NVGcontext *vg = nvgContext;
+//        NVGcontext *vg = vg;
         int r = 7;
         if (isChecked) {
             nvgBeginPath(vg);

@@ -40,7 +40,7 @@ public:
     virtual void onDraw() override {
         if (isPress)
             updateValueByPos();
-        NVGcontext *vg = this->nvgContext;
+//        NVGcontext *vg = this->vg;
         int tx = _value * width / maxValue;
 
         nvgBeginPath(vg);

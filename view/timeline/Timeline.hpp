@@ -98,7 +98,7 @@ private:
     ScrollBar *vScrollBar;
 
     void renderTrackInfo(TrackInfo *trackInfo) {
-        NVGcontext *vg = nvgContext;
+//        NVGcontext *vg = vg;
 
         if (trackInfo->next)
             renderTrackInfo(trackInfo->next);
@@ -106,7 +106,7 @@ private:
 };
 
 void Timeline::render() {
-    NVGcontext *vg = nvgContext;
+//    NVGcontext *vg = vg;
     nvgBeginPath(vg);
     nvgRect(vg, gX(), gY(), width, height);
     nvgFillColor(vg, nvgRGBA(72, 72, 72, 255));

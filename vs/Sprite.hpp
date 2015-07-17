@@ -47,9 +47,9 @@ public:
     virtual void render() override {
         VsObjContainer::updateZDepth();
         onDrawBegin();
-        nvgSave(nvgContext);
+        nvgSave(vg);
         onDraw();
-        nvgRestore(nvgContext);
+        nvgRestore(vg);
         onDrawEnd();
     }
 

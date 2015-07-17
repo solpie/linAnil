@@ -32,7 +32,7 @@ public:
     virtual void onDraw() override {
         if (isPress)
             updateValueByPos();
-        NVGcontext *vg = this->nvgContext;
+//        NVGcontext *vg = this->vg;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
         nvgFillColor(vg, nvgRGBA(62, 62, 62, 255));

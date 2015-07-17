@@ -9,7 +9,6 @@
 
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
-//#include <model/App.hpp>
 #include "vs/Sprite.hpp"
 class Track : public OneLinker<Track>, public Sprite {
 public:
@@ -31,24 +30,13 @@ public:
         addChild(vSlider);
 
 
-//        add_event(MouseEvent::UP, onUp);
         add_event(MouseEvent::DOWN, onUp);
         setColor(99, 138, 20);
     };
 
     void onUp(void *e) {
-//        Track * st = (Track*)selectedTrack;
-//        if(st) {
-//            st->setSelected(false);
-//        }
-//        selectedTrack = this;
         setSelected(true);
-        VsEvent se;
-        disEvent(VsEvent::SELECTED, se);
-//        App()._().trackModel
-//        bool isSelected = !_trackInfo->isSelected;
-//        foreach([this](Track *t) { t->setSelected(false); });
-//        setSelected(isSelected);
+        disEvent(VsEvent::SELECTED, VsEvent());
     }
 
     void setSelected(bool v) {
@@ -71,7 +59,6 @@ public:
     }
 
     virtual void onDraw() override {
-        NVGcontext *vg = nvgContext;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
         if (_trackInfo->isSelected)
