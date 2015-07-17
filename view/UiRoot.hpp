@@ -42,9 +42,8 @@ public:
 
     void resize(int w, int h) {
         titleBar->resize(w, h);
-        timeline->setY(h - 360);
-        timeline->width = w;
-        timeline->height = h;
+        timeline->resize(w, h);
+
     }
 
 private:

@@ -40,20 +40,42 @@ public:
 
         //thumb
         int tx = _value * width / maxValue;
-        nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
-        nvgFillColor(vg, nvgRGBA(44, 44, 44, 255));
-        nvgFill(vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx + 1, gY(), 3, height);
-        nvgFillColor(vg, nvgRGBA(207, 207, 207, 255));
-        nvgFill(vg);
+        if (_dir == Direction::Horizontal) {
+            nvgBeginPath(vg);
+            nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
+            nvgFillColor(vg, nvgRGBA(44, 44, 44, 255));
+            nvgFill(vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
-        nvgFillColor(vg, nvgRGBA(182, 182, 182, 255));
-        nvgFill(vg);
+            nvgBeginPath(vg);
+            nvgRect(vg, gX() + tx + 1, gY(), 3, height);
+            nvgFillColor(vg, nvgRGBA(207, 207, 207, 255));
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+            nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
+            nvgFillColor(vg, nvgRGBA(182, 182, 182, 255));
+            nvgFill(vg);
+        }
+        else {
+            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
+            nvgRect(vg, gX() - 1, gY() + tx, width + 2, 5);
+            nvgFillColor(vg, nvgRGBA(44, 44, 44, 255));
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx + 1, gY(), 3, height);
+            nvgRect(vg, gX(), gY() + tx + 1, width,3);
+            nvgFillColor(vg, nvgRGBA(207, 207, 207, 255));
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
+            nvgRect(vg, gX()  + 1, gY()+ tx + 2, width-2,1);
+            nvgFillColor(vg, nvgRGBA(182, 182, 182, 255));
+            nvgFill(vg);
+        }
         ////
 
         //value hint

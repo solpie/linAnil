@@ -55,7 +55,7 @@ public:
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
 //        addChild(newTrack);
-        add_event_on(newTrack,VsEvent::SELECTED,onSelTrack)
+        add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
 
         addChildAt(newTrack, 0);
         if (!headTrack) {
@@ -88,6 +88,13 @@ public:
 
 
     virtual void render() override;
+
+    void resize(int w, int h) {
+        setY(h - 360);
+        width = w;
+        height = h;
+        vScrollBar->setX(w - vScrollBar->width);
+    }
 
 private:
     TrackToolBar *trackToolBar;
