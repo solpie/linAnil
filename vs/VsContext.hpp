@@ -127,9 +127,9 @@ public:
 //#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
         //no title bar no border
-//        glfwWindowHint(GLFW_DECORATED, false);
+        glfwWindowHint(GLFW_DECORATED, false);
 
-        window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "linAnil", nullptr, nullptr);
+        window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "", nullptr, nullptr);
         if (!window) {
             glfwTerminate();
 //            return -1;
@@ -236,9 +236,16 @@ public:
     }
 
     void minimize() {
+        glfwIconifyWindow(window);
     }
 
     void maximize() {
+    }
+
+    void moveWindow(int dx, int dy) {
+        int wx, wy;
+        glfwGetWindowPos(window, &wx, &wy);
+        glfwSetWindowPos(window, wx + dx, wy + dy);
     }
 
     unsigned int buttons;

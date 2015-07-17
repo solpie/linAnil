@@ -7,6 +7,11 @@ class TitleBar : public Sprite {
 public:
     TitleBar() {
         height = 36;
+        add_event(MouseEvent::DOWN, onDown)
+        add_event(MouseEvent::MOVE, onMove)
+        add_event(MouseEvent::UP, onUp)
+//        add_event_on_context(VsEvent::STAGE_MOUSE_UP,onUp)
+
 
 
         minimize = new Sprite();
@@ -20,13 +25,55 @@ public:
         maximize->isInteractive = true;
         add_event_on(maximize, SpriteEvent::DRAW, onDrawMaximize)
         addChild(maximize);
+
         close = new Sprite();
         close->setSize(29, 25);
         close->isInteractive = true;
         add_event_on(close, SpriteEvent::DRAW, onDrawClose)
-        add_event_on(close, MouseEvent::UP, onClose)
         addChild(close);
+
+        add_event_on(minimize, MouseEvent::UP, onMinimize)
+        add_event_on(maximize, MouseEvent::UP, onMaximize)
+        add_event_on(close, MouseEvent::UP, onClose)
         resize(VS_WIDTH, 0);
+
+
+    }
+
+    void onDown(void *e) {
+        _isPress = true;
+        _lastX = _lastY = 0;
+    }
+
+
+    void onMove(void *e) {
+        if (_isPress) {
+            int dx = 0, dy = 0;
+            if (_lastX)
+                dx = VS_CONTEXT.cursor.x - _lastX;
+            _lastX = VS_CONTEXT.cursor.x;
+
+            if (_lastY)
+                dy = VS_CONTEXT.cursor.y - _lastY;
+            _lastY = VS_CONTEXT.cursor.y;
+            if (dx != 0 || dy != 0) {
+                VS_CONTEXT.moveWindow(dx, dy);
+                _lastX -= dx;
+                _lastY -= dy;
+            }
+        }
+    }
+
+    void onUp(void *e) {
+        _isPress = false;
+    }
+
+    void onMinimize(void *e) {
+        VS_CONTEXT.minimize();
+    }
+
+    void onMaximize(void *e) {
+        VS_CONTEXT.maximize();
     }
 
     void onClose(void *e) {
@@ -114,6 +161,8 @@ public:
     }
 
 private:
+    bool _isPress = false;
+    int _lastX = 0, _lastY = 0;
     Sprite *minimize;
     Sprite *maximize;
     Sprite *close;
