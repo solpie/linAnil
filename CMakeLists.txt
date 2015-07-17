@@ -25,28 +25,32 @@ model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 model/App.hpp
 utils/Linker.hpp
-view/UI.hpp
 events/ActionEvent.hpp
 events/TrackModelEvent.hpp
-view/win/FileDialog.hpp
-view/Input.hpp
-vs/Performance.hpp
 vs/VsObj.hpp
+vs/Performance.hpp
 vs/VsObjContainer.hpp
 vs/VsContext.hpp
 vs/events/EventDispatcher.hpp
-view/UiRoot.hpp
-view/TrackArea.hpp
-view/timeline/Timeline.hpp
 vs/Sprite.hpp
 vs/events/MouseEvent.hpp
 vs/events/BaseEvent.hpp
 vs/Slider.hpp
+vs/CheckBox.hpp
+vs/events/VsEvent.hpp
+vs/VsColor.hpp
+vs/ScrollBar.hpp
+view/UI.hpp
+view/win/FileDialog.hpp
+view/Input.hpp
+view/UiRoot.hpp
+view/TrackArea.hpp
+view/timeline/Timeline.hpp
+view/TitleBar.hpp
 view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
-vs/CheckBox.hpp
-vs/events/VsEvent.hpp vs/VsColor.hpp vs/ScrollBar.hpp view/TitleBar.hpp vs/events/SpriteEvent.hpp)
+vs/events/SpriteEvent.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 #target_link_libraries(linAnil :libwinpthread.a)

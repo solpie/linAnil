@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "nanovg/nanovg.h"
-
 enum GraphrenderStyle {
     GRAPH_RENDER_FPS,
     GRAPH_RENDER_MS,

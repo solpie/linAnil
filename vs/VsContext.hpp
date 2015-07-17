@@ -41,6 +41,9 @@
 
 #define VS_WIDTH 1440
 #define VS_HEIGHT 920
+
+#include "windows.h"
+
 using namespace std;
 
 template<typename T>
@@ -88,8 +91,33 @@ public:
     Performance *perfFps;
     Performance *perfCpu;
     GLFWwindow *window;
-
+//    int screenWidth;
+//    int screenHeight;
+    HWND actWindow;
+    long normalStyle;
+    long noBorderStyle;
+    bool isMaximized = false;
+    int lastWidth;
+    int lastHeight;
     void initVsContext() {
+        actWindow = GetActiveWindow();
+
+
+        long Style = GetWindowLong(actWindow, GWL_STYLE);
+        normalStyle = Style;
+        Style &= ~(0x00C00000L |
+                   0x00C0000L); //this makes it still work when WS_MAXIMIZEBOX is actually already toggled off
+//        Style &= ~WS_CAPTION;
+        noBorderStyle = Style;
+        SetWindowLong(actWindow, GWL_STYLE, Style);
+
+//        long Style = GetWindowLong(actWindow, GWL_STYLE);
+//        Style &= ~WS_MAXIMIZEBOX; //this makes it still work when WS_MAXIMIZEBOX is actually already toggled off
+//        SetWindowLong(actWindow, GWL_STYLE, Style);
+//        GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+//        const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+//        screenWidth = mode->width;
+//        screenHeight = mode->height;
         nvgContext = nvgCreateGL3(NVG_ANTIALIAS);
         nvgCreateFont(nvgContext, "icons", "fonts/entypo.ttf");
         nvgCreateFont(nvgContext, "sans", "fonts/Roboto-Regular.ttf");
@@ -127,7 +155,10 @@ public:
 //#endif
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
         //no title bar no border
-        glfwWindowHint(GLFW_DECORATED, false);
+//        glfwWindowHint(GLFW_DECORATED, false);
+
+
+
 
         window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "", nullptr, nullptr);
         if (!window) {
@@ -160,6 +191,7 @@ public:
         initVsContext();
 //        init(_vg);
         //limit fps to monitor on=1 off=0
+//        glfwSwapInterval(0);
         glfwSwapInterval(1);
 
         glfwSetTime(0);
@@ -240,6 +272,18 @@ public:
     }
 
     void maximize() {
+        if (isMaximized) {
+            SetWindowLong(actWindow, GWL_STYLE, noBorderStyle);
+            glfwSetWindowSize(window, lastWidth, lastHeight);
+        }
+        else {
+            lastWidth = width;
+            lastHeight = height;
+            SetWindowLong(actWindow, GWL_STYLE, normalStyle);
+            ShowWindow(actWindow, SW_MAXIMIZE);
+            SetWindowLong(actWindow, GWL_STYLE, normalStyle & ~WS_CAPTION);
+        }
+        isMaximized = !isMaximized;
     }
 
     void moveWindow(int dx, int dy) {
