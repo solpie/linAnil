@@ -11,6 +11,8 @@
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
+#define _nvgcontext nvgContext
+
 
 /*
  * VsObj visible object

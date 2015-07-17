@@ -9,6 +9,7 @@
 #endif //LINANIL_SPRITE_HPP
 
 #include <GLFW/glfw3.h>
+#include <vs/events/SpriteEvent.hpp>
 #include "VsObjContainer.hpp"
 
 using namespace std;
@@ -33,6 +34,14 @@ public:
                              || event == MouseEvent::ROLL_OVER
                              || event == MouseEvent::ROLL_OUT
                              || event == MouseEvent::UP);
+
+
+        if (event == MouseEvent::ROLL_OVER) {
+            _ignoreRollOver = false;
+        }
+        if (event == MouseEvent::ROLL_OUT) {
+            _ignoreRollOut = false;
+        }
     };
 
     virtual void render() override {
@@ -66,24 +75,26 @@ public:
                 }
             }
 
-            if (!_isHover && isIn) {
-                _isHover = true;
-                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OVER));
+            if (!isHover && isIn) {
+                isHover = true;
+                if (!_ignoreRollOver)
+                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OVER));
 
             }
-            else if (_isHover && !isIn) {
-                _isHover = false;
-                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OUT));
+            else if (isHover && !isIn) {
+                isHover = false;
+                if (!_ignoreRollOut)
+                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::ROLL_OUT));
             }
         }
     }
 
 
-    virtual void onDraw() { }
-
-    virtual void onDrawEnd() {
-
+    virtual void onDraw() {
+        disEvent(SpriteEvent::DRAW);
     }
+
+    virtual void onDrawEnd() { }
 
     void setSize(int w, int h) {
         width = w;
@@ -91,11 +102,14 @@ public:
     }
 
     bool mouseEnabled = true;
-private:
+    bool isHover = false;
+    bool isInteractive;
 
-    bool _isHover = false;
+private:
+    bool _ignoreRollOut = true;
+    bool _ignoreRollOver = true;
+
     int _mx;
     int _my;
-    bool isInteractive;
 };
 

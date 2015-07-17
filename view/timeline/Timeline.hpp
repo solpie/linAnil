@@ -10,6 +10,7 @@
 
 
 #include <model/TrackInfo.hpp>
+#include "events/Event.hpp"
 #include <events/TrackModelEvent.hpp>
 #include <vs/ScrollBar.hpp>
 #include "vs/Slider.hpp"

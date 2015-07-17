@@ -12,10 +12,11 @@
 #include "view/TrackArea.hpp"
 #include "view/timeline/Timeline.hpp"
 #include "vs/events/VsEvent.hpp"
+#include "TitleBar.hpp"
 
-class VsRoot : public VsObjContainer {
+class UiRoot : public VsObjContainer {
 public:
-    VsRoot() {
+    UiRoot() {
         for (int i = 0; i < 12; i++) {
             char file[128];
             snprintf(file, 128, "test/thumb/image%d.jpg", i + 1);
@@ -27,8 +28,10 @@ public:
         }
 
 //        setX(500);
+        titleBar = new TitleBar();
+        addChild(titleBar);
+
         timeline = new Timeline();
-//        timeline->setY(width - 630);
         addChild(timeline);
         cout << this << "init root" << endl;
 //        Evt_dis(VsEvent::INITED, nullptr)
@@ -38,6 +41,7 @@ public:
     virtual void render() override;
 
     void resize(int w, int h) {
+        titleBar->resize(w, h);
         timeline->setY(h - 360);
         timeline->width = w;
         timeline->height = h;
@@ -46,10 +50,11 @@ public:
 private:
 
     int images[12];
+    TitleBar *titleBar;
     Timeline *timeline;
 };
 
-void VsRoot::render() {
+void UiRoot::render() {
     drawThumbnails(VG_CONTEXT, 365, 30, 160, 300, images, 12, glfwGetTime());
     VsObjContainer::render();
 }

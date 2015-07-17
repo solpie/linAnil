@@ -10,7 +10,7 @@
 
 #include "VsObj.hpp"
 #include "vector"
-
+#define VS_RENDER_CHILDREN() VsObjContainer::render()
 class VsObjContainer : public VsObj {
 public:
     VsObjContainer() : VsObj() {

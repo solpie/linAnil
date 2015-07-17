@@ -33,10 +33,14 @@
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
-#define add_event_on_context(type,func) VS_CONTEXT.add_event(type,func);
+#define add_event_on_context(type, func) VS_CONTEXT.add_event(type,func);
+
 #include "events/EventDispatcher.hpp"
 #include "events/BaseEvent.hpp"
 #include "Performance.hpp"
+
+#define VS_WIDTH 1440
+#define VS_HEIGHT 920
 using namespace std;
 
 template<typename T>
@@ -56,7 +60,8 @@ struct pos {
 void errorcb(int error, const char *desc) {
     cout << "GLFW error " << error << ": " << desc << endl;
 }
-void mousebutton(GLFWwindow *window, int button, int action, int mods) ;
+
+void mousebutton(GLFWwindow *window, int button, int action, int mods);
 
 void cursorpos(GLFWwindow *window, double x, double y);
 
@@ -124,7 +129,7 @@ public:
         //no title bar no border
 //        glfwWindowHint(GLFW_DECORATED, false);
 
-        window = glfwCreateWindow(1440, 920, "linAnil", nullptr, nullptr);
+        window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "linAnil", nullptr, nullptr);
         if (!window) {
             glfwTerminate();
 //            return -1;
@@ -226,6 +231,16 @@ public:
         }
     }
 
+    void close() {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+
+    void minimize() {
+    }
+
+    void maximize() {
+    }
+
     unsigned int buttons;
     int mods;
     int enabeld;
@@ -235,8 +250,10 @@ public:
     void beginFrame() {
 //        renderIdx = 0;
     }
+
     int width;
     int height;
+
     void render(NVGcontext *vg, int w, int h) {
         if (this->width != w || this->height != h) {
             this->width = w;

@@ -7,13 +7,13 @@
 
 #endif //SEQTRUAN_APP_H
 
-#include <view/VsRoot.hpp>
+#include "UiRoot.hpp"
 #include "utils/Singleton.hpp"
 #include "TrackModel.hpp"
 #include "vs/events/VsEvent.hpp"
 class App : public Singleton<App> {
 public:
-    VsRoot *vsRoot = nullptr;
+    UiRoot *vsRoot = nullptr;
 
     void start(int argc, char *argv[]) {
         VS_CONTEXT.add(VsEvent::INITED, [this](void *e) { onInitContext(); });
@@ -23,10 +23,9 @@ public:
 
     void init() {
         trackModel = new TrackModel();
-        vsRoot = new VsRoot();
+        vsRoot = new UiRoot();
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
-//        Evt_add(VsEvent::INITED, onInitRoot)
     }
 
     void onInitContext() {

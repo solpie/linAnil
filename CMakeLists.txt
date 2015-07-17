@@ -13,6 +13,8 @@ link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(view/ui)
+include_directories(view)
+include_directories(vs)
 set(SOURCE_FILES main.cpp)
 
 add_executable(linAnil ${SOURCE_FILES}
@@ -33,7 +35,7 @@ vs/VsObj.hpp
 vs/VsObjContainer.hpp
 vs/VsContext.hpp
 vs/events/EventDispatcher.hpp
-view/VsRoot.hpp
+view/UiRoot.hpp
 view/TrackArea.hpp
 view/timeline/Timeline.hpp
 vs/Sprite.hpp
@@ -44,7 +46,7 @@ view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
 vs/CheckBox.hpp
-vs/events/VsEvent.hpp vs/VsColor.hpp vs/ScrollBar.hpp)
+vs/events/VsEvent.hpp vs/VsColor.hpp vs/ScrollBar.hpp view/TitleBar.hpp vs/events/SpriteEvent.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 #target_link_libraries(linAnil :libwinpthread.a)
