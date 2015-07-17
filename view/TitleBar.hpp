@@ -8,7 +8,6 @@ public:
     TitleBar() {
         height = 36;
         add_event(MouseEvent::DOWN, onDown)
-        add_event(MouseEvent::MOVE, onMove)
         add_event(MouseEvent::UP, onUp)
 //        add_event_on_context(VsEvent::STAGE_MOUSE_UP,onUp)
 
@@ -46,11 +45,10 @@ public:
     }
 
 
-    void onMove(void *e) {
-        POINT mpos;
-        GetCursorPos(&mpos);
-        cout << this << " Cursor: " << mpos.x << " " << mpos.y << endl;
+    void onMove() {
         if (_isPress&&!VS_CONTEXT.isMaximized) {
+            POINT mpos;
+            GetCursorPos(&mpos);
             int dx = 0, dy = 0;
             if (_lastX)
                 dx = mpos.x - _lastX;
@@ -141,6 +139,7 @@ public:
     }
 
     virtual void onDraw() override {
+        onMove();
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
         nvgFillColor(vg, nvgRGB(22, 22, 22));

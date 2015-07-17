@@ -29,8 +29,9 @@ public:
 
     void onAdd(const string &event) override {
         if (!isInteractive)
-            isInteractive = (event == MouseEvent::MOVE
-                             || event == MouseEvent::DOWN
+            isInteractive = (
+//                    event == MouseEvent::MOVE
+                              event == MouseEvent::DOWN
                              || event == MouseEvent::ROLL_OVER
                              || event == MouseEvent::ROLL_OUT
                              || event == MouseEvent::UP);
@@ -63,7 +64,7 @@ public:
                 if (_mx != mx || _my != my) {
                     _mx = mx;
                     _my = my;
-                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::MOVE));
+//                    VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::MOVE));
                 }
                 if (VS_CONTEXT.enabeld) {
                     if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1) {
