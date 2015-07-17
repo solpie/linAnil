@@ -47,19 +47,20 @@ public:
 
 
     void onMove(void *e) {
-        if (_isPress) {
+        POINT mpos;
+        GetCursorPos(&mpos);
+        cout << this << " Cursor: " << mpos.x << " " << mpos.y << endl;
+        if (_isPress&&!VS_CONTEXT.isMaximized) {
             int dx = 0, dy = 0;
             if (_lastX)
-                dx = VS_CONTEXT.cursor.x - _lastX;
-            _lastX = VS_CONTEXT.cursor.x;
+                dx = mpos.x - _lastX;
+            _lastX = mpos.x;
 
             if (_lastY)
-                dy = VS_CONTEXT.cursor.y - _lastY;
-            _lastY = VS_CONTEXT.cursor.y;
+                dy = mpos.y - _lastY;
+            _lastY = mpos.y;
             if (dx != 0 || dy != 0) {
                 VS_CONTEXT.moveWindow(dx, dy);
-                _lastX -= dx;
-                _lastY -= dy;
             }
         }
     }

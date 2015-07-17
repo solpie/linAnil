@@ -287,9 +287,9 @@ public:
     }
 
     void moveWindow(int dx, int dy) {
-        int wx, wy;
-        glfwGetWindowPos(window, &wx, &wy);
-        glfwSetWindowPos(window, wx + dx, wy + dy);
+        RECT  r;
+        GetWindowRect(actWindow, &r);
+        MoveWindow(actWindow, r.left + dx, r.top + dy,width,height,TRUE);
     }
 
     unsigned int buttons;
