@@ -17,7 +17,7 @@ public:
         height = 15;
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
-        Evt_add(VsEvent::STAGE_MOUSE_UP, onUp);
+        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp);
     }
 
     void onUp(void *e) {
@@ -28,8 +28,6 @@ public:
             glfwSetCursorPos(VS_CONTEXT.window, px, gY() + 5);
             glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
-
-
     }
 
 //    pos hidePos;

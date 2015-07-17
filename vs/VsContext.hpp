@@ -29,12 +29,11 @@
 #include "nanovg/nanovg_gl.h"
 #include <exception>
 #include <vs/events/VsEvent.hpp>
-#include <events/Event.hpp>
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
 #define VS_CONTEXT VsContext::_()
-
+#define add_event_on_context(type,func) VS_CONTEXT.add_event(type,func);
 #include "events/EventDispatcher.hpp"
 #include "events/BaseEvent.hpp"
 #include "Performance.hpp"
@@ -258,9 +257,9 @@ public:
         action = act;
         enabeld = 1;
         if (act == GLFW_PRESS)
-            Evt_dis(VsEvent::STAGE_MOUSE_DOWN, nullptr)
+            disEvent(VsEvent::STAGE_MOUSE_DOWN);
         else if (act == GLFW_RELEASE)
-            Evt_dis(VsEvent::STAGE_MOUSE_UP, nullptr)
+            disEvent(VsEvent::STAGE_MOUSE_UP);
     }
 
     void setCursor(int x, int y) {

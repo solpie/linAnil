@@ -13,6 +13,7 @@
 #endif //LINANIL_VSEVENTDISPATCHER_HPP
 #define add_event(type, func) add(type, [this](void* e) { func(e); });
 #define add_event_on(obj, type, func) obj->add_event(type,func);
+#define add_event_on2(obj, type, func) obj.add_event(type,func);
 #define get_dispatcher(ttype) (ttype *) ((BaseEvent *) e)->target
 
 #include "BaseEvent.hpp"
