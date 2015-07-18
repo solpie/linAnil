@@ -94,7 +94,7 @@ public:
 
     void scrollX(int x) {
 //        _scrollPosX = x;
-        scrollArea->setX(-x);
+        scrollArea->setX(-x+TIMELINE_TRACK_PANEL_DEF_WIDTH);
     }
 
     void resize(int w, int h) {

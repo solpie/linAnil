@@ -53,7 +53,9 @@ public:
             }
         }
     }
-
+    int numChildren() {
+        return vsobjs->size();
+    }
 protected:
     vector<VsObj *> *vsobjs;
 };

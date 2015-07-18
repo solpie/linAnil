@@ -11,7 +11,7 @@
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
-
+#define _3RGB(v) nvgRGB(v,v,v)
 
 /*
  * VsObj visible object

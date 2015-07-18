@@ -33,7 +33,7 @@ public:
 
         timestampBar = new TimestampBar();
         timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
-        add_event(VsEvent::CHANGED, onScrollH)
+        add_event_on(timestampBar,VsEvent::CHANGED, onScrollH)
         addChild(timestampBar);
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
@@ -65,7 +65,7 @@ public:
         }
         else {
             Track *tail = headTrack->getTail();
-            newTrack->setY(tail->gY() + tail->height);
+            newTrack->setY(tail->y() + tail->height);
             newTrack->setPre(tail);
         }
     }
@@ -98,7 +98,6 @@ public:
 
         VsObjContainer::render();
         {//border
-
             nvgBeginPath(vg);
             nvgRect(vg, gX() + TIMELINE_TRACK_PANEL_DEF_WIDTH - 3, gY(), 3, height);
             nvgFillColor(vg, nvgRGB(29, 29, 29));
@@ -108,7 +107,7 @@ public:
     }
 
     void resize(int w, int h) {
-        setY(h - 360);
+//        setY(h - 360);
         width = w;
         height = h;
         vScrollBar->setX(w - vScrollBar->width);
@@ -117,7 +116,7 @@ public:
 
 private:
     TrackToolBar *trackToolBar;
-    Track *t;
+//    Track *t;
     Track *headTrack = nullptr;
     TrackInfo *_trackInfo = nullptr;
     ScrollBar *vScrollBar;

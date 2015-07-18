@@ -40,13 +40,15 @@ public:
     }
 
     void onDown(void *e) {
-        _isPress = true;
-        _lastX = _lastY = 0;
+        if (!VS_CONTEXT.isMaximized) {
+            _isPress = true;
+            _lastX = _lastY = 0;
+        }
     }
 
 
     void onMove() {
-        if (_isPress&&!VS_CONTEXT.isMaximized) {
+        if (_isPress && !VS_CONTEXT.isMaximized) {
             POINT mpos;
             GetCursorPos(&mpos);
             int dx = 0, dy = 0;

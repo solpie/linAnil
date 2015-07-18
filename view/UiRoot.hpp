@@ -13,6 +13,7 @@
 #include "view/timeline/Timeline.hpp"
 #include "vs/events/VsEvent.hpp"
 #include "TitleBar.hpp"
+#include <Splitter.hpp>
 
 class UiRoot : public VsObjContainer {
 public:
@@ -27,12 +28,22 @@ public:
             }
         }
 
+
+
 //        setX(500);
         titleBar = new TitleBar();
         addChild(titleBar);
 
+        vSplitter = new Splitter(Direction::Vertical);
+        vSplitter->setY(titleBar->height);
+        addChild(vSplitter);
+        viewport = new Sprite();
+        viewport->height = 300;
+        viewport->width = 1440;
+        vSplitter->addChild(viewport);
+
         timeline = new Timeline();
-        addChild(timeline);
+        vSplitter->addChild(timeline);
         cout << this << "init root" << endl;
 //        Evt_dis(VsEvent::INITED, nullptr)
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
@@ -52,18 +63,20 @@ public:
 
     void resize(int w, int h) {
         titleBar->resize(w, h);
+        vSplitter->resize(w, h - titleBar->height);
         timeline->resize(w, h);
-
     }
 
 private:
 
     int images[12];
+    Splitter *vSplitter;
     TitleBar *titleBar;
     Timeline *timeline;
+    Sprite *viewport;
 };
 
 void UiRoot::render() {
-    drawThumbnails(VG_CONTEXT, 365, 30, 160, 300, images, 12, glfwGetTime());
+//    drawThumbnails(VG_CONTEXT, 365, 30, 160, 300, images, 12, glfwGetTime());
     VsObjContainer::render();
 }
