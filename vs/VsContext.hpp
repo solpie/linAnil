@@ -368,7 +368,7 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
             button = 1;
             break;
     }
-    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
+//    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
     VsContext::_().setMouseButton(button, mods, action);
 }
 

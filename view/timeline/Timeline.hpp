@@ -99,7 +99,7 @@ public:
         width = w;
         height = h;
         vScrollBar->setX(w - vScrollBar->width);
-        timestampBar->resize(w, h);
+        timestampBar->resize(w-TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
     }
 
 private:

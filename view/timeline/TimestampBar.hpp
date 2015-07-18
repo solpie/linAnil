@@ -9,6 +9,7 @@ public:
         height = 45;
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
+        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
     }
 
     void onUp(void *e) {
@@ -23,6 +24,8 @@ public:
         else {
             isPressScrollBar = false;
         }
+
+        _lastX = _lastY = 0;
     }
 
     virtual void onDraw() override {
@@ -32,12 +35,34 @@ public:
         nvgFill(vg);
 
         //scroll bar
-        int barWidth = float(maxValue - width) / stepValue;
-        int barX = float(_value) / stepValue;
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), barWidth, scrollBarHeight);
-        nvgFillColor(vg, nvgRGB(88, 88, 88));
-        nvgFill(vg);
+        {
+
+            float raito = contentWidth / (width);
+            float barWidth = width / raito;
+            int maxValue = float(width - barWidth) * stepValue;
+
+            if (isPressScrollBar) {
+                pos mpos = VS_CONTEXT.cursor;
+                int dx = 0, dy = 0;
+                if (_lastX)
+                    dx = mpos.x - _lastX;
+                _lastX = mpos.x;
+
+                if (_lastY)
+                    dy = mpos.y - _lastY;
+                _lastY = mpos.y;
+                if (dx != 0 || dy != 0) {
+                    _value += dx * stepValue;
+                    limit(_value, 0, maxValue)
+                    cout << this << " Width: " << width << endl;
+                }
+            }
+            int barX = float(_value) / stepValue;
+            nvgBeginPath(vg);
+            nvgRect(vg, gX() + barX, gY(), barWidth, scrollBarHeight);
+            nvgFillColor(vg, nvgRGB(88, 88, 88));
+            nvgFill(vg);
+        }
 
 
         VS_RENDER_CHILDREN();
@@ -47,10 +72,15 @@ public:
         width = w;
     }
 
-    int _value = 0;
-    int maxValue = 2048;
+    int getValue() {
+        return _value * stepValue;
+    }
+
+    int contentWidth = 1440 * 3;
     int stepValue = 10;
 private:
+    int _value = 0;
+    int _lastX, _lastY;
     int scrollBarHeight = 20;
     bool isPressScrollBar = false;
     Sprite *rangeSlider;
