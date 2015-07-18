@@ -15,7 +15,7 @@ public:
 
     void start(int argc, char *argv[]) {
 //        VS_CONTEXT.add(VsEvent::INITED, [this](void *e) { onInitContext(); });
-        init();
+//        init();
     }
 
     TrackModel *trackModel;

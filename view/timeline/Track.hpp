@@ -60,8 +60,6 @@ public:
     }
 
     virtual void onDraw() override {
-
-
         {//bg
             nvgBeginPath(vg);
             nvgRect(vg, gX(), gY(), width, height);

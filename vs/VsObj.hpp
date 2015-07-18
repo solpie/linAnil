@@ -12,8 +12,6 @@
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
 
-#define _nvgcontext nvgContext
-
 
 /*
  * VsObj visible object
@@ -26,8 +24,8 @@ public:
 
     ~VsObj() { }
 
-    float width = 0;
-    float height = 0;
+    int width = 0;
+    int height = 0;
     bool visible = true;
     //0~255
     float alpha = 255;

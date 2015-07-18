@@ -18,6 +18,7 @@
 using namespace boost;
 
 #include <stack>
+#include <view/Theme.hpp>
 #include "events/TrackModelEvent.hpp"
 class TrackModel {
 public:
@@ -84,6 +85,7 @@ public:
 //        }
         Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
     };
+    int frameWidth=TIMELINE_TRACK_FRAME_MAX_WIDTH;
 private:
 
     TrackInfo *_trackInfo = nullptr;

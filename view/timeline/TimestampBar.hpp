@@ -63,7 +63,17 @@ public:
             nvgFillColor(vg, nvgRGB(88, 88, 88));
             nvgFill(vg);
         }
+        {//time stamp
+            int frameWidth = _app.trackModel->frameWidth;
+            int fY = gY() + height - 10;
 
+            for (int i = getValue() % frameWidth; i < width; i += frameWidth) {
+                nvgBeginPath(vg);
+                nvgRect(vg, gX() + i,fY , 1, 10);
+                nvgFillColor(vg, nvgRGB(20, 20, 20));
+                nvgFill(vg);
+            }
+        }
 
         VS_RENDER_CHILDREN();
     }

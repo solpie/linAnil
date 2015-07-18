@@ -5,8 +5,9 @@
 UiRoot *root = nullptr;
 
 void onInitContext(void *e) {
+    App()._().init();
     root = new UiRoot();
-
+    _app.test();
 }
 
 int main(int argc, char *argv[]) {

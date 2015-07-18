@@ -50,7 +50,7 @@ view/TitleBar.hpp
 view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
-vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp)
+vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 #target_link_libraries(linAnil :libwinpthread.a)

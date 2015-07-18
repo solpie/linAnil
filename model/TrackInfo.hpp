@@ -14,7 +14,6 @@
 
 using namespace std;
 
-VsColor colorSelect(0xff);
 
 class TrackInfo : public OneLinker<TrackInfo> {
 public:
