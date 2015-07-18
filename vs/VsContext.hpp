@@ -99,6 +99,7 @@ public:
     bool isMaximized = false;
     int lastWidth;
     int lastHeight;
+
     void initVsContext() {
         actWindow = GetActiveWindow();
 
@@ -287,9 +288,9 @@ public:
     }
 
     void moveWindow(int dx, int dy) {
-        RECT  r;
+        RECT r;
         GetWindowRect(actWindow, &r);
-        MoveWindow(actWindow, r.left + dx, r.top + dy,width,height,TRUE);
+        MoveWindow(actWindow, r.left + dx, r.top + dy, width, height, TRUE);
     }
 
     unsigned int buttons;
@@ -317,6 +318,19 @@ public:
 
     void endFrame() {
         popUIEvent();
+    }
+
+    int _curCursor = 0;
+    map<int, GLFWcursor *> _mapCursor;
+
+    void setCursor(int v) {
+        if (_curCursor != v) {
+            _curCursor = v;
+            if (_mapCursor.find(v)==_mapCursor.end()) {
+                _mapCursor[v] = glfwCreateStandardCursor(v);
+            }
+            glfwSetCursor(window, _mapCursor[v]);
+        }
     }
 
     void setMouseButton(unsigned int button, unsigned int mod, int act) {

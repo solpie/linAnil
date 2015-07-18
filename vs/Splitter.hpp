@@ -36,8 +36,17 @@ public:
             nvgRect(vg, bar->gX(), bar->gY(), bar->width, bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
+            if(_isPress||bar->isHover) {
+//                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+                VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
+            }
+            else{
+                VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
+            }
 
             if (_isPress) {
+                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+
                 pos mpos = VS_CONTEXT.cursor;
                 int dx = 0, dy = 0;
 
