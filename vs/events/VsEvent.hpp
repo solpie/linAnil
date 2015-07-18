@@ -13,6 +13,7 @@ public:
     static constexpr const char *RENDER = "RENDER";
     static constexpr const char *RESIZE = "RESIZE";
     static constexpr const char *SELECTED = "SELECTED";
+    static constexpr const char *CHANGED = "CHANGED";
     static constexpr const char *STAGE_MOUSE_UP = "STAGE_MOUSE_UP";
     static constexpr const char *STAGE_MOUSE_DOWN = "STAGE_MOUSE_DOWN";
 };

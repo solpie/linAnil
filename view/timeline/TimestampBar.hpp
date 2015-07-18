@@ -54,6 +54,7 @@ public:
                 if (dx != 0 || dy != 0) {
                     _value += dx * stepValue;
                     limit(_value, 0, maxValue)
+                    disEvent(VsEvent::CHANGED);
                     cout << this << " Width: " << width << endl;
                 }
             }

@@ -33,11 +33,18 @@ public:
 
         timestampBar = new TimestampBar();
         timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        add_event(VsEvent::CHANGED, onScrollH)
         addChild(timestampBar);
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
     Track *selectTrack = nullptr;
+
+    void onScrollH(void *e) {
+        headTrack->foreach([this](Track* track){
+            track->scrollX(timestampBar->getValue());
+        });
+    }
 
     void onSelTrack(void *e) {
         if (selectTrack)

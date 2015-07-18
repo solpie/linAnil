@@ -30,7 +30,14 @@ public:
         vSlider->setY(40);
         addChild(vSlider);
 
+        scrollArea = new VsObjContainer();
+        scrollArea->width = width;
+        scrollArea->height = height;
+        scrollArea->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        addChild(scrollArea);
 
+        test = new CheckBox();
+        scrollArea->addChild(test);
         add_event(MouseEvent::DOWN, onUp);
         setColor(99, 138, 20);
     };
@@ -85,7 +92,22 @@ public:
         VsObjContainer::render();
     }
 
+    void scrollX(int x) {
+//        _scrollPosX = x;
+        scrollArea->setX(-x);
+    }
+
+    void resize(int w, int h) {
+        width = w;
+        height = h;
+        scrollArea->width = w;
+        scrollArea->height = h;
+    }
+
 private:
+    CheckBox *test;
+    VsObjContainer *scrollArea;
+    int _scrollPosX;
     VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
