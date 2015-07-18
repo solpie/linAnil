@@ -31,10 +31,10 @@ public:
         if (!isInteractive)
             isInteractive = (
 //                    event == MouseEvent::MOVE
-                              event == MouseEvent::DOWN
-                             || event == MouseEvent::ROLL_OVER
-                             || event == MouseEvent::ROLL_OUT
-                             || event == MouseEvent::UP);
+                    event == MouseEvent::DOWN
+                    || event == MouseEvent::ROLL_OVER
+                    || event == MouseEvent::ROLL_OUT
+                    || event == MouseEvent::UP);
 
 
         if (event == MouseEvent::ROLL_OVER) {
@@ -55,7 +55,7 @@ public:
     }
 
     virtual void onDrawBegin() {
-        if (mouseEnabled && isInteractive) {
+        if (mouseEnabled && isInteractive && visible) {
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
             bool isIn = false;
@@ -105,6 +105,13 @@ public:
     bool mouseEnabled = true;
     bool isHover = false;
     bool isInteractive;
+
+    int mouseX() {
+        return VS_CONTEXT.cursor.x - gX();
+    }
+    int mouseY() {
+        return VS_CONTEXT.cursor.y - gY();
+    }
 
 private:
     bool _ignoreRollOut = true;
