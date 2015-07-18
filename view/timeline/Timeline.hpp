@@ -13,6 +13,7 @@
 #include "events/Event.hpp"
 #include <events/TrackModelEvent.hpp>
 #include <vs/ScrollBar.hpp>
+#include <model/App.hpp>
 #include "vs/Slider.hpp"
 #include "TrackToolBar.hpp"
 #include "Track.hpp"
@@ -24,17 +25,6 @@ public:
         trackToolBar = new TrackToolBar();
         addChild(trackToolBar);
 
-//        t = new Track();
-//        t->setY(trackToolBar->height);
-//        addChild(t);
-//        cout << this << "init Timeline" << endl;
-        hScrollBar = new ScrollBar(Direction::Horizontal);
-        hScrollBar->move(250, 300);
-        hScrollBar->width = 250;
-        hScrollBar->height = 15;
-        addChild(hScrollBar);
-
-//        Direction::Vertical;
         vScrollBar = new ScrollBar(Direction::Vertical);
         vScrollBar->move(250, trackToolBar->height);
         vScrollBar->width = 15;
@@ -44,7 +34,6 @@ public:
         timestampBar = new TimestampBar();
         timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
         addChild(timestampBar);
-
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
@@ -91,15 +80,32 @@ public:
         }
     }
 
+    virtual void render() override {
+        nvgBeginPath(vg);
+        nvgRect(vg, gX(), gY(), width, height);
+        nvgFillColor(vg, nvgRGB(29, 29, 29));
+        //
+        nvgFill(vg);
+        if (_trackInfo)
+            renderTrackInfo(_trackInfo);
 
-    virtual void render() override;
+        VsObjContainer::render();
+        {//border
+
+            nvgBeginPath(vg);
+            nvgRect(vg, gX() + TIMELINE_TRACK_PANEL_DEF_WIDTH - 3, gY(), 3, height);
+            nvgFillColor(vg, nvgRGB(29, 29, 29));
+            nvgFill(vg);
+        }
+
+    }
 
     void resize(int w, int h) {
         setY(h - 360);
         width = w;
         height = h;
         vScrollBar->setX(w - vScrollBar->width);
-        timestampBar->resize(w-TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
+        timestampBar->resize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
     }
 
 private:
@@ -107,27 +113,12 @@ private:
     Track *t;
     Track *headTrack = nullptr;
     TrackInfo *_trackInfo = nullptr;
-    ScrollBar *hScrollBar;
     ScrollBar *vScrollBar;
     TimestampBar *timestampBar;
-    void renderTrackInfo(TrackInfo *trackInfo) {
-//        NVGcontext *vg = vg;
 
+    void renderTrackInfo(TrackInfo *trackInfo) {
         if (trackInfo->next)
             renderTrackInfo(trackInfo->next);
     }
 };
 
-void Timeline::render() {
-//    NVGcontext *vg = vg;
-    nvgBeginPath(vg);
-    nvgRect(vg, gX(), gY(), width, height);
-    nvgFillColor(vg, nvgRGB(29, 29, 29));
-    //
-//    nvgFillColor(vg, nvgRGBA(72, 72, 72, 255));
-    nvgFill(vg);
-    if (_trackInfo)
-        renderTrackInfo(_trackInfo);
-
-    VsObjContainer::render();
-}

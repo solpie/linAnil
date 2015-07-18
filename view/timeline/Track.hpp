@@ -10,6 +10,7 @@
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
+
 class Track : public OneLinker<Track>, public Sprite {
 public:
     Track(TrackInfo *trackInfo) {
@@ -59,14 +60,25 @@ public:
     }
 
     virtual void onDraw() override {
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), width, height);
-        if (_trackInfo->isSelected)
-            nvgFillColor(vg, nvgRGBA(selColor.r, selColor.g, selColor.b, 255));
-        else
-            nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
-        nvgFill(vg);
 
+
+        {//bg
+            nvgBeginPath(vg);
+            nvgRect(vg, gX(), gY(), width, height);
+            if (_trackInfo->isSelected)
+                nvgFillColor(vg, nvgRGBA(selColor.r, selColor.g, selColor.b, 255));
+            else
+                nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
+            nvgFill(vg);
+        }
+
+        {//track name
+            nvgFontFace(vg, "sans");
+            nvgFontSize(vg, 14.0f);
+            nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+            nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
+            nvgText(vg, gX() + 5, gY() + 5, _trackInfo->name.c_str(), nullptr);
+        }
         nvgBeginPath(vg);
         nvgFillColor(vg, nvgRGBA(52, 52, 52, 255));
         nvgRect(vg, gX(), gY() + height - 1, width, 1);

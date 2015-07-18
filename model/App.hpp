@@ -7,50 +7,26 @@
 
 #endif //SEQTRUAN_APP_H
 
-#include "UiRoot.hpp"
 #include "utils/Singleton.hpp"
 #include "TrackModel.hpp"
 #include "vs/events/VsEvent.hpp"
 class App : public Singleton<App> {
 public:
-    UiRoot *vsRoot = nullptr;
 
     void start(int argc, char *argv[]) {
-        VS_CONTEXT.add(VsEvent::INITED, [this](void *e) { onInitContext(); });
+//        VS_CONTEXT.add(VsEvent::INITED, [this](void *e) { onInitContext(); });
+        init();
     }
 
     TrackModel *trackModel;
 
     void init() {
         trackModel = new TrackModel();
-        vsRoot = new UiRoot();
-        VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
-        VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
     }
 
-    void onInitContext() {
-        init();
-        initUI();
-        test();
-    }
 
-    void onRender() {
-        vsRoot->render();
-//        test();
-    }
 
-    void onResize() {
-        vsRoot->resize(VS_CONTEXT.width, VS_CONTEXT.height);
-//        test();
-    }
 
-    void onInitRoot(void *e) {
-//        test();
-    }
-
-    void initUI() {
-
-    }
 
     void test() {
 //        App()._().trackModel->walk();

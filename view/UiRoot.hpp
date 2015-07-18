@@ -35,9 +35,19 @@ public:
         addChild(timeline);
         cout << this << "init root" << endl;
 //        Evt_dis(VsEvent::INITED, nullptr)
+        VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
+        VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
 
     }
+    void onInitContext(){
 
+    }
+    void onResize() {
+        resize(VS_CONTEXT.width, VS_CONTEXT.height);
+    }
+    void onRender() {
+        render();
+    }
     virtual void render() override;
 
     void resize(int w, int h) {
