@@ -326,9 +326,8 @@ public:
     void setCursor(int v) {
         if (_curCursor != v) {
             _curCursor = v;
-            if (_mapCursor.find(v)==_mapCursor.end()) {
+            if (_mapCursor.find(v)==_mapCursor.end())
                 _mapCursor[v] = glfwCreateStandardCursor(v);
-            }
             glfwSetCursor(window, _mapCursor[v]);
         }
     }

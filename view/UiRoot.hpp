@@ -14,6 +14,7 @@
 #include "vs/events/VsEvent.hpp"
 #include "TitleBar.hpp"
 #include <Splitter.hpp>
+#include "viewport/Viewport.hpp"
 
 class UiRoot : public VsObjContainer {
 public:
@@ -37,9 +38,8 @@ public:
         vSplitter = new Splitter(Direction::Vertical);
         vSplitter->setY(titleBar->height);
         addChild(vSplitter);
-        viewport = new Sprite();
-        viewport->height = 300;
-        viewport->width = 1440;
+        viewport = new Viewport();
+        viewport->move(0, 0);
         vSplitter->addChild(viewport);
 
         timeline = new Timeline();
@@ -63,6 +63,7 @@ public:
 
     void resize(int w, int h) {
         titleBar->resize(w, h);
+        viewport->resize(w, h);
         vSplitter->resize(w, h - titleBar->height);
         timeline->resize(w, h);
     }
@@ -73,7 +74,7 @@ private:
     Splitter *vSplitter;
     TitleBar *titleBar;
     Timeline *timeline;
-    Sprite *viewport;
+    Viewport *viewport;
 };
 
 void UiRoot::render() {

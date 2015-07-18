@@ -36,11 +36,11 @@ public:
             nvgRect(vg, bar->gX(), bar->gY(), bar->width, bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
-            if(_isPress||bar->isHover) {
+            if (_isPress || bar->isHover) {
 //                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
                 VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
             }
-            else{
+            else {
                 VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
             }
 
@@ -59,7 +59,7 @@ public:
                         int my = bar->y() + dy;
                         limit(my, 0, height - bar->height)
                         bar->setY(my);
-
+                        child1->height = my;
                         child2->setY(bar->y() + bar->height);
                     }
                 }
