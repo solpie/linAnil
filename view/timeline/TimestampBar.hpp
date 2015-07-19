@@ -14,18 +14,28 @@ public:
 
     void onUp(void *e) {
         isPressScrollBar = false;
+        isPressTimestamp = false;
     }
 
     void onDown(void *e) {
         cout << this << " mouseX: " << mouseX();
         if (mouseY() < scrollBarHeight) {
             isPressScrollBar = true;
+            isPressTimestamp = false;
         }
         else {
             isPressScrollBar = false;
+            isPressTimestamp = true;
+            updateCursorPos();
         }
 
         _lastX = _lastY = 0;
+    }
+
+    void updateCursorPos() {
+        int frameWidth = _app.trackModel->frameWidth;
+        int mx = int((VS_CONTEXT.cursor.x - gX()) / frameWidth)*frameWidth;
+        _cursorPos = mx;
     }
 
     virtual void onDraw() override {
@@ -36,7 +46,6 @@ public:
 
         //scroll bar
         {
-
             float raito = contentWidth / (width);
             float barWidth = width / raito;
             int maxValue = float(width - barWidth) * stepValue;
@@ -64,16 +73,46 @@ public:
             nvgFillColor(vg, nvgRGB(88, 88, 88));
             nvgFill(vg);
         }
-        {//time stamp
-            int frameWidth = _app.trackModel->frameWidth;
-            int fY = gY() + height - 10;
+        int frameWidth = _app.trackModel->frameWidth;
 
-            for (int i = getValue() % frameWidth; i < width; i += frameWidth) {
+        {//time stamp
+            int fY = gY() + height - 10;
+            int fCount = getValue() / frameWidth;
+            int sY = gY() + 30;
+            char str[10];
+            for (int fX = getValue() % frameWidth; fX < width; fX += frameWidth) {
+
+                {//track name
+                    nvgFontFace(vg, "sans");
+                    nvgFontSize(vg, 14.0f);
+                    nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+                    nvgFillColor(vg, nvgRGB(240, 240, 240));
+                    sprintf(str, "%d", (fCount++));
+                    nvgText(vg, gX() + fX + 4, sY, str, nullptr);
+                }
                 nvgBeginPath(vg);
-                nvgRect(vg, gX() + i,fY , 1, 10);
+                nvgRect(vg, gX() + fX, fY, 1, 10);
                 nvgFillColor(vg, nvgRGB(20, 20, 20));
                 nvgFill(vg);
             }
+        }
+
+        {//cursor
+            if(isPressTimestamp)
+                updateCursorPos();
+            int cpx = gX()+_cursorPos;
+            nvgBeginPath(vg);
+            nvgMoveTo(vg,cpx - 10, gY() + scrollBarHeight + 5);
+            nvgLineTo(vg,cpx + 10, gY() + scrollBarHeight + 5);
+            nvgLineTo(vg, cpx, gY() + scrollBarHeight + 20);
+            nvgFillColor(vg, _3RGB(200));
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+            nvgRect(vg, cpx, gY() + height, frameWidth, 200);
+            nvgFillColor(vg, _3RGBA(200,128));
+            nvgFill(vg);
+
         }
 
         VS_RENDER_CHILDREN();
@@ -94,6 +133,8 @@ private:
     int _lastX, _lastY;
     int scrollBarHeight = 20;
     bool isPressScrollBar = false;
-    Sprite *rangeSlider;
+    bool isPressTimestamp = false;
+    int _cursorPos = 0;
+//    Sprite *rangeSlider;
 };
 

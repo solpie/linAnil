@@ -12,6 +12,7 @@
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
 #define _3RGB(v) nvgRGB(v,v,v)
+#define _3RGBA(v,a) nvgRGBA(v,v,v,a)
 
 /*
  * VsObj visible object
