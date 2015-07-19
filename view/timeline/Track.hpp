@@ -43,8 +43,8 @@ public:
     };
 
     void onUp(void *e) {
-        setSelected(true);
         disEvent(VsEvent::SELECTED, VsEvent());
+        setSelected(true);
     }
 
     void setSelected(bool v) {

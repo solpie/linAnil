@@ -50,7 +50,6 @@ public:
         if (selectTrack)
             selectTrack->setSelected(false);
         selectTrack = get_dispatcher(Track);
-
     }
 
     void onNewTrack(TrackInfo *trackInfo) {

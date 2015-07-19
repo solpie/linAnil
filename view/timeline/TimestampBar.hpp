@@ -48,7 +48,7 @@ public:
         {
             float raito = contentWidth / (width);
             float barWidth = width / raito;
-            int maxValue = float(width - barWidth) * stepValue;
+            int maxValue = (width - barWidth);
 
             if (isPressScrollBar) {
                 pos mpos = VS_CONTEXT.cursor;
@@ -67,7 +67,7 @@ public:
                     cout << this << " Width: " << width << endl;
                 }
             }
-            int barX = float(_value) / stepValue;
+            int barX = float(_value);
             nvgBeginPath(vg);
             nvgRect(vg, gX() + barX, gY(), barWidth, scrollBarHeight);
             nvgFillColor(vg, nvgRGB(88, 88, 88));
@@ -75,20 +75,24 @@ public:
         }
         int frameWidth = _app.trackModel->frameWidth;
 
-        {//time stamp
+        {//timestamp
             int fY = gY() + height - 10;
-            int fCount = getValue() / frameWidth;
+            int fCount = (getValue() / frameWidth);
             int sY = gY() + 30;
             char str[10];
-            for (int fX = getValue() % frameWidth; fX < width; fX += frameWidth) {
+            nvgScissor(vg, gX(), gY(), width, height);
 
+            for (int fX = -(getValue() % frameWidth); fX < width; fX += frameWidth) {
                 {//track name
+
                     nvgFontFace(vg, "sans");
                     nvgFontSize(vg, 14.0f);
                     nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
                     nvgFillColor(vg, nvgRGB(240, 240, 240));
                     sprintf(str, "%d", (fCount++));
                     nvgText(vg, gX() + fX + 4, sY, str, nullptr);
+//                    nvgSave(vg);
+
                 }
                 nvgBeginPath(vg);
                 nvgRect(vg, gX() + fX, fY, 1, 10);
@@ -98,14 +102,15 @@ public:
         }
 
         {//cursor
+            cout << this << " scroll value: " << _value << endl;
             if (isPressTimestamp)
                 updateCursorPos();
-            int cpx = gX() + _cursorPos - _value;
+            int cpx = gX() + _cursorPos - getValue();
             if (cpx > gX()) {
                 nvgBeginPath(vg);
                 nvgMoveTo(vg, cpx - 10, gY() + scrollBarHeight + 5);
                 nvgLineTo(vg, cpx + 10, gY() + scrollBarHeight + 5);
-                nvgLineTo(vg, cpx, gY() + scrollBarHeight + 20);
+                nvgLineTo(vg, cpx, gY() + scrollBarHeight + 15);
                 nvgFillColor(vg, _3RGB(200));
                 nvgFill(vg);
 
@@ -116,20 +121,23 @@ public:
             }
 
         }
+//        nvgSave(vg);
 
         VS_RENDER_CHILDREN();
     }
 
     void resize(int w, int h) {
         width = w;
+        //test
+        contentWidth = 2 * width;
     }
 
     int getValue() {
-        return _value * stepValue;
+        return _value;
     }
 
-    int contentWidth = 1440 * 3;
-    int stepValue = 10;
+    int contentWidth = 1440 * 2;
+    int stepValue = 1;
 private:
     int _value = 0;
     int _lastX, _lastY;
