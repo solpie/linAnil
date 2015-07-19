@@ -34,7 +34,7 @@ public:
 
     void updateCursorPos() {
         int frameWidth = _app.trackModel->frameWidth;
-        int mx = int((VS_CONTEXT.cursor.x - gX()) / frameWidth)*frameWidth;
+        int mx = int((VS_CONTEXT.cursor.x - gX()) / frameWidth) * frameWidth;
         _cursorPos = mx;
     }
 
@@ -98,20 +98,22 @@ public:
         }
 
         {//cursor
-            if(isPressTimestamp)
+            if (isPressTimestamp)
                 updateCursorPos();
-            int cpx = gX()+_cursorPos;
-            nvgBeginPath(vg);
-            nvgMoveTo(vg,cpx - 10, gY() + scrollBarHeight + 5);
-            nvgLineTo(vg,cpx + 10, gY() + scrollBarHeight + 5);
-            nvgLineTo(vg, cpx, gY() + scrollBarHeight + 20);
-            nvgFillColor(vg, _3RGB(200));
-            nvgFill(vg);
+            int cpx = gX() + _cursorPos - _value;
+            if (cpx > gX()) {
+                nvgBeginPath(vg);
+                nvgMoveTo(vg, cpx - 10, gY() + scrollBarHeight + 5);
+                nvgLineTo(vg, cpx + 10, gY() + scrollBarHeight + 5);
+                nvgLineTo(vg, cpx, gY() + scrollBarHeight + 20);
+                nvgFillColor(vg, _3RGB(200));
+                nvgFill(vg);
 
-            nvgBeginPath(vg);
-            nvgRect(vg, cpx, gY() + height, frameWidth, 200);
-            nvgFillColor(vg, _3RGBA(200,128));
-            nvgFill(vg);
+                nvgBeginPath(vg);
+                nvgRect(vg, cpx, gY() + height, frameWidth, 200);
+                nvgFillColor(vg, _3RGBA(200, 128));
+                nvgFill(vg);
+            }
 
         }
 
