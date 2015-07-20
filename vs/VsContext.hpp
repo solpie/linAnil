@@ -90,7 +90,6 @@ class VsContext : public EventDispatcher, public S<VsContext> {
 public:
     Performance *perfFps;
     Performance *perfCpu;
-    GLFWwindow *window;
 //    int screenWidth;
 //    int screenHeight;
     HWND actWindow;
@@ -161,18 +160,18 @@ public:
 
 
 
-        window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "", nullptr, nullptr);
-        if (!window) {
+        _window = glfwCreateWindow(VS_WIDTH, VS_HEIGHT, "", nullptr, nullptr);
+        if (!_window) {
             glfwTerminate();
 //            return -1;
         }
-        glfwSetKeyCallback(window, key);
-        glfwSetCharCallback(window, charevent);
-        glfwSetCursorPosCallback(window, cursorpos);
-        glfwSetMouseButtonCallback(window, mousebutton);
-        glfwSetScrollCallback(window, scrollevent);
+        glfwSetKeyCallback(_window, key);
+        glfwSetCharCallback(_window, charevent);
+        glfwSetCursorPosCallback(_window, cursorpos);
+        glfwSetMouseButtonCallback(_window, mousebutton);
+        glfwSetScrollCallback(_window, scrollevent);
 
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(_window);
 #ifdef NANOVG_GLEW
         glewExperimental = GL_TRUE;
         if (glewInit() != GLEW_OK) {
@@ -204,7 +203,7 @@ public:
         double prevt = 0, cpuTime = 0;
 //        }
 
-        while (!glfwWindowShouldClose(window)) {
+        while (!glfwWindowShouldClose(_window)) {
             double mx, my;
             int winWidth, winHeight;
             int fbWidth, fbHeight;
@@ -218,9 +217,9 @@ public:
             }
 
 
-            glfwGetCursorPos(window, &mx, &my);
-            glfwGetWindowSize(window, &winWidth, &winHeight);
-            glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
+            glfwGetCursorPos(_window, &mx, &my);
+            glfwGetWindowSize(_window, &winWidth, &winHeight);
+            glfwGetFramebufferSize(_window, &fbWidth, &fbHeight);
             // Calculate pixel ration for hi-dpi devices.
             pxRatio = (float) fbWidth / (float) winWidth;
 
@@ -246,7 +245,7 @@ public:
                 perfCpu->updateGraph(cpuTime);
             }
 
-            glfwSwapBuffers(window);
+            glfwSwapBuffers(_window);
             glfwPollEvents();
         }
 
@@ -265,17 +264,17 @@ public:
     }
 
     void close() {
-        glfwSetWindowShouldClose(window, GL_TRUE);
+        glfwSetWindowShouldClose(_window, GL_TRUE);
     }
 
     void minimize() {
-        glfwIconifyWindow(window);
+        glfwIconifyWindow(_window);
     }
 
     void maximize() {
         if (isMaximized) {
             SetWindowLong(actWindow, GWL_STYLE, noBorderStyle);
-            glfwSetWindowSize(window, lastWidth, lastHeight);
+            glfwSetWindowSize(_window, lastWidth, lastHeight);
         }
         else {
             lastWidth = width;
@@ -328,21 +327,21 @@ public:
             _curCursor = v;
             if (_mapCursor.find(v) == _mapCursor.end())
                 _mapCursor[v] = glfwCreateStandardCursor(v);
-            glfwSetCursor(window, _mapCursor[v]);
+            glfwSetCursor(_window, _mapCursor[v]);
         }
     }
 
     void setCursorPos(int x, int y) {
-        glfwSetCursorPos(window, x, y);
+        glfwSetCursorPos(_window, x, y);
     }
 
     void hideCursor() {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     }
 
     void showCursor() {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
     void setMouseButton(unsigned int button, unsigned int mod, int act) {
@@ -380,6 +379,7 @@ public:
     }
 
 protected:
+    GLFWwindow *_window;
     map<string, BaseEvent> _uiEvents;
     NVGcontext *nvgContext = nullptr;
 };

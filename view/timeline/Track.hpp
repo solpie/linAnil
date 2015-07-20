@@ -16,7 +16,7 @@ public:
     Track(TrackInfo *trackInfo) {
         _trackInfo = trackInfo;
         width = 1024;
-        height = 62;
+        height = 55;
 
         trackVisibleBox = new CheckBox();
         trackVisibleBox->isChecked = true;
@@ -27,7 +27,7 @@ public:
         vSlider = new Slider();
         vSlider->setValue(100);
         vSlider->setX(200);
-        vSlider->setY(40);
+        vSlider->setY(32);
         addChild(vSlider);
 
         scrollArea = new VsObjContainer();
@@ -67,6 +67,8 @@ public:
     }
 
     virtual void onDraw() override {
+        if (parent&&gY()<parent->gY())
+            return;
         {//bg
             nvgBeginPath(vg);
             nvgRect(vg, gX(), gY(), width, height);
@@ -94,7 +96,7 @@ public:
 
     void scrollX(int x) {
 //        _scrollPosX = x;
-        scrollArea->setX(-x+TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        scrollArea->setX(-x + TIMELINE_TRACK_PANEL_DEF_WIDTH);
     }
 
     void resize(int w, int h) {
@@ -104,7 +106,13 @@ public:
         scrollArea->height = h;
     }
 
+    void setHideY(int hy) {
+        _hy = hy;
+    }
+
 private:
+    int _hy = 0;
+
     CheckBox *test;
     VsObjContainer *scrollArea;
     int _scrollPosX;

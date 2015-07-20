@@ -12,8 +12,6 @@
 
 class ScrollBar : public Sprite {
 public:
-    int maxValue = 100;
-    int minValue = 0;
 
     ScrollBar(int dir) {
         _dir = dir;
@@ -29,64 +27,64 @@ public:
 
     void onDown(void *e) {
         _isPress = true;
+        _lastX = _lastY = 0;
     }
 
     void updateValueByPos() {
-        int px = VS_CONTEXT.cursor.x - gX();
-        if (px < 0)
-            px = 0;
-        else if (px > width)
-            px = width;
-        _value = px * (maxValue - minValue + 1) / width;
+//        int px = VS_CONTEXT.cursor.x - gX();
+//        if (px < 0)
+//            px = 0;
+//        else if (px > width)
+//            px = width;
+//        _value = px * (_maxValue - minValue + 1) / width;
     }
 
     virtual void onDraw() override {
-        if (_isPress)
-            updateValueByPos();
-//        NVGcontext *vg = this->vg;
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);
         nvgFillColor(vg, _3RGB(47));
         nvgFill(vg);
 
         //thumb
-        int tx = _value * width / maxValue;
+//        int tx = _value * width / _maxValue;
 
         if (_isHorizontal()) {
-            nvgBeginPath(vg);
-            nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
-            nvgFillColor(vg, nvgRGB(44, 44, 44));
-            nvgFill(vg);
-
-            nvgBeginPath(vg);
-            nvgRect(vg, gX() + tx + 1, gY(), 3, height);
-            nvgFillColor(vg, nvgRGB(207, 207, 207));
-            nvgFill(vg);
-
-            nvgBeginPath(vg);
-            nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
-            nvgFillColor(vg, nvgRGB(182, 182, 182));
-            nvgFill(vg);
+//            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx, gY() - 1, 5, height + 2);
+//            nvgFillColor(vg, nvgRGB(44, 44, 44));
+//            nvgFill(vg);
+//
+//            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx + 1, gY(), 3, height);
+//            nvgFillColor(vg, nvgRGB(207, 207, 207));
+//            nvgFill(vg);
+//
+//            nvgBeginPath(vg);
+//            nvgRect(vg, gX() + tx + 2, gY() + 1, 1, height - 2);
+//            nvgFillColor(vg, nvgRGB(182, 182, 182));
+//            nvgFill(vg);
         }
         else {
+            if (_isPress&&_maxValue>0) {
+                int cY = VS_CONTEXT.cursor.y;
+                int dy = 0;
+                if (_lastY)
+                    dy = cY - _lastY;
+                _lastY = cY;
+                if (dy != 0) {
+                    _value += dy;
+                    limit(_value, 0, _maxValue)
+                    disEvent(VsEvent::CHANGED);
+//                    cout << this << " Width: " << width << endl;
+                }
+            }
+
             nvgBeginPath(vg);
-            nvgRect(vg, gX(), gY() + tx, width, _barLength);
+            nvgRect(vg, gX(), gY() + _value, width, _barLength);
             nvgFillColor(vg, _3RGB(88));
             nvgFill(vg);
-
         }
         ////
-
-        //value hint
-        char str[4];
-        if (_isPress) {
-            nvgFontFace(vg, "sans");
-            nvgFontSize(vg, 14.0f);
-            nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-            nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
-            sprintf(str, "%d%%", _value * 100 / (maxValue - minValue + 1));
-            nvgText(vg, gX() + tx, gY() - 20, str, nullptr);
-        }
 
     }
 
@@ -98,18 +96,24 @@ public:
         _contentLength = v;
         if (_isHorizontal()) {
             _barLength = width * width / _contentLength;
+            _maxValue = width - _barLength;
+
 
         }
         else {
             _barLength = height * height / _contentLength;
+            _maxValue = height - _barLength;
+
         }
     }
 
 
     virtual void setSize(int w, int h) override {
-        Sprite::setSize(w, h);
+        VsObj::setSize(w, h);
         setContent(_contentLength);
     }
+
+    int getValue() { return _value; }
 
 private:
     void onContentResize(void *e) {
@@ -123,11 +127,13 @@ private:
     bool _isHorizontal() {
         return _dir == Direction::Horizontal;
     }
+    int _maxValue = 100;
 
     int _barLength = 0;
     int _dir = 1;
     int _contentLength = 0;
     bool _isPress = false;
+    int _lastX, _lastY;
     int _value = 0;
 
 };

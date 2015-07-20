@@ -34,12 +34,26 @@ public:
         vScrollBar->move(TIMELINE_TRACK_PANEL_DEF_WIDTH - 15, trackToolBar->height);
         vScrollBar->width = 15;
         vScrollBar->height = 250;
+        add_event_on(vScrollBar, VsEvent::CHANGED, onScrollV)
+
         addChild(vScrollBar);
 
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
     Track *selectTrack = nullptr;
+
+    void onScrollV(void *e) {
+        int vy = vScrollBar->getValue();
+        headTrack->setY(trackToolBar->height - vy);
+        vy = 0;
+        headTrack->foreach([&](Track *track) {
+            if (vy) {
+                track->setY(vy);
+            }
+            vy = track->y() + track->height;
+        });
+    }
 
     void onScrollH(void *e) {
         headTrack->foreach([this](Track *track) {
@@ -56,8 +70,8 @@ public:
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
 //        addChild(newTrack);
+        newTrack->setHideY(trackToolBar->height);
         add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
-
         addChildAt(newTrack, 0);
         if (!headTrack) {
             headTrack = newTrack;
@@ -70,7 +84,7 @@ public:
         }
         int totalHeight = 0;
         headTrack->foreach([&](Track *track) {
-            totalHeight+=track->height;
+            totalHeight += track->height;
         });
         vScrollBar->setContent(totalHeight);
     }

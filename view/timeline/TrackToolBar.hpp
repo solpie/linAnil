@@ -19,8 +19,11 @@ public:
     }
 
     virtual void render() override {
-
-        VsObjContainer::render();
+        nvgBeginPath(vg);
+        nvgRect(vg, gX(), gY(), width, height);
+        nvgFillColor(vg, _3RGB(20));
+        nvgFill(vg);
+        VS_RENDER_CHILDREN();
     }
 };
 
