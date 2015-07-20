@@ -5,20 +5,20 @@ class Splitter : public VsObjContainer {
 public:
     Splitter(int dir) {
         _dir = dir;
-        bar = new Sprite();
+        _bar = new Sprite();
         if (_dir == Direction::Vertical) {
-            bar->height = barWidth;
+            _bar->height = barWidth;
         }
         else {
-            bar->width = barWidth;
+            _bar->width = barWidth;
         }
-        bar->parent = this;
+        _bar->parent = this;
 
-        add_event_on(bar, MouseEvent::DOWN, onDown)
-        add_event_on(bar, MouseEvent::UP, onUp)
+        add_event_on(_bar, MouseEvent::DOWN, onDown)
+        add_event_on(_bar, MouseEvent::UP, onUp)
         add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
 
-        add_event_on(bar, SpriteEvent::DRAW, onDrawBar)
+        add_event_on(_bar, SpriteEvent::DRAW, onDrawBar)
     }
 
     void onUp(void *e) {
@@ -33,10 +33,10 @@ public:
     void onDrawBar(void *e) {
         if (numChildren() == 2) {
             nvgBeginPath(vg);
-            nvgRect(vg, bar->gX(), bar->gY(), bar->width, bar->height);
+            nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
-            if (_isPress || bar->isHover) {
+            if (_isPress || _bar->isHover) {
 //                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
                 VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
             }
@@ -46,7 +46,6 @@ public:
 
             if (_isPress) {
                 glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-
                 pos mpos = VS_CONTEXT.cursor;
                 int dx = 0, dy = 0;
 
@@ -56,11 +55,11 @@ public:
                     _lastY = mpos.y;
                     if (dy != 0) {
 
-                        int my = bar->y() + dy;
-                        limit(my, 0, height - bar->height)
-                        bar->setY(my);
+                        int my = _bar->y() + dy;
+                        limit(my, 0, height - _bar->height)
+                        _bar->setY(my);
                         child1->height = my;
-                        child2->setY(bar->y() + bar->height);
+                        child2->setY(_bar->y() + _bar->height);
                     }
                 }
                 else {
@@ -80,19 +79,19 @@ public:
         if (n == 0) {
             child1 = vsObj;
             if (_dir == Direction::Vertical) {
-                bar->setY(vsObj->height);
+                _bar->setY(vsObj->height);
             }
             else {
-                bar->setX(vsObj->width);
+                _bar->setX(vsObj->width);
             }
         }
         else if (n == 1) {
             child2 = vsObj;
             if (_dir == Direction::Vertical) {
-                child2->setY(bar->y() + bar->height);
+                child2->setY(_bar->y() + _bar->height);
             }
             else {
-                child2->setX(bar->x() + bar->width);
+                child2->setX(_bar->x() + _bar->width);
             }
         }
         else {
@@ -102,34 +101,29 @@ public:
     }
 
 
-    void resize(int w, int h) {
-        width = w;
-        height = h;
+    void setSize(int w, int h) override {
+        VsObj::setSize(w, h);
         if (_dir == Direction::Vertical) {
-//            bar->setY(10);
-            bar->width = w;
+            _bar->width = w;
+            int h2 =  h - _bar->x() - _bar->height;
+            child2->setSize(w, h2);
         }
         else {
-//            bar->setX(10);
-            bar->height = h;
+            _bar->height = h;
         }
-//        if(child1)
-//            child1->resize()
     }
 
     virtual void render() override {
         VS_RENDER_CHILDREN();
-        bar->render();
-
+        _bar->render();
     }
 
     int barWidth = 8;
-
 private:
     int _dir;
     bool _isPress = false;
     int _lastX, _lastY;
     VsObj *child1 = nullptr;
     VsObj *child2 = nullptr;
-    Sprite *bar;
+    Sprite *_bar;
 };

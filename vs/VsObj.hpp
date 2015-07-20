@@ -11,8 +11,9 @@
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
 #include "events/EventDispatcher.hpp"
+
 #define _3RGB(v) nvgRGB(v,v,v)
-#define _3RGBA(v,a) nvgRGBA(v,v,v,a)
+#define _3RGBA(v, a) nvgRGBA(v,v,v,a)
 
 /*
  * VsObj visible object
@@ -37,6 +38,7 @@ public:
 
     float x() { return _x; }
 
+    //todo set gX() when parent changed
     float gX() {
         if (parent)
             return parent->gX() + _x;
@@ -62,6 +64,13 @@ public:
 
     void updateZDepth() {
 //        zdepth = VS_CONTEXT.renderIdx++;
+    }
+
+    virtual void setSize(int w, int h) {
+        if (w > -1)
+            width = w;
+        if (h > -1)
+            height = h;
     }
 
     virtual void render() {

@@ -97,10 +97,7 @@ public:
 
     virtual void onDrawEnd() { }
 
-    void setSize(int w, int h) {
-        width = w;
-        height = h;
-    }
+
 
     bool mouseEnabled = true;
     bool isHover = false;
@@ -109,6 +106,7 @@ public:
     int mouseX() {
         return VS_CONTEXT.cursor.x - gX();
     }
+
     int mouseY() {
         return VS_CONTEXT.cursor.y - gY();
     }

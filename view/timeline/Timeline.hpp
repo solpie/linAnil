@@ -25,23 +25,24 @@ public:
         trackToolBar = new TrackToolBar();
         addChild(trackToolBar);
 
+        timestampBar = new TimestampBar();
+        timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        add_event_on(timestampBar, VsEvent::CHANGED, onScrollH)
+        addChild(timestampBar);
+
         vScrollBar = new ScrollBar(Direction::Vertical);
-        vScrollBar->move(250, trackToolBar->height);
+        vScrollBar->move(TIMELINE_TRACK_PANEL_DEF_WIDTH - 15, trackToolBar->height);
         vScrollBar->width = 15;
         vScrollBar->height = 250;
         addChild(vScrollBar);
 
-        timestampBar = new TimestampBar();
-        timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
-        add_event_on(timestampBar,VsEvent::CHANGED, onScrollH)
-        addChild(timestampBar);
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
     Track *selectTrack = nullptr;
 
     void onScrollH(void *e) {
-        headTrack->foreach([this](Track* track){
+        headTrack->foreach([this](Track *track) {
             track->scrollX(timestampBar->getValue());
         });
     }
@@ -67,6 +68,7 @@ public:
             newTrack->setY(tail->y() + tail->height);
             newTrack->setPre(tail);
         }
+        vScrollBar->setContent(newTrack->gY() + newTrack->height);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -105,13 +107,13 @@ public:
 
     }
 
-    void resize(int w, int h) {
-//        setY(h - 360);
-        width = w;
-        height = h;
-        vScrollBar->setX(w - vScrollBar->width);
+    void setSize(int w, int h) override {
+        VsObj::setSize(w, h);
+//        vScrollBar->setX(w - vScrollBar->width);
+        vScrollBar->setSize(-1, h - trackToolBar->height);
         timestampBar->resize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
     }
+
 
 private:
     TrackToolBar *trackToolBar;

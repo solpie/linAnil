@@ -91,6 +91,7 @@ public:
                     nvgFillColor(vg, nvgRGB(240, 240, 240));
                     sprintf(str, "%d", (fCount++));
                     nvgText(vg, gX() + fX + 4, sY, str, nullptr);
+//                    nvgTextBounds(vg, gX() + fX + 4, sY, str, nullptr);
 //                    nvgSave(vg);
 
                 }
@@ -102,7 +103,7 @@ public:
         }
 
         {//cursor
-            cout << this << " scroll value: " << _value << endl;
+//            cout << typeid(this).name() << " scroll value: " << _value << endl;
             if (isPressTimestamp)
                 updateCursorPos();
             int cpx = gX() + _cursorPos - getValue();

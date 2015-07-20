@@ -19,15 +19,15 @@
 class UiRoot : public VsObjContainer {
 public:
     UiRoot() {
-        for (int i = 0; i < 12; i++) {
-            char file[128];
-            snprintf(file, 128, "test/thumb/image%d.jpg", i + 1);
-            images[i] = nvgCreateImage(VG_CONTEXT, file, 0);
-            if (images[i] == 0) {
-                printf("Could not load %s.\n", file);
-//                return -1;
-            }
-        }
+//        for (int i = 0; i < 12; i++) {
+//            char file[128];
+//            snprintf(file, 128, "test/thumb/image%d.jpg", i + 1);
+//            images[i] = nvgCreateImage(VG_CONTEXT, file, 0);
+//            if (images[i] == 0) {
+//                printf("Could not load %s.\n", file);
+////                return -1;
+//            }
+//        }
 
 
 
@@ -64,12 +64,11 @@ public:
     void resize(int w, int h) {
         titleBar->resize(w, h);
         viewport->resize(w, h);
-        vSplitter->resize(w, h - titleBar->height);
-        timeline->resize(w, h);
+//        timeline->setSize(w, h);
+        vSplitter->setSize(w, h - titleBar->height);
     }
 
 private:
-
     int images[12];
     Splitter *vSplitter;
     TitleBar *titleBar;
