@@ -89,22 +89,14 @@ public:
 
         }
         else {
-            _barLength = height / (_contentLength / height);
+            _barLength = height * height / _contentLength;
         }
     }
 
 
     virtual void setSize(int w, int h) override {
         Sprite::setSize(w, h);
-
-        if (_isHorizontal()) {
-            _barLength = width * width / _contentLength;
-
-        }
-        else {
-            _barLength = height / (_contentLength / height);
-        }
-//        setContent(_contentLength);
+        setContent(_contentLength);
     }
 
 private:

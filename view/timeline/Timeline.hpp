@@ -68,7 +68,11 @@ public:
             newTrack->setY(tail->y() + tail->height);
             newTrack->setPre(tail);
         }
-        vScrollBar->setContent(newTrack->gY() + newTrack->height);
+        int totalHeight = 0;
+        headTrack->foreach([&](Track *track) {
+            totalHeight+=track->height;
+        });
+        vScrollBar->setContent(totalHeight);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -109,9 +113,11 @@ public:
 
     void setSize(int w, int h) override {
         VsObj::setSize(w, h);
-//        vScrollBar->setX(w - vScrollBar->width);
+        headTrack->foreach([this](Track *track) {
+            track->width = width;
+        });
         vScrollBar->setSize(-1, h - trackToolBar->height);
-        timestampBar->resize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
+        timestampBar->setSize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
     }
 
 

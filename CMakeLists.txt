@@ -44,7 +44,7 @@ view/UI.hpp
 view/win/FileDialog.hpp
 view/Input.hpp
 view/UiRoot.hpp
-view/TrackArea.hpp
+#view/TrackArea.hpp
 view/timeline/Timeline.hpp
 view/TitleBar.hpp
 view/timeline/Track.hpp

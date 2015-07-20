@@ -74,7 +74,20 @@ public:
             nvgFill(vg);
         }
         int frameWidth = _app.trackModel->frameWidth;
+        int cpx = gX() + _cursorPos - getValue();
 
+        {//cursor
+            if (isPressTimestamp)
+                updateCursorPos();
+            if (cpx > gX()) {
+                //
+                nvgBeginPath(vg);
+                nvgRect(vg, cpx, gY() + height, frameWidth, _cursorFrameHeight);
+                nvgFillColor(vg, _3RGBA(200, 128));
+                nvgFill(vg);
+            }
+
+        }
         {//timestamp
             int fY = gY() + height - 10;
             int fCount = (getValue() / frameWidth);
@@ -101,12 +114,7 @@ public:
                 nvgFill(vg);
             }
         }
-
-        {//cursor
-//            cout << typeid(this).name() << " scroll value: " << _value << endl;
-            if (isPressTimestamp)
-                updateCursorPos();
-            int cpx = gX() + _cursorPos - getValue();
+        {//cursor tri
             if (cpx > gX()) {
                 nvgBeginPath(vg);
                 nvgMoveTo(vg, cpx - 10, gY() + scrollBarHeight + 5);
@@ -114,21 +122,18 @@ public:
                 nvgLineTo(vg, cpx, gY() + scrollBarHeight + 15);
                 nvgFillColor(vg, _3RGB(200));
                 nvgFill(vg);
-
-                nvgBeginPath(vg);
-                nvgRect(vg, cpx, gY() + height, frameWidth, 200);
-                nvgFillColor(vg, _3RGBA(200, 128));
-                nvgFill(vg);
             }
 
         }
+
 //        nvgSave(vg);
 
         VS_RENDER_CHILDREN();
     }
 
-    void resize(int w, int h) {
+    void setSize(int w, int h) override{
         width = w;
+        _cursorFrameHeight = h-height;
         //test
         contentWidth = 2 * width;
     }
@@ -142,6 +147,7 @@ public:
 private:
     int _value = 0;
     int _lastX, _lastY;
+    int _cursorFrameHeight = 300;
     int scrollBarHeight = 20;
     bool isPressScrollBar = false;
     bool isPressTimestamp = false;

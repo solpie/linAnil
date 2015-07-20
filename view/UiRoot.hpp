@@ -9,7 +9,7 @@
 #endif //LINANIL_VSROOT_HPP
 
 #include "vs/VsObjContainer.hpp"
-#include "view/TrackArea.hpp"
+//#include "view/TrackArea.hpp"
 #include "view/timeline/Timeline.hpp"
 #include "vs/events/VsEvent.hpp"
 #include "TitleBar.hpp"
@@ -54,14 +54,14 @@ public:
 
     }
     void onResize() {
-        resize(VS_CONTEXT.width, VS_CONTEXT.height);
+        setSize(VS_CONTEXT.width, VS_CONTEXT.height);
     }
     void onRender() {
         render();
     }
     virtual void render() override;
 
-    void resize(int w, int h) {
+    void setSize(int w, int h) override {
         titleBar->resize(w, h);
         viewport->resize(w, h);
 //        timeline->setSize(w, h);
