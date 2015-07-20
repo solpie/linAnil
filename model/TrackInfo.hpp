@@ -20,6 +20,8 @@ public:
     TrackInfo(string name) {
         this->name = name;
         trackFrameInfos = new vector<TrackFrameInfo *>();
+
+
     };
     string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
@@ -74,7 +76,7 @@ protected:
     int _endFrame = 1;
     int _startFrame = 1;
 
-    double _opacity = 1.0;
+    double _opacity = 255;
 private:
     int _trackFrameIdx;
 

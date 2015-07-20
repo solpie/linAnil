@@ -53,6 +53,7 @@ view/Theme.hpp
 vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
+target_link_libraries(linAnil :libboost_filesystem-mt.a)
 #target_link_libraries(linAnil :libwinpthread.a)
 #target_link_libraries(linAnil :libglew32.dll.a)
 #target_link_libraries(linAnil :libglew32.a)

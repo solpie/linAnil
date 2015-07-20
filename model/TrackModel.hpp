@@ -45,17 +45,11 @@ public:
             _trackInfo = trackInfo;
         TrackFrameInfo *pre = nullptr;
         if (dirname != "") {
-//            QDir dir(dirname);
-//            dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoSymLinks);
-//            const QFileInfoList fileinfolist = dir.entryInfoList();
-//                    foreach(const QFileInfo &fi, fileinfolist) {
-//                    if (fi.baseName() == "." || fi.baseName() == ".." || fi.baseName() == "") {
-//                        continue;
-//                    }
-//                    if (fi.isDir() && fi.isReadable()) {
-//                        // This is the conditional for recursion
-////                walk( fi.absoluteFilePath() );
-//                    }
+            boost::filesystem::recursive_directory_iterator itr(dirname);
+            while (itr != boost::filesystem::recursive_directory_iterator()) {
+                cout << itr->path().string() << endl;
+                ++itr;
+            }
 //                    else {
 //                        // This is where you might call your encrypting function
 ////                        qDebug() << "Image file: " << fi.absoluteFilePath();
