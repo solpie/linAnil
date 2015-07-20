@@ -17,6 +17,18 @@ public:
 
     ScrollBar(int dir) {
         _dir = dir;
+
+        add_event(MouseEvent::DOWN, onDown);
+        add_event(MouseEvent::UP, onUp);
+        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp);
+    }
+
+    void onUp(void *e) {
+        _isPress = false;
+    }
+
+    void onDown(void *e) {
+        _isPress = true;
     }
 
     void updateValueByPos() {
@@ -29,7 +41,7 @@ public:
     }
 
     virtual void onDraw() override {
-        if (isPress)
+        if (_isPress)
             updateValueByPos();
 //        NVGcontext *vg = this->vg;
         nvgBeginPath(vg);
@@ -67,7 +79,7 @@ public:
 
         //value hint
         char str[4];
-        if (isPress) {
+        if (_isPress) {
             nvgFontFace(vg, "sans");
             nvgFontSize(vg, 14.0f);
             nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
@@ -115,7 +127,7 @@ private:
     int _barLength = 0;
     int _dir = 1;
     int _contentLength = 0;
-    bool isPress = false;
+    bool _isPress = false;
     int _value = 0;
 
 };

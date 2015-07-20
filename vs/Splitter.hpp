@@ -60,8 +60,7 @@ public:
                         _bar->setY(my);
                         child1->height = my;
                         child2->setY(_bar->y() + _bar->height);
-                        int h2 =  height - _bar->y() - _bar->height;
-                        child2->setSize(width, h2);
+                        child2->setSize(width, height - _bar->y() - _bar->height);
                     }
                 }
                 else {
@@ -107,8 +106,7 @@ public:
         VsObj::setSize(w, h);
         if (_dir == Direction::Vertical) {
             _bar->width = w;
-            int h2 =  h - _bar->y() - _bar->height;
-            child2->setSize(w, h2);
+            child2->setSize(w, h - _bar->y() - _bar->height);
         }
         else {
             _bar->height = h;

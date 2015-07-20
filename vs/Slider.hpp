@@ -21,31 +21,31 @@ public:
     }
 
     void onUp(void *e) {
-        if (isPress) {
-            isPress = false;
+        if (_isPress) {
+            _isPress = false;
             int px = VS_CONTEXT.cursor.x;
-            limit(px,gX(),gX()+width)
-            glfwSetCursorPos(VS_CONTEXT.window, px, gY() + 5);
-            glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            limit(px, gX(), gX() + width)
+            VS_CONTEXT.setCursor(px, gY() + 5);
+            VS_CONTEXT.showCursor();
         }
     }
 
 //    pos hidePos;
     void onDown(void *e) {
-        isPress = true;
+        _isPress = true;
         updateValueByPos();
-        glfwSetInputMode(VS_CONTEXT.window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        VS_CONTEXT.hideCursor();
     }
 
     virtual void onDraw() override {
-        if (isPress)
+        if (_isPress)
             updateValueByPos();
 //        NVGcontext *vg = this->vg;
         int tx = _value * width / maxValue;
 
         nvgBeginPath(vg);
 //        nvgRect(vg, gX(), gY(), width, height);
-        nvgRect(vg, gX()+tx-1, gY(), width-tx-1, height);
+        nvgRect(vg, gX() + tx - 1, gY(), width - tx - 1, height);
 //        nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
         nvgFillColor(vg, nvgRGBA(62, 62, 62, 255));
         nvgFill(vg);
@@ -60,7 +60,7 @@ public:
         ////
         //value hint
         char str[4];
-        if (isPress) {
+        if (_isPress) {
             nvgFontFace(vg, "sans");
             nvgFontSize(vg, 14.0f);
             nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
@@ -81,11 +81,11 @@ public:
     void setValue(int v) { _value = v; }
 
 private:
-    bool isPress = false;
+    bool _isPress = false;
 
     void updateValueByPos() {
         int px = VS_CONTEXT.cursor.x - gX();
-        limit(px,0,width)
+        limit(px, 0, width)
         _value = px * (maxValue - minValue + 1) / width;
     }
 

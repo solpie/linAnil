@@ -326,10 +326,23 @@ public:
     void setCursor(int v) {
         if (_curCursor != v) {
             _curCursor = v;
-            if (_mapCursor.find(v)==_mapCursor.end())
+            if (_mapCursor.find(v) == _mapCursor.end())
                 _mapCursor[v] = glfwCreateStandardCursor(v);
             glfwSetCursor(window, _mapCursor[v]);
         }
+    }
+
+    void setCursorPos(int x, int y) {
+        glfwSetCursorPos(window, x, y);
+    }
+
+    void hideCursor() {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+    }
+
+    void showCursor() {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
     void setMouseButton(unsigned int button, unsigned int mod, int act) {
