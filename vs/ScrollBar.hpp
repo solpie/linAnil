@@ -65,7 +65,7 @@ public:
 //            nvgFill(vg);
         }
         else {
-            if (_isPress&&_maxValue>0) {
+            if (_isPress) {
                 int cY = VS_CONTEXT.cursor.y;
                 int dy = 0;
                 if (_lastY)
@@ -73,12 +73,13 @@ public:
                 _lastY = cY;
                 if (dy != 0) {
                     _value += dy;
-                    limit(_value, 0, _maxValue)
-                    disEvent(VsEvent::CHANGED);
-//                    cout << this << " Width: " << width << endl;
+                    if (_maxValue > 0) limit(_value, 0, _maxValue)
+                    if (_value >= 0)
+                        disEvent(VsEvent::CHANGED);
                 }
             }
-
+            if (_value < 0)
+                _value = 0;
             nvgBeginPath(vg);
             nvgRect(vg, gX(), gY() + _value, width, _barLength);
             nvgFillColor(vg, _3RGB(88));
@@ -127,6 +128,7 @@ private:
     bool _isHorizontal() {
         return _dir == Direction::Horizontal;
     }
+
     int _maxValue = 100;
 
     int _barLength = 0;
