@@ -10,11 +10,13 @@
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
+#include "TrackFrame.hpp"
 
 class Track : public OneLinker<Track>, public Sprite {
 public:
     Track(TrackInfo *trackInfo) {
         _trackInfo = trackInfo;
+
         width = 1024;
         height = 55;
 
@@ -30,17 +32,25 @@ public:
         vSlider->setY(32);
         addChild(vSlider);
 
-        scrollArea = new VsObjContainer();
-        scrollArea->width = width;
-        scrollArea->height = height;
-        scrollArea->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
-        addChild(scrollArea);
-
-        test = new CheckBox();
-        scrollArea->addChild(test);
+//        scrollArea = new VsObjContainer();
+//        scrollArea->width = width;
+//        scrollArea->height = height;
+//        scrollArea->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
+//        addChild(scrollArea);
         add_event(MouseEvent::DOWN, onUp);
+
+
         setColor(99, 138, 20);
+        load(trackInfo);
     };
+
+    void load(TrackInfo *trackInfo) {
+        _trackInfo = trackInfo;
+        int len = trackInfo->trackFrameInfos->size();
+        TrackFrame *pre = nullptr;
+        int frameWidth = _app.trackModel->frameWidth;
+
+    }
 
     void onUp(void *e) {
         disEvent(VsEvent::SELECTED, VsEvent());
@@ -91,17 +101,36 @@ public:
             int left = _scrollPosX;
             int frameWidth = _app.trackModel->frameWidth;
             int thumbHeight = 0;
+            int tx;
             for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
                 if (thumbHeight == 0) {
                     thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 }
+                tx = gX() + left;
+                if (tx < gX() + _trackLeft) {
+                    left += frameWidth;
+                    continue;
+                }
+                else
+                    left += frameWidth;
+
                 nvgBeginPath(vg);
-                nvgRect(vg, gX() + left, gY(), frameWidth, thumbHeight);
+                nvgRect(vg, tx, gY(), frameWidth, thumbHeight);
                 nvgFillPaint(vg,
-                             nvgImagePattern(vg, gX() + left, gY(), frameWidth, thumbHeight, 0, tfi->imageInfo->id, 1));
+                             nvgImagePattern(vg, tx, gY(), frameWidth, thumbHeight, 0, tfi->imageInfo->id, 1));
                 nvgFill(vg);
 
-                left += frameWidth;
+                nvgBeginPath(vg);
+                vsLineWidthColor(vg, 1, _3RGB(255));
+                vsMoveTo(vg, tx, gY());
+                vsLineTo(vg, tx + frameWidth, gY());
+                vsLineTo(vg, tx + frameWidth, gY() + thumbHeight);
+                vsLineTo(vg, tx, gY() + thumbHeight);
+                vsLineTo(vg, tx, gY());
+                nvgFill(vg);
+//                nvgStroke()
+//                        nvgStrokeColor()
+//                nvgCancelFrame()
             }
         }
 
@@ -117,16 +146,15 @@ public:
     }
 
     void scrollX(int x) {
-//        _scrollPosX = x;
-        _scrollPosX = -x + TIMELINE_TRACK_PANEL_DEF_WIDTH;
-        scrollArea->setX(-x + TIMELINE_TRACK_PANEL_DEF_WIDTH);
+        _scrollPosX = -x + _trackLeft;
+//        scrollArea->setX(-x + _trackLeft);
     }
 
     void resize(int w, int h) {
         width = w;
         height = h;
-        scrollArea->width = w;
-        scrollArea->height = h;
+//        scrollArea->width = w;
+//        scrollArea->height = h;
     }
 
     void setHideY(int hy) {
@@ -135,10 +163,10 @@ public:
 
 private:
     int _hy = 0;
+    int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
+//    VsObjContainer *scrollArea;
+    int _scrollPosX = _trackLeft;
 
-    CheckBox *test;
-    VsObjContainer *scrollArea;
-    int _scrollPosX = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;

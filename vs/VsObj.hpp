@@ -14,6 +14,41 @@
 
 #define _3RGB(v) nvgRGB(v,v,v)
 #define _3RGBA(v, a) nvgRGBA(v,v,v,a)
+struct LineInfo {
+    int x, y, width;
+    NVGcolor nvgColor;
+} _lineInfo;
+
+void vsLineWidthColor(NVGcontext *vg,int width, NVGcolor col) {
+    nvgFillColor(vg,col);
+
+    _lineInfo.width = width;
+    _lineInfo.nvgColor = col;
+}
+
+void vsMoveTo(NVGcontext *vg,int x, int y) {
+    _lineInfo.x = x;
+    _lineInfo.y = y;
+}
+
+void vsLineTo(NVGcontext *vg, int x, int y) {
+    if (y == _lineInfo.y) {
+        if (x > _lineInfo.x)
+            nvgRect(vg, _lineInfo.x, _lineInfo.y, x - _lineInfo.x, _lineInfo.width);
+        else if (x < _lineInfo.x)
+            nvgRect(vg, x, y, _lineInfo.x - x, _lineInfo.width);
+    }
+    else if (x == _lineInfo.x) {
+        if (y > _lineInfo.y)
+            nvgRect(vg, _lineInfo.x, _lineInfo.y, _lineInfo.width, y - _lineInfo.y);
+        else if (y < _lineInfo.y)
+            nvgRect(vg, x, y, _lineInfo.width, _lineInfo.y - y);
+
+    }
+
+    _lineInfo.x = x;
+    _lineInfo.y = y;
+}
 
 /*
  * VsObj visible object
@@ -30,28 +65,28 @@ public:
     int height = 0;
     bool visible = true;
     //0~255
-    float alpha = 255;
+    int alpha = 255;
 
-    float _x = 0;
+    int _x = 0;
 
-    void setX(float x) { _x = x; }
+    void setX(int x) { _x = x; }
 
-    float x() { return _x; }
+    int x() { return _x; }
 
     //todo set gX() when parent changed
-    float gX() {
+    int gX() {
         if (parent)
             return parent->gX() + _x;
         return _x;
     }
 
-    float _y = 0;
+    int _y = 0;
 
-    float y() { return _y; }
+    int y() { return _y; }
 
-    void setY(float y) { _y = y; }
+    void setY(int y) { _y = y; }
 
-    float gY() {
+    int gY() {
         if (parent)
             return parent->gY() + _y;
         return _y;

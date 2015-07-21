@@ -20,7 +20,10 @@ class ImageLoader : public Singleton<ImageLoader> {
 public:
     void setContext(NVGcontext *vg) { _vg = vg; }
 
-    ImageInfo* load(std::string absPath) {
+    ImageInfo *load(std::string absPath) {
+        if (_images.find(absPath) != _images.end())
+            return _images[absPath];
+
         ImageInfo *imgInfo = new ImageInfo();
         imgInfo->id = nvgCreateImage(_vg, absPath.c_str(), 0);
         imgInfo->path = absPath;

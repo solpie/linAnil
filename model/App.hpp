@@ -30,9 +30,9 @@ public:
 //        App()._().trackModel->walk();
         App()._().trackModel->newTrack("newTrack");
         App()._().trackModel->newTrack("curry", "D:/projects/linAnil/test/test10/");
-        App()._().trackModel->newTrack("newTrack2");
-        App()._().trackModel->newTrack("newTrack2");
-        App()._().trackModel->newTrack("newTrack2");
+        App()._().trackModel->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        App()._().trackModel->newTrack("newTrack4");
+        App()._().trackModel->newTrack("newTrack5");
 //        App()._().trackModel->newTrack("newTrack2");
 //        App()._().trackModel->newTrack("newTrack2");
 //        App()._().trackModel->newTrack("newTrack2");
