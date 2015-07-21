@@ -14,17 +14,6 @@
 #include "utils/Sh1tMacro.hpp"
 #include "ImageLoader.hpp"
 
-//class ImageSlot :  {
-//
-//public:
-//    ImageSlot() : QObject() { };
-//    QImage *payLoad;
-//public slots:
-//
-//    void onLoaded(QImage *img) {
-//        this->payLoad = img;
-//    }
-//};
 
 class TrackFrameInfo : public OneLinker<TrackFrameInfo> {
 public:
@@ -77,13 +66,13 @@ public:
 //        return nullptr;
     }
 
-    ImageLoader *imageLoader = nullptr;
+//    ImageLoader *imageLoader = nullptr;
 
     void load(std::string path) {
-        if (!imageLoader) {
-            imageLoader = new ImageLoader();
-        }
-        imageLoader->load(path);
+//        if (!imageLoader) {
+//            imageLoader = new ImageLoader();
+//        }
+//        imageLoader->load(path);
 //        imageLoader->loadFunc = [] {
 //            qDebug() << this << "loadFunc";;
 //        };

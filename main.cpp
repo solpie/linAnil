@@ -1,12 +1,13 @@
 //#include "view/MainWin.hpp"
 #include <view/UiRoot.hpp>
 #include "model/App.hpp"
-
+#include "model/ImageLoader.hpp"
 UiRoot *root = nullptr;
 
 void onInitContext(void *e) {
     App()._().init();
     root = new UiRoot();
+    ImageLoader()._().setContext(VG_CONTEXT);
     _app.test();
 }
 

@@ -20,10 +20,13 @@ using namespace boost;
 #include <stack>
 #include <view/Theme.hpp>
 #include "events/TrackModelEvent.hpp"
+#include "ImageLoader.hpp"
+
 class TrackModel {
 public:
     TrackModel() {
         _trackInfos = new vector<TrackInfo *>();
+
     }
 
     void walk() {
@@ -47,7 +50,11 @@ public:
         if (dirname != "") {
             boost::filesystem::recursive_directory_iterator itr(dirname);
             while (itr != boost::filesystem::recursive_directory_iterator()) {
-                cout << itr->path().string() << endl;
+                if (itr->path().extension() == ".png") {
+                    ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
+                    cout << typeid(this).name() << " load image: " << imgInfo->path << " " << imgInfo->width << " " <<
+                    imgInfo->height << endl;
+                }
                 ++itr;
             }
 //                    else {
@@ -79,7 +86,7 @@ public:
 //        }
         Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
     };
-    int frameWidth=TIMELINE_TRACK_FRAME_MAX_WIDTH;
+    int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
 private:
 
     TrackInfo *_trackInfo = nullptr;
