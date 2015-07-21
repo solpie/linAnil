@@ -53,43 +53,37 @@ public:
                 if (itr->path().extension() == ".png") {
                     ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
                     cout << typeid(this).name() << " load image: " << imgInfo->path << " " << imgInfo->width << " " <<
-                    imgInfo->height << endl;
+                    imgInfo->height << " id:" << imgInfo->id << endl;
+
+                    TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
+                    trackFrameInfo->imageInfo = imgInfo;
+                    pre = trackFrameInfo->setPre(pre);
+                    trackFrameInfo->setTrackInfoIdx(trackInfo->idx);
+                    trackFrameInfo->setIdx(trackInfo->trackFrameInfos->size());
+                    trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
+                    trackFrameInfo->setHoldFrame(1);
+                    trackInfo->append(trackFrameInfo);
+                    if (!trackInfo->getHeadTrackFrameInfo())
+                        trackInfo->setHead(trackFrameInfo);
+
+
+                    ++itr;
                 }
-                ++itr;
             }
-//                    else {
-//                        // This is where you might call your encrypting function
-////                        qDebug() << "Image file: " << fi.absoluteFilePath();
-////                        QImage *img = new QImage(fi.absoluteFilePath());
-//                        TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
-//
-//                        trackFrameInfo->load(fi.absoluteFilePath());
-//                        pre = trackFrameInfo->setPre(pre);
-//                        trackFrameInfo->setTrackInfoIdx(trackInfo->idx);
-////                        trackFrameInfo->payLoad = img;
-//                        trackFrameInfo->setIdx(trackInfo->trackFrameInfos->size());
-//                        trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
-//                        trackFrameInfo->setHoldFrame(1);
-//                        trackInfo->append(trackFrameInfo);
-//                        if (!trackInfo->getHeadTrackFrameInfo()) {
-//                            trackInfo->setHead(trackFrameInfo);
-//                        }
-//                    }
-//                }
         }
         else {//empty frame
 
         }
-        cout << this << "trackInfo frame count:" << trackInfo->getFrameCount();
+        cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
 //        if (sizeof(trackInfo->trackFrameInfos) > sequencePlayback->endFrameIdx) {
 //            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
 //        }
         Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
-    };
+    }
+
     int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
 private:
 
     TrackInfo *_trackInfo = nullptr;
     vector<TrackInfo *> *_trackInfos;
-
 };

@@ -14,7 +14,6 @@
 #include "utils/Sh1tMacro.hpp"
 #include "ImageLoader.hpp"
 
-
 class TrackFrameInfo : public OneLinker<TrackFrameInfo> {
 public:
     int getIdx() {
@@ -66,7 +65,6 @@ public:
 //        return nullptr;
     }
 
-//    ImageLoader *imageLoader = nullptr;
 
     void load(std::string path) {
 //        if (!imageLoader) {
@@ -80,7 +78,7 @@ public:
 
     double opacity;//
 
-
+    ImageInfo *imageInfo= nullptr;
 protected:
     int _trackInfoIdx;
 
@@ -90,6 +88,4 @@ protected:
 
     int idx;
 
-//    auto *payLoad;
-//    PayLoad payLoad;
 };

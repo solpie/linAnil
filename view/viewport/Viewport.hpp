@@ -8,6 +8,7 @@ public:
         char file[128];
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
         imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
+//        imagei = nvgCreateImage(VG_CONTEXT, "test/test10/image001.png", 0);
     }
 
     void render() override {
@@ -16,14 +17,13 @@ public:
         nvgFillColor(vg, _3RGB(80));
         nvgFill(vg);
 
-        string d = "test/thumb/image1.jpg";
         int w, h;
         NVGpaint imgPaint;
 
         nvgImageSize(vg, imagei, &w, &h);
-        imgPaint = nvgImagePattern(vg, gX(), gY(), w, h, 0, imagei, 1);
+        imgPaint = nvgImagePattern(vg, gX()+300, gY(), w*.5, h*.5, 0, imagei, 1);
         nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), w, h);
+        nvgRect(vg, gX()+300, gY(), w*.5, h*.5);
         nvgFillPaint(vg, imgPaint);
         nvgFill(vg);
 

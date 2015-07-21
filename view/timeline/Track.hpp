@@ -67,7 +67,7 @@ public:
     }
 
     virtual void onDraw() override {
-        if (parent&&gY()<parent->gY())
+        if (parent && gY() < parent->gY())
             return;
         {//bg
             nvgBeginPath(vg);
@@ -86,16 +86,39 @@ public:
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
             nvgText(vg, gX() + 5, gY() + 5, _trackInfo->name.c_str(), nullptr);
         }
-        nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGBA(52, 52, 52, 255));
-        nvgRect(vg, gX(), gY() + height - 1, width, 1);
-        nvgFill(vg);
+
+        {//trackFrame
+            int left = _scrollPosX;
+            int frameWidth = _app.trackModel->frameWidth;
+            int thumbHeight = 0;
+            for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
+                if (thumbHeight == 0) {
+                    thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
+                }
+                nvgBeginPath(vg);
+                nvgRect(vg, gX() + left, gY(), frameWidth, thumbHeight);
+                nvgFillPaint(vg,
+                             nvgImagePattern(vg, gX() + left, gY(), frameWidth, thumbHeight, 0, tfi->imageInfo->id, 1));
+                nvgFill(vg);
+
+                left += frameWidth;
+            }
+        }
+
+
+        {//bottom border
+            nvgBeginPath(vg);
+            nvgFillColor(vg, _3RGB(52));
+            nvgRect(vg, gX(), gY() + height - 1, width, 1);
+            nvgFill(vg);
+        }
 
         VsObjContainer::render();
     }
 
     void scrollX(int x) {
 //        _scrollPosX = x;
+        _scrollPosX = -x + TIMELINE_TRACK_PANEL_DEF_WIDTH;
         scrollArea->setX(-x + TIMELINE_TRACK_PANEL_DEF_WIDTH);
     }
 
@@ -115,7 +138,7 @@ private:
 
     CheckBox *test;
     VsObjContainer *scrollArea;
-    int _scrollPosX;
+    int _scrollPosX = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
