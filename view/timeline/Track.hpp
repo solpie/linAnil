@@ -37,7 +37,9 @@ public:
 //        scrollArea->height = height;
 //        scrollArea->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
 //        addChild(scrollArea);
-        add_event(MouseEvent::DOWN, onUp);
+        add_event(MouseEvent::DOWN, onDown);
+        add_event(MouseEvent::UP, onUp);
+        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
 
 
         setColor(99, 138, 20);
@@ -53,6 +55,11 @@ public:
     }
 
     void onUp(void *e) {
+        _isPress = false;
+    }
+
+    void onDown(void *e) {
+        _isPress = true;
         disEvent(VsEvent::SELECTED, VsEvent());
         setSelected(true);
     }
@@ -112,14 +119,11 @@ public:
 
     void scrollX(int x) {
         _scrollPosX = -x + _trackLeft;
-//        scrollArea->setX(-x + _trackLeft);
     }
 
     void resize(int w, int h) {
         width = w;
         height = h;
-//        scrollArea->width = w;
-//        scrollArea->height = h;
     }
 
     void setHideY(int hy) {
@@ -128,18 +132,26 @@ public:
 
 private:
     int _trackFramesY = 5;
+    bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
 
     void drawTrackFrame() {
         //trackFrame
         int left = _scrollPosX;
         int frameWidth = _app.trackModel->frameWidth;
+        int frameHeight = 40;
+
         int thumbHeight = 0;
+        int thumbY = 0;
+
         int tx;
         int hoverTx = 0;
+        bool isHoverLeft = false;
+        bool isShowRightArrow = false;
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
+                thumbY = gY() + _trackFramesY - (thumbHeight - frameHeight) * .5;
             }
             tx = gX() + left;
             if (tx < gX() + _trackLeft) {
@@ -148,58 +160,89 @@ private:
             }
             else
                 left += frameWidth;
-
+            //white bg
             nvgBeginPath(vg);
-            nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
+            nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
+            nvgFillColor(vg, _3RGB(255));
+            nvgFill(vg);
+
+            //thumb
+            nvgBeginPath(vg);
+            nvgRect(vg, tx, thumbY, frameWidth, thumbHeight);
             nvgFillPaint(vg,
-                         nvgImagePattern(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight, 0,
+                         nvgImagePattern(vg, tx, thumbY, frameWidth, thumbHeight, 0,
                                          tfi->imageInfo->id, 1));
             nvgFill(vg);
 
             //frame
             nvgBeginPath(vg);
             vsLineWidthColor(vg, 1, _3RGB(20));
-            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
+            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
             nvgFill(vg);
 
             //hover check
             if (hoverTx == 0 &&
                 isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, frameWidth,
-                         thumbHeight)) {
+                         frameHeight)) {
                 hoverTx = tx;
-
+                if (VS_CONTEXT.cursor.x < tx + frameWidth * .5) {
+                    isHoverLeft = true;
+                }
             }
         }
         if (hoverTx != 0) {//hover mask
-            thumbHeight = 45;
-            int s1 = 10, s2 = 15, s3 = 7, p4 = 15;
-            //left arrow
+
+            //left block
+            int blockWidth = 5;
+            int blockY = gY() + _trackFramesY + 1;
+            NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+            NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+            if (isHoverLeft) {
+                colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+                colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+            }
             nvgBeginPath(vg);
-            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
-            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1);
-            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3);
-            nvgLineTo(vg, hoverTx - s2 - p4, gY() + _trackFramesY + s1 - s3 + p4);
-            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
-            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
-            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+            nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
+            nvgFillColor(vg, colorL);
+            nvgFill(vg);
+
+            nvgBeginPath(vg);
+            nvgRect(vg, hoverTx + frameWidth, blockY, blockWidth, frameHeight - 2);
+            nvgFillColor(vg, colorR);
             nvgFill(vg);
 
 
-            hoverTx += frameWidth;
-            //right arrow
-            nvgBeginPath(vg);
-            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
-            nvgLineTo(vg, hoverTx +s2, gY() + _trackFramesY + s1);
-            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3);
-            nvgLineTo(vg, hoverTx + s2 + p4, gY() + _trackFramesY + s1 - s3 + p4);
-            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
-            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
-            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
-            nvgFill(vg);
+//            thumbHeight = 45;
+//            int s1 = 10, s2 = 15, s3 = 7, p4 = 15;
+//            //left arrow
+//            nvgBeginPath(vg);
+//            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3);
+//            nvgLineTo(vg, hoverTx - s2 - p4, gY() + _trackFramesY + s1 - s3 + p4);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+//            nvgFill(vg);
+//
+//
+//            hoverTx += frameWidth;
+//            //right arrow
+//            nvgBeginPath(vg);
+//            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgLineTo(vg, hoverTx +s2, gY() + _trackFramesY + s1);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3);
+//            nvgLineTo(vg, hoverTx + s2 + p4, gY() + _trackFramesY + s1 - s3 + p4);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+//            nvgFill(vg);
+
+
         }
     }
 
