@@ -12,6 +12,8 @@
 #include "vs/Sprite.hpp"
 #include "TrackFrame.hpp"
 
+int handleIdx = 0;
+
 class Track : public OneLinker<Track>, public Sprite {
 public:
     Track(TrackInfo *trackInfo) {
@@ -59,6 +61,7 @@ public:
     }
 
     void onDown(void *e) {
+        _lastX = _lastY = 0;
         _isPress = true;
         disEvent(VsEvent::SELECTED, VsEvent());
         setSelected(true);
@@ -146,6 +149,8 @@ private:
 
         int tx;
         int hoverTx = 0;
+        int trackStartX = _trackInfo->getStartFrame() * frameWidth;
+
         bool isHoverLeft = false;
         bool isShowRightArrow = false;
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
@@ -153,7 +158,7 @@ private:
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 thumbY = gY() + _trackFramesY - (thumbHeight - frameHeight) * .5;
             }
-            tx = gX() + left;
+            tx = gX() + left + trackStartX;
             if (tx < gX() + _trackLeft) {
                 left += frameWidth;
                 continue;
@@ -188,28 +193,29 @@ private:
                 if (VS_CONTEXT.cursor.x < tx + frameWidth * .5) {
                     isHoverLeft = true;
                 }
+
             }
         }
         if (hoverTx != 0) {//hover mask
+            if (!_isPress) {
+                //left block
+                int blockWidth = 5;
+                int blockY = gY() + _trackFramesY + 1;
+                NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+                NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+                if (isHoverLeft) {
+                    colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+                    colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+                }
+                nvgBeginPath(vg);
+                nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
+                nvgFillColor(vg, colorL);
+                nvgFill(vg);
 
-            //left block
-            int blockWidth = 5;
-            int blockY = gY() + _trackFramesY + 1;
-            NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
-            NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
-            if (isHoverLeft) {
-                colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
-                colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
-            }
-            nvgBeginPath(vg);
-            nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
-            nvgFillColor(vg, colorL);
-            nvgFill(vg);
-
-            nvgBeginPath(vg);
-            nvgRect(vg, hoverTx + frameWidth, blockY, blockWidth, frameHeight - 2);
-            nvgFillColor(vg, colorR);
-            nvgFill(vg);
+                nvgBeginPath(vg);
+                nvgRect(vg, hoverTx + frameWidth, blockY, blockWidth, frameHeight - 2);
+                nvgFillColor(vg, colorR);
+                nvgFill(vg);
 
 
 //            thumbHeight = 45;
@@ -243,6 +249,29 @@ private:
 //            nvgFill(vg);
 
 
+            }
+            else {
+                pos mpos = VS_CONTEXT.cursor;
+                int dx = 0;
+                if (_lastX)
+                    dx = mpos.x - _lastX;
+                else
+                    _lastX = mpos.x;
+                if (dx != 0) {
+                    if (isHoverLeft) {
+
+                    }
+                    else {
+                        cout << typeid(this).name() << " press R move: " << dx << endl;
+                        if (dx > 30) {
+                            nvgBeginPath(vg);
+                            nvgRect(vg, hoverTx + frameWidth, gY() + 1, 200, 3);
+                            nvgFillColor(vg, nvgRGB(COLOR_TRACK_THUMB_BLOCK));
+                            nvgFill(vg);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -250,7 +279,7 @@ private:
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
 //    VsObjContainer *scrollArea;
     int _scrollPosX = _trackLeft;
-
+    int _lastX, _lastY;
     VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
