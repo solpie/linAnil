@@ -19,14 +19,14 @@ struct LineInfo {
     NVGcolor nvgColor;
 } _lineInfo;
 
-void vsLineWidthColor(NVGcontext *vg,int width, NVGcolor col) {
-    nvgFillColor(vg,col);
+void vsLineWidthColor(NVGcontext *vg, int width, NVGcolor col) {
+    nvgFillColor(vg, col);
 
     _lineInfo.width = width;
     _lineInfo.nvgColor = col;
 }
 
-void vsMoveTo(NVGcontext *vg,int x, int y) {
+void vsMoveTo(NVGcontext *vg, int x, int y) {
     _lineInfo.x = x;
     _lineInfo.y = y;
 }
@@ -48,6 +48,14 @@ void vsLineTo(NVGcontext *vg, int x, int y) {
 
     _lineInfo.x = x;
     _lineInfo.y = y;
+}
+
+void vsLineRect(NVGcontext *vg, int x, int y, int width, int height) {
+    vsMoveTo(vg, x, y);
+    vsLineTo(vg, x + width, y);
+    vsLineTo(vg, x + width, y + height);
+    vsLineTo(vg, x, y + height);
+    vsLineTo(vg, x, y);
 }
 
 /*

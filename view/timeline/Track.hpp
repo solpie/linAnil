@@ -115,22 +115,21 @@ public:
                     left += frameWidth;
 
                 nvgBeginPath(vg);
-                nvgRect(vg, tx, gY(), frameWidth, thumbHeight);
+                nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
                 nvgFillPaint(vg,
-                             nvgImagePattern(vg, tx, gY(), frameWidth, thumbHeight, 0, tfi->imageInfo->id, 1));
+                             nvgImagePattern(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight, 0,
+                                             tfi->imageInfo->id, 1));
                 nvgFill(vg);
 
+                //frame
                 nvgBeginPath(vg);
                 vsLineWidthColor(vg, 1, _3RGB(255));
-                vsMoveTo(vg, tx, gY());
-                vsLineTo(vg, tx + frameWidth, gY());
-                vsLineTo(vg, tx + frameWidth, gY() + thumbHeight);
-                vsLineTo(vg, tx, gY() + thumbHeight);
-                vsLineTo(vg, tx, gY());
+                vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
                 nvgFill(vg);
-//                nvgStroke()
-//                        nvgStrokeColor()
-//                nvgCancelFrame()
+
+                {//hover
+
+                }
             }
         }
 
@@ -162,6 +161,8 @@ public:
     }
 
 private:
+    int _trackFramesY = 5;
+
     int _hy = 0;
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
 //    VsObjContainer *scrollArea;
