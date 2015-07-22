@@ -97,41 +97,7 @@ public:
             nvgText(vg, gX() + 5, gY() + 5, _trackInfo->name.c_str(), nullptr);
         }
 
-        {//trackFrame
-            int left = _scrollPosX;
-            int frameWidth = _app.trackModel->frameWidth;
-            int thumbHeight = 0;
-            int tx;
-            for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
-                if (thumbHeight == 0) {
-                    thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
-                }
-                tx = gX() + left;
-                if (tx < gX() + _trackLeft) {
-                    left += frameWidth;
-                    continue;
-                }
-                else
-                    left += frameWidth;
-
-                nvgBeginPath(vg);
-                nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
-                nvgFillPaint(vg,
-                             nvgImagePattern(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight, 0,
-                                             tfi->imageInfo->id, 1));
-                nvgFill(vg);
-
-                //frame
-                nvgBeginPath(vg);
-                vsLineWidthColor(vg, 1, _3RGB(255));
-                vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
-                nvgFill(vg);
-
-                {//hover
-
-                }
-            }
-        }
+        drawTrackFrame();
 
 
         {//bottom border
@@ -162,6 +128,80 @@ public:
 
 private:
     int _trackFramesY = 5;
+    bool _isPressFrameLeft, _isPressFrameRight;
+
+    void drawTrackFrame() {
+        //trackFrame
+        int left = _scrollPosX;
+        int frameWidth = _app.trackModel->frameWidth;
+        int thumbHeight = 0;
+        int tx;
+        int hoverTx = 0;
+        for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
+            if (thumbHeight == 0) {
+                thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
+            }
+            tx = gX() + left;
+            if (tx < gX() + _trackLeft) {
+                left += frameWidth;
+                continue;
+            }
+            else
+                left += frameWidth;
+
+            nvgBeginPath(vg);
+            nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
+            nvgFillPaint(vg,
+                         nvgImagePattern(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight, 0,
+                                         tfi->imageInfo->id, 1));
+            nvgFill(vg);
+
+            //frame
+            nvgBeginPath(vg);
+            vsLineWidthColor(vg, 1, _3RGB(20));
+            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, thumbHeight);
+            nvgFill(vg);
+
+            //hover check
+            if (hoverTx == 0 &&
+                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, frameWidth,
+                         thumbHeight)) {
+                hoverTx = tx;
+
+            }
+        }
+        if (hoverTx != 0) {//hover mask
+            thumbHeight = 45;
+            int s1 = 10, s2 = 15, s3 = 7, p4 = 15;
+            //left arrow
+            nvgBeginPath(vg);
+            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
+            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1);
+            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3);
+            nvgLineTo(vg, hoverTx - s2 - p4, gY() + _trackFramesY + s1 - s3 + p4);
+            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
+            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+            nvgFill(vg);
+
+
+            hoverTx += frameWidth;
+            //right arrow
+            nvgBeginPath(vg);
+            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
+            nvgLineTo(vg, hoverTx +s2, gY() + _trackFramesY + s1);
+            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3);
+            nvgLineTo(vg, hoverTx + s2 + p4, gY() + _trackFramesY + s1 - s3 + p4);
+            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
+            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
+            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+            nvgFill(vg);
+        }
+    }
 
     int _hy = 0;
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;

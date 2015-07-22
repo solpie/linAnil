@@ -2,11 +2,7 @@
 //
 // Created by manoyuria on 2015/7/11.
 //
-#pragma once
-#ifndef KIUITEST_DISPLAYOBJ_HPP
-#define KIUITEST_DISPLAYOBJ_HPP
 
-#endif //KIUITEST_DISPLAYOBJ_HPP
 
 #include "nanovg/nanovg.h"
 #include "VsContext.hpp"
@@ -57,6 +53,15 @@ void vsLineRect(NVGcontext *vg, int x, int y, int width, int height) {
     vsLineTo(vg, x, y + height);
     vsLineTo(vg, x, y);
 }
+
+#ifndef commonMethod
+#define commonMethod
+
+bool isInRect(int mX, int mY, int gX, int gY, int width, int height) {
+    return mX >= gX && mY >= gY && mX <= gX + width && mY <= gY + height;
+}
+
+#endif //KIUITEST_DISPLAYOBJ_HPP
 
 /*
  * VsObj visible object

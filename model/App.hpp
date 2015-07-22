@@ -29,7 +29,7 @@ public:
     void test() {
 //        App()._().trackModel->walk();
         App()._().trackModel->newTrack("newTrack");
-        App()._().trackModel->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        App()._().trackModel->newTrack("number", "D:/projects/linAnil/test/test30/");
         App()._().trackModel->newTrack("curry", "D:/projects/linAnil/test/test10/");
         App()._().trackModel->newTrack("newTrack4");
         App()._().trackModel->newTrack("newTrack5");

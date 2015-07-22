@@ -59,7 +59,7 @@ public:
             int mx = VS_CONTEXT.cursor.x;
             int my = VS_CONTEXT.cursor.y;
             bool isIn = false;
-            if (mx >= gX() && my >= gY() && mx <= gX() + width && my <= gY() + height) {
+            if (isInRect(mx, my, gX(), gY(), width, height)) {
                 isIn = true;
 //                if (_mx != mx || _my != my) {
 //                    _mx = mx;
@@ -96,7 +96,6 @@ public:
     }
 
     virtual void onDrawEnd() { }
-
 
 
     bool mouseEnabled = true;
