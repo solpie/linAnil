@@ -85,11 +85,14 @@ public:
         handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() + 1);
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() + 1);
-        });
+        },handleTrackFrame);
     }
 
     void R2L(TrackFrameInfo *handleTrackFrame) {
-
+        handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() - 1);
+        handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
+            tfi->setStartFrame(tfi->getStartFrame() - 1);
+        },handleTrackFrame);
     }
 
     void L2L(TrackFrameInfo *handleTrackFrame) {

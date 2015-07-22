@@ -151,6 +151,7 @@ private:
 
         int tx;
         int hoverTx = 0;
+        int hoverTWidth = 0;
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
 
         bool isHoverLeft = false;
@@ -184,7 +185,7 @@ private:
             //frame
             nvgBeginPath(vg);
             vsLineWidthColor(vg, 1, _3RGB(20));
-            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth*tfi->getHoldFrame(), frameHeight);
+            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth * tfi->getHoldFrame(), frameHeight);
             nvgFill(vg);
 
             //hover check
@@ -192,6 +193,7 @@ private:
                 isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, frameWidth,
                          frameHeight)) {
                 hoverTx = tx;
+                hoverTWidth = tfi->getHoldFrame() * frameHeight;
                 if (VS_CONTEXT.cursor.x < tx + frameWidth * .5) {
                     isHoverLeft = true;
                 }
@@ -216,7 +218,7 @@ private:
                 nvgFill(vg);
 
                 nvgBeginPath(vg);
-                nvgRect(vg, hoverTx + frameWidth, blockY, blockWidth, frameHeight - 2);
+                nvgRect(vg, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
                 nvgFillColor(vg, colorR);
                 nvgFill(vg);
 
@@ -253,33 +255,39 @@ private:
 
 
             }
-            else {
-                pos mpos = VS_CONTEXT.cursor;
-                int dx = 0;
-                if (_lastX)
-                    dx = mpos.x - _lastX;
-                else
-                    _lastX = mpos.x;
-                if (dx != 0) {
-                    if (isHoverLeft) {
+            else
+                handlePressAndDrag(isHoverLeft);
 
-                    }
-                    else {
-                        cout << typeid(this).name() << " press R move: " << dx
-                        << " handle: " << _handleTrackFrameInfo->getIdx()
-                        << endl;
-                        if (dx > 30) {
-                            nvgBeginPath(vg);
-                            nvgRect(vg, hoverTx + frameWidth, gY() + 1, 200, 3);
-                            nvgFillColor(vg, nvgRGB(COLOR_TRACK_THUMB_BLOCK));
-                            nvgFill(vg);
-                            _app.trackModel->R2R(_handleTrackFrameInfo);
-                            _isPress = false;
-                        }
-                    }
+        }
+    }
+
+    void handlePressAndDrag(bool isLeft) {
+        pos mpos = VS_CONTEXT.cursor;
+        int dx = 0;
+        if (_lastX)
+            dx = mpos.x - _lastX;
+        else
+            _lastX = mpos.x;
+        if (dx != 0) {
+            if (isLeft) {
+
+            }
+            else {
+                cout << typeid(this).name() << " press R move: " << dx
+                << " handle: " << _handleTrackFrameInfo->getIdx()
+                << endl;
+                if (dx > 30) {
+                    _app.trackModel->R2R(_handleTrackFrameInfo);
+                    //fixme
+                    _isPress = false;
+                }
+                else if (dx < -30 && _handleTrackFrameInfo->getHoldFrame() > 1) {
+                    _app.trackModel->R2L(_handleTrackFrameInfo);
+                    _isPress = false;
                 }
             }
         }
+
     }
 
     int _hy = 0;
