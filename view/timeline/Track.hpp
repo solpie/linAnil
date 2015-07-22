@@ -53,16 +53,21 @@ public:
         int len = trackInfo->trackFrameInfos->size();
         TrackFrame *pre = nullptr;
         int frameWidth = _app.trackModel->frameWidth;
-
     }
 
     void onUp(void *e) {
+        if (_isPress && isDragHide) {
+            VS_CONTEXT.showCursor();
+            VS_CONTEXT.setCursorPos(_hideX, _hideY);
+        }
         _isPress = false;
         _handleTrackFrameInfo = nullptr;
     }
 
     void onDown(void *e) {
         _lastX = _lastY = 0;
+        _hideX = VS_CONTEXT.cursor.x;
+        _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
         disEvent(VsEvent::SELECTED, VsEvent());
         setSelected(true);
@@ -135,7 +140,7 @@ public:
     }
 
 private:
-    int _trackFramesY = 5;
+    int _trackFramesY = 13;
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
@@ -147,6 +152,7 @@ private:
         int frameHeight = 40;
 
         int thumbHeight = 0;
+        int thumbWidth;
         int thumbY = 0;
 
         int tx;
@@ -156,18 +162,27 @@ private:
 
         bool isHoverLeft = false;
         bool isShowRightArrow = false;
+
+        int dragBarX;
+        TrackFrameInfo *lastTFI;
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
+            lastTFI = tfi;
+            tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 thumbY = gY() + _trackFramesY - (thumbHeight - frameHeight) * .5;
+                dragBarX = tx;
+                if (dragBarX < gX() + _trackLeft)
+                    dragBarX = gX() + _trackLeft;
             }
-            tx = gX() + left + trackStartX;
+
+            thumbWidth = frameWidth * tfi->getHoldFrame();
             if (tx < gX() + _trackLeft) {
-                left += frameWidth * tfi->getHoldFrame();
+                left += thumbWidth;
                 continue;
             }
             else
-                left += frameWidth * tfi->getHoldFrame();
+                left += thumbWidth;
             //white bg
             nvgBeginPath(vg);
             nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
@@ -190,17 +205,25 @@ private:
 
             //hover check
             if (hoverTx == 0 &&
-                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, frameWidth,
+                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, thumbWidth,
                          frameHeight)) {
                 hoverTx = tx;
                 hoverTWidth = tfi->getHoldFrame() * frameHeight;
-                if (VS_CONTEXT.cursor.x < tx + frameWidth * .5) {
+                if (VS_CONTEXT.cursor.x < tx + thumbWidth * .5) {
                     isHoverLeft = true;
                 }
                 if (_isPress && !_handleTrackFrameInfo)
                     _handleTrackFrameInfo = tfi;
             }
         }
+        if (lastTFI) {//drag bar
+            int dragWidth = tx + lastTFI->getHoldFrame() * frameWidth - dragBarX;
+            nvgBeginPath(vg);
+            nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackFramesY);
+            nvgFillColor(vg, _3RGB(20));
+            nvgFill(vg);
+        }
+
         if (hoverTx != 0) {//hover mask
             if (!_isPress) {
                 //left block
@@ -261,29 +284,41 @@ private:
         }
     }
 
+    int _dragSense = 30;
+    bool isDragHide = false;
+
     void handlePressAndDrag(bool isLeft) {
-        pos mpos = VS_CONTEXT.cursor;
+        pos *mpos = &VS_CONTEXT.cursor;
         int dx = 0;
         if (_lastX)
-            dx = mpos.x - _lastX;
+            dx = mpos->x - _lastX;
         else
-            _lastX = mpos.x;
+            _lastX = mpos->x;
         if (dx != 0) {
+            VS_CONTEXT.hideCursor();
             if (isLeft) {
-
+                if (dx > _dragSense) {
+                    isDragHide = true;
+                    _lastX = mpos->x;
+                }
+                else if (dx < -_dragSense) {
+                    isDragHide = true;
+                    _lastX = mpos->x;
+                }
             }
             else {
                 cout << typeid(this).name() << " press R move: " << dx
                 << " handle: " << _handleTrackFrameInfo->getIdx()
                 << endl;
-                if (dx > 30) {
+                if (dx > _dragSense) {
                     _app.trackModel->R2R(_handleTrackFrameInfo);
-                    //fixme
-                    _isPress = false;
+                    isDragHide = true;
+                    _lastX = mpos->x;
                 }
-                else if (dx < -30 && _handleTrackFrameInfo->getHoldFrame() > 1) {
+                else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
                     _app.trackModel->R2L(_handleTrackFrameInfo);
-                    _isPress = false;
+                    isDragHide = true;
+                    _lastX = mpos->x;
                 }
             }
         }
@@ -295,6 +330,7 @@ private:
 //    VsObjContainer *scrollArea;
     int _scrollPosX = _trackLeft;
     int _lastX, _lastY;
+    int _hideX, _hideY;
     VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
