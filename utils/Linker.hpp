@@ -57,7 +57,13 @@ public:
     template<typename func>
 
     void foreach(func &&f) {
-        CLS *h = getHead();
+        foreach(f, getHead());
+    }
+
+    template<typename func>
+
+    void foreach(func &&f, CLS *from) {
+        CLS *h = from;
         while (h) {
             f(h);
             h = h->next;

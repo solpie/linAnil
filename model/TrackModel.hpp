@@ -81,9 +81,28 @@ public:
         Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
     }
 
+    void R2R(TrackFrameInfo *handleTrackFrame) {
+        handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() + 1);
+        handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
+            tfi->setStartFrame(tfi->getStartFrame() + 1);
+        });
+    }
+
+    void R2L(TrackFrameInfo *handleTrackFrame) {
+
+    }
+
+    void L2L(TrackFrameInfo *handleTrackFrame) {
+
+    }
+
+    void L2R(TrackFrameInfo *handleTrackFrame) {
+
+    }
+
+
     int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
 private:
-
     TrackInfo *_trackInfo = nullptr;
     vector<TrackInfo *> *_trackInfos;
 };

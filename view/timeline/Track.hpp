@@ -58,6 +58,7 @@ public:
 
     void onUp(void *e) {
         _isPress = false;
+        _handleTrackFrameInfo = nullptr;
     }
 
     void onDown(void *e) {
@@ -137,6 +138,7 @@ private:
     int _trackFramesY = 5;
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
+    TrackFrameInfo *_handleTrackFrameInfo = nullptr;
 
     void drawTrackFrame() {
         //trackFrame
@@ -160,11 +162,11 @@ private:
             }
             tx = gX() + left + trackStartX;
             if (tx < gX() + _trackLeft) {
-                left += frameWidth;
+                left += frameWidth * tfi->getHoldFrame();
                 continue;
             }
             else
-                left += frameWidth;
+                left += frameWidth * tfi->getHoldFrame();
             //white bg
             nvgBeginPath(vg);
             nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
@@ -182,7 +184,7 @@ private:
             //frame
             nvgBeginPath(vg);
             vsLineWidthColor(vg, 1, _3RGB(20));
-            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
+            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth*tfi->getHoldFrame(), frameHeight);
             nvgFill(vg);
 
             //hover check
@@ -193,7 +195,8 @@ private:
                 if (VS_CONTEXT.cursor.x < tx + frameWidth * .5) {
                     isHoverLeft = true;
                 }
-
+                if (_isPress && !_handleTrackFrameInfo)
+                    _handleTrackFrameInfo = tfi;
             }
         }
         if (hoverTx != 0) {//hover mask
@@ -262,12 +265,16 @@ private:
 
                     }
                     else {
-                        cout << typeid(this).name() << " press R move: " << dx << endl;
+                        cout << typeid(this).name() << " press R move: " << dx
+                        << " handle: " << _handleTrackFrameInfo->getIdx()
+                        << endl;
                         if (dx > 30) {
                             nvgBeginPath(vg);
                             nvgRect(vg, hoverTx + frameWidth, gY() + 1, 200, 3);
                             nvgFillColor(vg, nvgRGB(COLOR_TRACK_THUMB_BLOCK));
                             nvgFill(vg);
+                            _app.trackModel->R2R(_handleTrackFrameInfo);
+                            _isPress = false;
                         }
                     }
                 }
