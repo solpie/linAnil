@@ -69,7 +69,7 @@ public:
 
     void onNewTrack(TrackInfo *trackInfo) {
         Track *newTrack = new Track(trackInfo);
-        newTrack->setHideY(trackToolBar->height);
+//        newTrack->setHideY(trackToolBar->height);
         add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
         addChildAt(newTrack, 0);
         if (!headTrack) {

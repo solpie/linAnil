@@ -135,12 +135,12 @@ public:
         height = h;
     }
 
-    void setHideY(int hy) {
-        _hy = hy;
-    }
+//    void setHideY(int hy) {
+//        _hy = hy;
+//    }
 
 private:
-    int _trackFramesY = 13;
+    int _trackDragBarHeight = 13;
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
@@ -164,13 +164,13 @@ private:
         bool isShowRightArrow = false;
 
         int dragBarX;
-        TrackFrameInfo *lastTFI;
+        TrackFrameInfo *lastTFI = nullptr;
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             lastTFI = tfi;
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
-                thumbY = gY() + _trackFramesY - (thumbHeight - frameHeight) * .5;
+                thumbY = gY() + _trackDragBarHeight - (thumbHeight - frameHeight) * .5;
                 dragBarX = tx;
                 if (dragBarX < gX() + _trackLeft)
                     dragBarX = gX() + _trackLeft;
@@ -185,7 +185,7 @@ private:
                 left += thumbWidth;
             //white bg
             nvgBeginPath(vg);
-            nvgRect(vg, tx, gY() + _trackFramesY, frameWidth, frameHeight);
+            nvgRect(vg, tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
             nvgFillColor(vg, _3RGB(255));
             nvgFill(vg);
 
@@ -200,12 +200,12 @@ private:
             //frame
             nvgBeginPath(vg);
             vsLineWidthColor(vg, 1, _3RGB(20));
-            vsLineRect(vg, tx, gY() + _trackFramesY, frameWidth * tfi->getHoldFrame(), frameHeight);
+            vsLineRect(vg, tx, gY() + _trackDragBarHeight, frameWidth * tfi->getHoldFrame(), frameHeight);
             nvgFill(vg);
 
             //hover check
             if (hoverTx == 0 &&
-                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackFramesY, thumbWidth,
+                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackDragBarHeight, thumbWidth,
                          frameHeight)) {
                 hoverTx = tx;
                 hoverTWidth = tfi->getHoldFrame() * frameHeight;
@@ -219,7 +219,7 @@ private:
         if (lastTFI) {//drag bar
             int dragWidth = tx + lastTFI->getHoldFrame() * frameWidth - dragBarX;
             nvgBeginPath(vg);
-            nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackFramesY);
+            nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
         }
@@ -228,7 +228,7 @@ private:
             if (!_isPress) {
                 //left block
                 int blockWidth = 5;
-                int blockY = gY() + _trackFramesY + 1;
+                int blockY = gY() + _trackDragBarHeight + 1;
                 NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
                 NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
                 if (isHoverLeft) {
@@ -250,14 +250,14 @@ private:
 //            int s1 = 10, s2 = 15, s3 = 7, p4 = 15;
 //            //left arrow
 //            nvgBeginPath(vg);
-//            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
-//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1);
-//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3);
-//            nvgLineTo(vg, hoverTx - s2 - p4, gY() + _trackFramesY + s1 - s3 + p4);
-//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
-//            nvgLineTo(vg, hoverTx - s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgMoveTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackDragBarHeight + s1);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackDragBarHeight + s1 - s3);
+//            nvgLineTo(vg, hoverTx - s2 - p4, gY() + _trackDragBarHeight + s1 - s3 + p4);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4);
+//            nvgLineTo(vg, hoverTx - s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
 //            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
 //
@@ -265,14 +265,14 @@ private:
 //            hoverTx += frameWidth;
 //            //right arrow
 //            nvgBeginPath(vg);
-//            nvgMoveTo(vg, hoverTx, gY() + _trackFramesY + s1);
-//            nvgLineTo(vg, hoverTx +s2, gY() + _trackFramesY + s1);
-//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3);
-//            nvgLineTo(vg, hoverTx + s2 + p4, gY() + _trackFramesY + s1 - s3 + p4);
-//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4);
-//            nvgLineTo(vg, hoverTx + s2, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1 - s3 + p4 + p4 - s3);
-//            nvgLineTo(vg, hoverTx, gY() + _trackFramesY + s1);
+//            nvgMoveTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
+//            nvgLineTo(vg, hoverTx +s2, gY() + _trackDragBarHeight + s1);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackDragBarHeight + s1 - s3);
+//            nvgLineTo(vg, hoverTx + s2 + p4, gY() + _trackDragBarHeight + s1 - s3 + p4);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4);
+//            nvgLineTo(vg, hoverTx + s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
+//            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
 //            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
 
@@ -324,10 +324,8 @@ private:
         }
 
     }
-
-    int _hy = 0;
+    int _hy;
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
-//    VsObjContainer *scrollArea;
     int _scrollPosX = _trackLeft;
     int _lastX, _lastY;
     int _hideX, _hideY;
