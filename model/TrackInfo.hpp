@@ -63,6 +63,7 @@ public:
 
     TrackFrameInfo *getHeadTrackFrameInfo() {
         return _head;
+
     }
 
     void setHead(TrackFrameInfo *tf) {

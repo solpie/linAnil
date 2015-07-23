@@ -13,6 +13,9 @@
 #include "TrackFrame.hpp"
 
 int handleIdx = 0;
+enum PressFlag {
+    Left = 1, Right
+};
 
 class Track : public OneLinker<Track>, public Sprite {
 public:
@@ -60,6 +63,7 @@ public:
             VS_CONTEXT.showCursor();
             VS_CONTEXT.setCursorPos(_hideX, _hideY);
         }
+        _pressFlag = 0;
         _isPress = false;
         _handleTrackFrameInfo = nullptr;
     }
@@ -161,12 +165,26 @@ private:
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
 
         bool isHoverLeft = false;
+//        int hoverFlag = 0;
         bool isShowRightArrow = false;
 
         int dragBarX;
-        TrackFrameInfo *lastTFI = nullptr;
+//        TrackFrameInfo *lastTFI = nullptr;
+        int lastTFIWidth = 0;
+//        TrackFrameInfo *tfi = nullptr;
+//        if (_trackInfo->trackFrameInfos->size() > 0) {
+//            for (TrackFrameInfo *t:*_trackInfo->trackFrameInfos) {
+//                tfi  =t;
+//                break;
+//            }
+//                tfi = _trackInfo->trackFrameInfos->at(0);
+//        }
+//        while (tfi) {
+//        }
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
-            lastTFI = tfi;
+//            }
+//            lastTFI = tfi;
+            lastTFIWidth = tfi->getHoldFrame() * frameWidth;
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
@@ -209,15 +227,25 @@ private:
                          frameHeight)) {
                 hoverTx = tx;
                 hoverTWidth = tfi->getHoldFrame() * frameHeight;
-                if (VS_CONTEXT.cursor.x < tx + thumbWidth * .5) {
-                    isHoverLeft = true;
+                if (!_isPress) {
+                    if (VS_CONTEXT.cursor.x < tx + thumbWidth * .5) {
+                        isHoverLeft = true;
+                        _pressFlag = PressFlag::Left;
+                    }
+                    else {
+                        _pressFlag = PressFlag::Right;
+                    }
                 }
-                if (_isPress && !_handleTrackFrameInfo)
+                else if (!_handleTrackFrameInfo)
                     _handleTrackFrameInfo = tfi;
             }
+
+            //todo show this to qm
+//            if (tfi->next)
+//                tfi = tfi->next;
         }
-        if (lastTFI) {//drag bar
-            int dragWidth = tx + lastTFI->getHoldFrame() * frameWidth - dragBarX;
+        if (lastTFIWidth) {//drag bar
+            int dragWidth = tx + lastTFIWidth - dragBarX;
             nvgBeginPath(vg);
             nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
             nvgFillColor(vg, _3RGB(20));
@@ -279,51 +307,65 @@ private:
 
             }
             else
-                handlePressAndDrag(isHoverLeft);
+                handlePressAndDrag();
 
         }
     }
 
     int _dragSense = 30;
     bool isDragHide = false;
+    int _pressFlag = 0;
 
-    void handlePressAndDrag(bool isLeft) {
+
+    void handlePressAndDrag() {
         pos *mpos = &VS_CONTEXT.cursor;
         int dx = 0;
+        int frameWidth = _app.trackModel->frameWidth;
         if (_lastX)
             dx = mpos->x - _lastX;
         else
             _lastX = mpos->x;
         if (dx != 0) {
             VS_CONTEXT.hideCursor();
-            if (isLeft) {
+            if (_pressFlag == PressFlag::Left) {
                 if (dx > _dragSense) {
+                    //fixme when _dragSense < frameWidth
                     isDragHide = true;
-                    _lastX = mpos->x;
+                    //fixme call L2R L2L when mouse up
+                    _app.trackModel->L2R(_handleTrackFrameInfo, _trackInfo);
+                    _lastX += frameWidth;
+
                 }
                 else if (dx < -_dragSense) {
                     isDragHide = true;
-                    _lastX = mpos->x;
+                    _app.trackModel->L2L(_handleTrackFrameInfo, _trackInfo);
+//                    _lastX = mpos->x;
+                    _lastX -= frameWidth;
+
                 }
             }
-            else {
+            else if (_pressFlag == PressFlag::Right) {
                 cout << typeid(this).name() << " press R move: " << dx
                 << " handle: " << _handleTrackFrameInfo->getIdx()
                 << endl;
                 if (dx > _dragSense) {
                     _app.trackModel->R2R(_handleTrackFrameInfo);
                     isDragHide = true;
-                    _lastX = mpos->x;
+                    _lastX += frameWidth;
+
+//                    _lastX = mpos->x;
                 }
                 else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
                     _app.trackModel->R2L(_handleTrackFrameInfo);
                     isDragHide = true;
-                    _lastX = mpos->x;
+                    _lastX -= frameWidth;
+//                    _lastX = mpos->x;
                 }
             }
         }
 
     }
+
     int _hy;
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     int _scrollPosX = _trackLeft;
