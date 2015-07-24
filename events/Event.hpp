@@ -28,15 +28,6 @@ class Evt : public Singleton<Evt> {
 public:
     Evt() = default;
 
-//    Event<SequencePlaybackEvent> *seq;
-//    Event<TrackModelEvent> *trackModelEvent;
-
-//    void init() {
-////        seq = new Event<SequencePlaybackEvent>();
-////        trackModelEvent = new Event<TrackModelEvent>();
-////        _map[typeid(SequencePlaybackEvent).name()] = seq;
-//    }
-
 //    map<string, void *> _map;
 
     template<typename Observer>

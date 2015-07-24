@@ -357,9 +357,9 @@ public:
     void setKey(int key, int action, int mods) {
         KeyEvent *keyEvent = new KeyEvent();
         keyEvent->key = key;
-        keyEvent->isShift = ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT);
-        keyEvent->isAlt = ((mods & GLFW_MOD_ALT) == GLFW_MOD_ALT);
-        keyEvent->isCtrl = ((mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL);
+        keyEvent->isShift = mods & GLFW_MOD_SHIFT ;
+        keyEvent->isAlt = mods & GLFW_MOD_ALT;
+        keyEvent->isCtrl = mods & GLFW_MOD_CONTROL;
         if (action == GLFW_PRESS) {
             keyEvent->type = KeyEvent::DOWN;
         }

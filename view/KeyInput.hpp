@@ -12,10 +12,6 @@
 
 void onKeyDown(void *e) {
     KeyEvent *keyEvent = (KeyEvent *) e;
-
-//    cout << " shift " << keyEvent->isShift
-//    << " alt " << keyEvent->isAlt
-//    << " ctrl " << keyEvent->isCtrl << endl;
     if (keyEvent->key == GLFW_KEY_ESCAPE)
         VS_CONTEXT.close();
 }
