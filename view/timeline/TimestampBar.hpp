@@ -33,7 +33,7 @@ public:
     }
 
     void updateCursorPos() {
-        int frameWidth = _app.trackModel->frameWidth;
+        int frameWidth = _proj->curCompInfo->frameWidth;
         _cursorFrame = (VS_CONTEXT.cursor.x - gX() + getValue()) / frameWidth;
         cout << typeid(this).name() << " cursor frame: " << _cursorFrame<<endl;
     }
@@ -72,7 +72,7 @@ public:
             nvgFillColor(vg, nvgRGB(88, 88, 88));
             nvgFill(vg);
         }
-        int frameWidth = _app.trackModel->frameWidth;
+        int frameWidth = _proj->curCompInfo->frameWidth;
         int cursorPx = gX() + _cursorFrame*frameWidth - getValue();
 //        int cursorPx = gX() + _cursorPos - getValue();
 

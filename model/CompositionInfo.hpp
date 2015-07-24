@@ -22,12 +22,20 @@ using namespace boost;
 #include "events/TrackModelEvent.hpp"
 #include "ImageLoader.hpp"
 
-class TrackModel {
+class CompositionInfo {
 public:
-    TrackModel() {
+    CompositionInfo() {
         _trackInfos = new vector<TrackInfo *>();
         _trackFrameInfotoRemoves = new vector<TrackFrameInfo *>();
     }
+
+    int currentFrame = 1;
+    int width;
+    int height;
+    int frameRate;
+    string name;
+    int durationFrame;
+    int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
 
     void walk() {
         boost::filesystem::path path = boost::filesystem::current_path();
@@ -156,8 +164,15 @@ public:
         cout << endl;
     }
 
-    int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
+    int getCurrentFrame() {
+        return _currentFrame;
+    }
+
+
 private:
+    //
+    int _currentFrame;
+
     void removeTrackFrameInfo(TrackFrameInfo *tfi, TrackInfo *trackInfo) {
         vector<TrackFrameInfo *>::iterator i = trackInfo->trackFrameInfos->begin();
         while (i != trackInfo->trackFrameInfos->end()) {

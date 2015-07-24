@@ -8,40 +8,42 @@
 #endif //SEQTRUAN_APP_H
 
 #include "utils/Singleton.hpp"
-#include "TrackModel.hpp"
+#include "CompositionInfo.hpp"
+#include "ProjectInfo.hpp"
 #include "vs/events/VsEvent.hpp"
+
 class App : public Singleton<App> {
 public:
-
     void start(int argc, char *argv[]) {
-//        VS_CONTEXT.add(VsEvent::INITED, [this](void *e) { onInitContext(); });
-//        init();
     }
 
-    TrackModel *trackModel;
+    ProjectInfo *projInfo;
 
     void init() {
-        trackModel = new TrackModel();
+        projInfo = new ProjectInfo;
     }
-
 
 
     void test() {
-//        App()._().trackModel->walk();
-//        App()._().trackModel->newTrack("newTrack");
-        App()._().trackModel->newTrack("number", "D:/projects/linAnil/test/test30/");
-        App()._().trackModel->newTrack("curry", "D:/projects/linAnil/test/test10/");
-        App()._().trackModel->newTrack("newTrack4");
-        App()._().trackModel->newTrack("newTrack5");
-//        App()._().trackModel->newTrack("newTrack2");
-//        App()._().trackModel->newTrack("newTrack2");
-//        App()._().trackModel->newTrack("newTrack2");
-//        App()._().trackModel->newTrack("newTrack2");
-//        App()._().trackModel->newTrack("curry", "D:/projects/SeqTruanCpp/test/test10/");
-//        App()._().trackModel->audioPlayback->load("D:/projects/SeqTruanCpp/test/mp3.mp3");
-//        App()._().trackModel->audioPlayback->play();
+        projInfo->newComposition("comp1", 1280, 720, 24, 300);
+
+//        App()._().curCompInfo->walk();
+//        App()._().curCompInfo->newTrack("newTrack");
+        projInfo->curCompInfo->newTrack("number", "D:/projects/linAnil/test/test30/");
+        projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        projInfo->curCompInfo->newTrack("newTrack4");
+        projInfo->curCompInfo->newTrack("newTrack5");
+//        App()._().curCompInfo->newTrack("newTrack2");
+//        App()._().curCompInfo->newTrack("newTrack2");
+//        App()._().curCompInfo->newTrack("newTrack2");
+//        App()._().curCompInfo->newTrack("newTrack2");
+//        App()._().curCompInfo->newTrack("curry", "D:/projects/SeqTruanCpp/test/test10/");
+//        App()._().curCompInfo->audioPlayback->load("D:/projects/SeqTruanCpp/test/mp3.mp3");
+//        App()._().curCompInfo->audioPlayback->play();
     }
 
 };
 
 #define _app App()._()
+
+#define _proj App()._().projInfo

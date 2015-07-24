@@ -55,7 +55,7 @@ public:
         _trackInfo = trackInfo;
         int len = trackInfo->trackFrameInfos->size();
         TrackFrame *pre = nullptr;
-        int frameWidth = _app.trackModel->frameWidth;
+        int frameWidth = _proj->curCompInfo->frameWidth;
     }
 
     void onUp(void *e) {
@@ -65,7 +65,7 @@ public:
                 VS_CONTEXT.setCursorPos(_hideX, _hideY);
 //            else if(_pressFlag == PressFlag::Right))
 //                V
-            _app.trackModel->clearRemoveFrame();
+            _proj->curCompInfo->clearRemoveFrame();
         }
         _pressFlag = 0;
         _isPress = false;
@@ -86,7 +86,7 @@ public:
     void setSelected(bool v) {
         cout << this << " setSelected() " << _trackInfo->name << endl;
         _trackInfo->isSelected = v;
-        if (v) _app.trackModel->dumpTrackFrameIdx(_trackInfo);
+        if (v) _proj->curCompInfo->dumpTrackFrameIdx(_trackInfo);
     }
 
     void setColor(int r, int g, int b) {
@@ -159,7 +159,7 @@ private:
     void drawTrackFrame() {
         //trackFrame
         int left = _scrollPosX;
-        int frameWidth = _app.trackModel->frameWidth;
+        int frameWidth = _proj->curCompInfo->frameWidth;
         int frameHeight = 40;
 
         int thumbHeight = 0;
@@ -314,7 +314,7 @@ private:
     void handlePressAndDrag(int left, int right) {
         pos *mpos = &VS_CONTEXT.cursor;
         int dx = 0;
-        int frameWidth = _app.trackModel->frameWidth;
+        int frameWidth = _proj->curCompInfo->frameWidth;
         if (_lastX)
             dx = mpos->x - _lastX;
         else
@@ -326,14 +326,14 @@ private:
                     //fixme when _dragSense < frameWidth
                     isDragHide = true;
                     //fixme call L2R L2L when mouse up
-                    _app.trackModel->L2R(_handleTrackFrameInfo, _trackInfo);
+                    _proj->curCompInfo->L2R(_handleTrackFrameInfo, _trackInfo);
                     _hideX += frameWidth;
                     _lastX = mpos->x;
 
                 }
                 else if (dx < -_dragSense) {
                     isDragHide = true;
-                    _app.trackModel->L2L(_handleTrackFrameInfo, _trackInfo);
+                    _proj->curCompInfo->L2L(_handleTrackFrameInfo, _trackInfo);
                     _lastX = mpos->x;
                     _hideX -= frameWidth;
 
@@ -344,13 +344,13 @@ private:
                 << " handle: " << _handleTrackFrameInfo->getIdx()
                 << endl;
                 if (dx > _dragSense) {
-                    _app.trackModel->R2R(_handleTrackFrameInfo);
+                    _proj->curCompInfo->R2R(_handleTrackFrameInfo);
                     isDragHide = true;
                     _hideX += frameWidth;
                     _lastX = mpos->x;
                 }
                 else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
-                    _app.trackModel->R2L(_handleTrackFrameInfo);
+                    _proj->curCompInfo->R2L(_handleTrackFrameInfo);
                     isDragHide = true;
                     _hideX -= frameWidth;
                     _lastX = mpos->x;

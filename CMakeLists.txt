@@ -19,7 +19,7 @@ set(SOURCE_FILES main.cpp)
 
 add_executable(linAnil ${SOURCE_FILES}
 events/Event.hpp
-model/TrackModel.hpp
+model/CompositionInfo.hpp
 model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
