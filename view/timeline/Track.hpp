@@ -62,6 +62,7 @@ public:
         if (_isPress && isDragHide) {
             VS_CONTEXT.showCursor();
             VS_CONTEXT.setCursorPos(_hideX, _hideY);
+            _app.trackModel->clearRemoveFrame();
         }
         _pressFlag = 0;
         _isPress = false;
@@ -165,26 +166,18 @@ private:
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
 
         bool isHoverLeft = false;
-//        int hoverFlag = 0;
         bool isShowRightArrow = false;
-
         int dragBarX;
-//        TrackFrameInfo *lastTFI = nullptr;
-        int lastTFIWidth = 0;
-//        TrackFrameInfo *tfi = nullptr;
-//        if (_trackInfo->trackFrameInfos->size() > 0) {
-//            for (TrackFrameInfo *t:*_trackInfo->trackFrameInfos) {
-//                tfi  =t;
-//                break;
-//            }
-//                tfi = _trackInfo->trackFrameInfos->at(0);
-//        }
-//        while (tfi) {
+        int lastTrackFrameHoldCount = 0;
+//        TrackFrameInfo *head=new TrackFrameInfo;
+//        while(head) {
+//
+//            int d;
+//
+//            head = head->next;
 //        }
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
-//            }
-//            lastTFI = tfi;
-            lastTFIWidth = tfi->getHoldFrame() * frameWidth;
+            lastTrackFrameHoldCount = tfi->getHoldFrame();
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
@@ -240,12 +233,9 @@ private:
                     _handleTrackFrameInfo = tfi;
             }
 
-            //todo show this to qm
-//            if (tfi->next)
-//                tfi = tfi->next;
         }
-        if (lastTFIWidth) {//drag bar
-            int dragWidth = tx + lastTFIWidth - dragBarX;
+        if (lastTrackFrameHoldCount) {//drag bar
+            int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX+1;
             nvgBeginPath(vg);
             nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
             nvgFillColor(vg, _3RGB(20));
@@ -303,11 +293,9 @@ private:
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
 //            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
-
-
             }
             else
-                handlePressAndDrag();
+                handlePressAndDrag(hoverTx, hoverTx + hoverTWidth);
 
         }
     }
@@ -317,7 +305,7 @@ private:
     int _pressFlag = 0;
 
 
-    void handlePressAndDrag() {
+    void handlePressAndDrag(int left, int right) {
         pos *mpos = &VS_CONTEXT.cursor;
         int dx = 0;
         int frameWidth = _app.trackModel->frameWidth;
@@ -333,14 +321,15 @@ private:
                     isDragHide = true;
                     //fixme call L2R L2L when mouse up
                     _app.trackModel->L2R(_handleTrackFrameInfo, _trackInfo);
-                    _lastX += frameWidth;
+//                    _lastX += frameWidth;
+                    _lastX = mpos->x;
 
                 }
                 else if (dx < -_dragSense) {
                     isDragHide = true;
                     _app.trackModel->L2L(_handleTrackFrameInfo, _trackInfo);
-//                    _lastX = mpos->x;
-                    _lastX -= frameWidth;
+                    _lastX = mpos->x;
+//                    _lastX -= frameWidth;
 
                 }
             }
@@ -351,15 +340,14 @@ private:
                 if (dx > _dragSense) {
                     _app.trackModel->R2R(_handleTrackFrameInfo);
                     isDragHide = true;
-                    _lastX += frameWidth;
-
-//                    _lastX = mpos->x;
+//                    _lastX += frameWidth;
+                    _lastX = mpos->x;
                 }
                 else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
                     _app.trackModel->R2L(_handleTrackFrameInfo);
                     isDragHide = true;
-                    _lastX -= frameWidth;
-//                    _lastX = mpos->x;
+//                    _lastX -= frameWidth;
+                    _lastX = mpos->x;
                 }
             }
         }

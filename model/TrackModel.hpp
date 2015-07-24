@@ -26,7 +26,7 @@ class TrackModel {
 public:
     TrackModel() {
         _trackInfos = new vector<TrackInfo *>();
-
+        _trackFrameInfotoRemoves = new vector<TrackFrameInfo *>();
     }
 
     void walk() {
@@ -96,19 +96,41 @@ public:
     }
 
     void L2L(TrackFrameInfo *handleTrackFrame, TrackInfo *trackInfo) {
-        //fixme
-        if (handleTrackFrame->pre)
-            removeTrackFrameInfo(handleTrackFrame->pre, trackInfo);
+        if (handleTrackFrame->pre) {
+            int preHoldFrame = handleTrackFrame->pre->getHoldFrame();
+            if (preHoldFrame > 1)
+                handleTrackFrame->pre->setHoldFrame(handleTrackFrame->pre->getHoldFrame() - 1);
+            else
+                removeTrackFrameInfo(handleTrackFrame->pre, trackInfo);
+        }
         handleTrackFrame->setStartFrame(handleTrackFrame->getStartFrame() - 1);
         handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() + 1);
     }
 
     void L2R(TrackFrameInfo *handleTrackFrame, TrackInfo *trackInfo) {
-        //fixme
         cout << typeid(this).name() << " L2R: " << handleTrackFrame->getIdx() << endl;
-        if (handleTrackFrame->pre) {
-            handleTrackFrame->pre->setHoldFrame(handleTrackFrame->pre->getHoldFrame() + 1);
+        if (!_trackFrameInfotoRemoves->empty()) {
+            TrackFrameInfo *delTfi = _trackFrameInfotoRemoves->back();
+            _trackFrameInfotoRemoves->pop_back();
+
+
+            //insert
+            delTfi->setPre(handleTrackFrame->pre);
+            handleTrackFrame->setPre(delTfi);
+            _trackInfo->trackFrameInfos->insert(_trackInfo->trackFrameInfos->begin() + delTfi->getIdx(), delTfi);
+            handleTrackFrame->foreach([](TrackFrameInfo *tfiBackward) {
+                tfiBackward->setIdx(tfiBackward->getIdx() + 1);
+            }, handleTrackFrame);
+            ///////////////////
+            cout << typeid(this).name() << " recover: " << delTfi->getIdx() << endl;
         }
+        else {
+            if (handleTrackFrame->pre) {
+                handleTrackFrame->pre->setHoldFrame(handleTrackFrame->pre->getHoldFrame() + 1);
+            }
+        }
+
+
         if (handleTrackFrame->getHoldFrame() > 1) {
             handleTrackFrame->setStartFrame(handleTrackFrame->getStartFrame() - 1);
             handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() - 1);
@@ -116,6 +138,12 @@ public:
         else {
             removeTrackFrameInfo(handleTrackFrame, trackInfo);
         }
+
+        _dumpTrackFrameIdx(trackInfo);
+    }
+
+    void clearRemoveFrame() {
+        _trackFrameInfotoRemoves->clear();
     }
 
 
@@ -136,7 +164,20 @@ private:
             nextTfi->foreach([](TrackFrameInfo *tfiBackward) {
                 tfiBackward->setIdx(tfiBackward->getIdx() - 1);
             }, nextTfi);
+        _trackFrameInfotoRemoves->push_back(tfi);
         tfi->remove();
+    }
+
+
+    vector<TrackFrameInfo *> *_trackFrameInfotoRemoves;
+
+    void _dumpTrackFrameIdx(TrackInfo *trackInfo) {
+        cout << typeid(this).name() << " track idx " << trackInfo->idx << ": ";
+        trackInfo->getHeadTrackFrameInfo()->foreach([](TrackFrameInfo *tfi) {
+            tfi->setIdx(tfi->getIdx() - 1);
+            cout << " " << tfi->getIdx();
+        });
+        cout << endl;
     }
 
     TrackInfo *_trackInfo = nullptr;
