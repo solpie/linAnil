@@ -33,15 +33,15 @@ public:
     }
 
 
-    void disEvent(BaseEvent e) {
-        disEvent(e.type, e);
+    void disEvent(BaseEvent* e) {
+        disEvent(e->type, e);
     }
 
-    void disEvent(const string event, BaseEvent e) {
+    void disEvent(const string event, BaseEvent* e) {
         if (_funcs.find(event) != _funcs.end())
             for (const auto &obs : _funcs.at(event)) {
-                e.target = this;
-                obs(&e);
+                e->target = this;
+                obs(e);
             }
     }
 

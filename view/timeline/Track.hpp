@@ -74,7 +74,7 @@ public:
         _hideX = VS_CONTEXT.cursor.x;
         _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
-        disEvent(VsEvent::SELECTED, VsEvent());
+        disEvent(VsEvent::SELECTED);
         setSelected(true);
     }
 

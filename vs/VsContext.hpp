@@ -355,9 +355,6 @@ public:
 
 
     void setKey(int key, int action, int mods) {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-            glfwSetWindowShouldClose(_window, GL_TRUE);
-        }
         KeyEvent *keyEvent = new KeyEvent();
         keyEvent->key = key;
         keyEvent->isShift = ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT);
@@ -369,15 +366,15 @@ public:
         else if (action == GLFW_RELEASE) {
             keyEvent->type = KeyEvent::UP;
         }
-        disEvent(*keyEvent);
-        cout << typeid(this).name() << " key " << key << " mods " << mods << keyEvent << endl;
+        disEvent(keyEvent);
+//        cout << typeid(this).name() << " key " << key << " mods " << mods << keyEvent << endl;
     }
 
     void popUIEvent() {
         for (const auto &obs : _uiEvents) {
             BaseEvent *event = &obs.second;
             if (!event->isAccept) {
-                ((EventDispatcher *) event->target)->disEvent(*event);
+                ((EventDispatcher *) event->target)->disEvent(event);
                 event->isAccept = true;
             }
         }

@@ -20,7 +20,6 @@
 
 #define Evt_add(type, func)  Evt()._().add(type, [this](void* e) { func(e); });
 //todo event delete
-#define Evt_del(type, func)  Evt()._().add(type, [this](void* e) { func(e); });
 #define Evt_dis(type, param) Evt()._().dis(type, param);
 using namespace std;
 
@@ -45,10 +44,10 @@ public:
         _observers[event].push_back(forward<function<void(void *)>>(observer));
     }
 
-    template<typename Observer>
-    void del(const string &event, Observer &&observer) {
-        _observers[event].push_back(forward<function<void(void *)>>(observer));
-    }
+//    template<typename Observer>
+//    void del(const string &event, Observer &&observer) {
+//        _observers[event].push_back(forward<function<void(void *)>>(observer));
+//    }
 
     void dis(const string &event, void *e = nullptr) const {
         if (_observers.find(event) != _observers.end())

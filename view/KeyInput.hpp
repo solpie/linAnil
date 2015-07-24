@@ -10,16 +10,17 @@
 
 #include "vs/events/KeyEvent.hpp"
 
-
 void onKeyDown(void *e) {
-    cout << "KeyEvent: " << e << endl;
-//    if (e->isAlt)
-//        cout << " alt " << e->isAlt << endl;
-//    if (e->isCtrl)
-//        cout << " ctrl " << e->isCtrl << endl;
+    KeyEvent *keyEvent = (KeyEvent *) e;
 
+//    cout << " shift " << keyEvent->isShift
+//    << " alt " << keyEvent->isAlt
+//    << " ctrl " << keyEvent->isCtrl << endl;
+    if (keyEvent->key == GLFW_KEY_ESCAPE)
+        VS_CONTEXT.close();
 }
 
 void onKeyUp(void *e) {
+    KeyEvent *keyEvent = (KeyEvent *) e;
 
 }
