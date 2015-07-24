@@ -34,8 +34,8 @@ public:
 
     void updateCursorPos() {
         int frameWidth = _app.trackModel->frameWidth;
-        int mx = int((VS_CONTEXT.cursor.x - gX()) / frameWidth) * frameWidth;
-        _cursorPos = mx;
+        _cursorFrame = (VS_CONTEXT.cursor.x - gX() + getValue()) / frameWidth;
+        cout << typeid(this).name() << " cursor frame: " << _cursorFrame<<endl;
     }
 
     virtual void onDraw() override {
@@ -44,8 +44,7 @@ public:
         nvgFillColor(vg, nvgRGB(47, 47, 47));
         nvgFill(vg);
 
-        //scroll bar
-        {
+        {//scroll bar
             float raito = contentWidth / (width);
             float barWidth = width / raito;
             int maxValue = (width - barWidth);
@@ -74,15 +73,16 @@ public:
             nvgFill(vg);
         }
         int frameWidth = _app.trackModel->frameWidth;
-        int cpx = gX() + _cursorPos - getValue();
+        int cursorPx = gX() + _cursorFrame*frameWidth - getValue();
+//        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor
             if (isPressTimestamp)
                 updateCursorPos();
-            if (cpx > gX()) {
+            if (cursorPx > gX()) {
                 //
                 nvgBeginPath(vg);
-                nvgRect(vg, cpx, gY() + height, frameWidth, _cursorFrameHeight);
+                nvgRect(vg, cursorPx, gY() + height, frameWidth, _cursorFrameHeight);
                 nvgFillColor(vg, _3RGBA(200, 128));
                 nvgFill(vg);
             }
@@ -115,11 +115,11 @@ public:
             }
         }
         {//cursor tri
-            if (cpx > gX()) {
+            if (cursorPx > gX()) {
                 nvgBeginPath(vg);
-                nvgMoveTo(vg, cpx - 10, gY() + scrollBarHeight + 5);
-                nvgLineTo(vg, cpx + 10, gY() + scrollBarHeight + 5);
-                nvgLineTo(vg, cpx, gY() + scrollBarHeight + 15);
+                nvgMoveTo(vg, cursorPx - 10, gY() + scrollBarHeight + 5);
+                nvgLineTo(vg, cursorPx + 10, gY() + scrollBarHeight + 5);
+                nvgLineTo(vg, cursorPx, gY() + scrollBarHeight + 15);
                 nvgFillColor(vg, _3RGB(200));
                 nvgFill(vg);
             }
@@ -131,9 +131,9 @@ public:
         VS_RENDER_CHILDREN();
     }
 
-    void setSize(int w, int h) override{
+    void setSize(int w, int h) override {
         width = w;
-        _cursorFrameHeight = h-height;
+        _cursorFrameHeight = h - height;
         //test
         contentWidth = 2 * width;
     }
@@ -151,7 +151,6 @@ private:
     int scrollBarHeight = 20;
     bool isPressScrollBar = false;
     bool isPressTimestamp = false;
-    int _cursorPos = 0;
-//    Sprite *rangeSlider;
+    int _cursorFrame = 1;
 };
 
