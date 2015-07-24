@@ -360,6 +360,9 @@ public:
         }
         KeyEvent *keyEvent = new KeyEvent();
         keyEvent->key = key;
+        keyEvent->isShift = ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT);
+        keyEvent->isAlt = ((mods & GLFW_MOD_ALT) == GLFW_MOD_ALT);
+        keyEvent->isCtrl = ((mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL);
         if (action == GLFW_PRESS) {
             keyEvent->type = KeyEvent::DOWN;
         }
@@ -367,7 +370,7 @@ public:
             keyEvent->type = KeyEvent::UP;
         }
         disEvent(*keyEvent);
-        cout << typeid(this).name() << " key " << key << " mods " << mods << endl;
+        cout << typeid(this).name() << " key " << key << " mods " << mods << keyEvent << endl;
     }
 
     void popUIEvent() {

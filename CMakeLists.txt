@@ -42,7 +42,7 @@ vs/VsColor.hpp
 vs/ScrollBar.hpp
 view/UI.hpp
 view/win/FileDialog.hpp
-view/Input.hpp
+view/KeyInput.hpp
 view/UiRoot.hpp
 model/ImageLoader.hpp
 view/timeline/Timeline.hpp

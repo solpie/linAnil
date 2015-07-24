@@ -1,14 +1,12 @@
 #include <view/UiRoot.hpp>
-#include "view/Input.hpp"
 #include "model/App.hpp"
-#include "model/ImageLoader.hpp"
+
 UiRoot *root = nullptr;
 
 void onInitContext(void *e) {
     App()._().init();
     root = new UiRoot();
-//    VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);
-//    VS_CONTEXT.add(KeyEvent::UP, onKeyUp);
+
     ImageLoader()._().setContext(VG_CONTEXT);
     _app.test();
 }

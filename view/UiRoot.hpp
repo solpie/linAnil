@@ -14,14 +14,14 @@
 #include "TitleBar.hpp"
 #include <Splitter.hpp>
 #include "viewport/Viewport.hpp"
-#include "Input.hpp"
+#include "KeyInput.hpp"
 
 class UiRoot : public VsObjContainer {
 public:
     UiRoot() {
 //        add_event_on_context(KeyEvent::DOWN,onKey)
-
-
+        VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);
+        VS_CONTEXT.add(KeyEvent::UP, onKeyUp);
 
 
         titleBar = new TitleBar();
@@ -40,17 +40,20 @@ public:
 //        Evt_dis(VsEvent::INITED, nullptr)
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
+    }
+
+    void onInitContext() {
 
     }
-    void onInitContext(){
 
-    }
     void onResize() {
         setSize(VS_CONTEXT.width, VS_CONTEXT.height);
     }
+
     void onRender() {
         render();
     }
+
     virtual void render() override;
 
     void setSize(int w, int h) override {
