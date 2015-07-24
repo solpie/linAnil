@@ -16,5 +16,4 @@ public:
     static constexpr const char *UP = "UP";
     static constexpr const char *ROLL_OVER = "ROLL_OVER";
     static constexpr const char *ROLL_OUT = "ROLL_OUT";
-
 };

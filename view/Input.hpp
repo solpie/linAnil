@@ -7,3 +7,14 @@
 #define LINANIL_INPUT_HPP
 
 #endif //LINANIL_INPUT_HPP
+
+#include "vs/events/KeyEvent.hpp"
+
+
+void onKeyDown(KeyEvent *e) {
+
+}
+
+void onKeyUp(KeyEvent *e) {
+
+}

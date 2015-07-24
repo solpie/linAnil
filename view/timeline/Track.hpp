@@ -81,6 +81,7 @@ public:
     void setSelected(bool v) {
         cout << this << " setSelected() " << _trackInfo->name << endl;
         _trackInfo->isSelected = v;
+        if (v) _app.trackModel->dumpTrackFrameIdx(_trackInfo);
     }
 
     void setColor(int r, int g, int b) {
@@ -235,7 +236,7 @@ private:
 
         }
         if (lastTrackFrameHoldCount) {//drag bar
-            int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX+1;
+            int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1;
             nvgBeginPath(vg);
             nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
             nvgFillColor(vg, _3RGB(20));

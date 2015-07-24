@@ -93,6 +93,7 @@ public:
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() - 1);
         }, handleTrackFrame);
+//        dumpTrackFrameIdx(trackInfo);
     }
 
     void L2L(TrackFrameInfo *handleTrackFrame, TrackInfo *trackInfo) {
@@ -105,6 +106,8 @@ public:
         }
         handleTrackFrame->setStartFrame(handleTrackFrame->getStartFrame() - 1);
         handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() + 1);
+
+        dumpTrackFrameIdx(trackInfo);
     }
 
     void L2R(TrackFrameInfo *handleTrackFrame, TrackInfo *trackInfo) {
@@ -139,13 +142,20 @@ public:
             removeTrackFrameInfo(handleTrackFrame, trackInfo);
         }
 
-        _dumpTrackFrameIdx(trackInfo);
+        dumpTrackFrameIdx(trackInfo);
     }
 
     void clearRemoveFrame() {
         _trackFrameInfotoRemoves->clear();
     }
 
+    void dumpTrackFrameIdx(TrackInfo *trackInfo) {
+        cout << typeid(this).name() << " track idx " << trackInfo->idx << ": ";
+        trackInfo->getHeadTrackFrameInfo()->foreach([](TrackFrameInfo *tfi) {
+            cout << " " << tfi->getIdx();
+        });
+        cout << endl;
+    }
 
     int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
 private:
@@ -171,14 +181,6 @@ private:
 
     vector<TrackFrameInfo *> *_trackFrameInfotoRemoves;
 
-    void _dumpTrackFrameIdx(TrackInfo *trackInfo) {
-        cout << typeid(this).name() << " track idx " << trackInfo->idx << ": ";
-        trackInfo->getHeadTrackFrameInfo()->foreach([](TrackFrameInfo *tfi) {
-            tfi->setIdx(tfi->getIdx() - 1);
-            cout << " " << tfi->getIdx();
-        });
-        cout << endl;
-    }
 
     TrackInfo *_trackInfo = nullptr;
     vector<TrackInfo *> *_trackInfos;

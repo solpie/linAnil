@@ -29,6 +29,7 @@
 #include "nanovg/nanovg_gl.h"
 #include <exception>
 #include <vs/events/VsEvent.hpp>
+#include <vs/events/KeyEvent.hpp>
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
@@ -64,9 +65,11 @@ void errorcb(int error, const char *desc) {
     cout << "GLFW error " << error << ": " << desc << endl;
 }
 
-void mousebutton(GLFWwindow *window, int button, int action, int mods);
+void mouseButton(GLFWwindow *window, int button, int action, int mods);
 
-void cursorpos(GLFWwindow *window, double x, double y);
+void cursorPos(GLFWwindow *window, double x, double y);
+
+void key(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 void scrollevent(GLFWwindow *window, double x, double y) {
     NVG_NOTUSED(window);
@@ -78,13 +81,6 @@ void charevent(GLFWwindow *window, unsigned int value) {
 //    uiSetChar(value);
 }
 
-void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    NVG_NOTUSED(scancode);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-//    uiSetKey(key, mods, action);
-}
 
 class VsContext : public EventDispatcher, public S<VsContext> {
 public:
@@ -167,8 +163,8 @@ public:
         }
         glfwSetKeyCallback(_window, key);
         glfwSetCharCallback(_window, charevent);
-        glfwSetCursorPosCallback(_window, cursorpos);
-        glfwSetMouseButtonCallback(_window, mousebutton);
+        glfwSetCursorPosCallback(_window, cursorPos);
+        glfwSetMouseButtonCallback(_window, mouseButton);
         glfwSetScrollCallback(_window, scrollevent);
 
         glfwMakeContextCurrent(_window);
@@ -183,13 +179,8 @@ public:
 #endif
         ////////////////////////vg
 
-//        _vg = VsContext::_().init();
-//        if (_vg == NULL) {
-//            printf("Could not init nanovg.\n");
-//            return -1;
-//        }
         initVsContext();
-//        init(_vg);
+
         //limit fps to monitor on=1 off=0
 //        glfwSwapInterval(0);
         glfwSwapInterval(1);
@@ -362,6 +353,23 @@ public:
 
     pos cursor;
 
+
+    void setKey(int key, int action, int mods) {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+            glfwSetWindowShouldClose(_window, GL_TRUE);
+        }
+        KeyEvent *keyEvent = new KeyEvent();
+        keyEvent->key = key;
+        if (action == GLFW_PRESS) {
+            keyEvent->type = KeyEvent::DOWN;
+        }
+        else if (action == GLFW_RELEASE) {
+            keyEvent->type = KeyEvent::UP;
+        }
+        disEvent(*keyEvent);
+        cout << typeid(this).name() << " key " << key << " mods " << mods << endl;
+    }
+
     void popUIEvent() {
         for (const auto &obs : _uiEvents) {
             BaseEvent *event = &obs.second;
@@ -384,7 +392,7 @@ protected:
     NVGcontext *nvgContext = nullptr;
 };
 
-void mousebutton(GLFWwindow *window, int button, int action, int mods) {
+void mouseButton(GLFWwindow *window, int button, int action, int mods) {
     NVG_NOTUSED(window);
     switch (button) {
         case 1:
@@ -394,11 +402,17 @@ void mousebutton(GLFWwindow *window, int button, int action, int mods) {
             button = 1;
             break;
     }
-//    cout << "button:" << button << "action:" << action << "mods:" << mods << endl;
     VsContext::_().setMouseButton(button, mods, action);
 }
 
-void cursorpos(GLFWwindow *window, double x, double y) {
+void cursorPos(GLFWwindow *window, double x, double y) {
     NVG_NOTUSED(window);
     VsContext::_().setCursor(x, y);
+}
+
+void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    NVG_NOTUSED(scancode);
+
+    VsContext::_().setKey(key, action, mods);
+//    uiSetKey(key, mods, action);
 }
