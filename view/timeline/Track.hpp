@@ -61,7 +61,10 @@ public:
     void onUp(void *e) {
         if (_isPress && isDragHide) {
             VS_CONTEXT.showCursor();
-            VS_CONTEXT.setCursorPos(_hideX, _hideY);
+//            if (_pressFlag == PressFlag::Left)
+                VS_CONTEXT.setCursorPos(_hideX, _hideY);
+//            else if(_pressFlag == PressFlag::Right))
+//                V
             _app.trackModel->clearRemoveFrame();
         }
         _pressFlag = 0;
@@ -74,7 +77,9 @@ public:
         _hideX = VS_CONTEXT.cursor.x;
         _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
-        disEvent(VsEvent::SELECTED);
+        VsEvent *vse =new VsEvent();
+        vse->type = VsEvent::SELECTED;
+        disEvent(vse);
         setSelected(true);
     }
 
@@ -322,7 +327,7 @@ private:
                     isDragHide = true;
                     //fixme call L2R L2L when mouse up
                     _app.trackModel->L2R(_handleTrackFrameInfo, _trackInfo);
-//                    _lastX += frameWidth;
+                    _hideX += frameWidth;
                     _lastX = mpos->x;
 
                 }
@@ -330,7 +335,7 @@ private:
                     isDragHide = true;
                     _app.trackModel->L2L(_handleTrackFrameInfo, _trackInfo);
                     _lastX = mpos->x;
-//                    _lastX -= frameWidth;
+                    _hideX -= frameWidth;
 
                 }
             }
@@ -341,13 +346,13 @@ private:
                 if (dx > _dragSense) {
                     _app.trackModel->R2R(_handleTrackFrameInfo);
                     isDragHide = true;
-//                    _lastX += frameWidth;
+                    _hideX += frameWidth;
                     _lastX = mpos->x;
                 }
                 else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
                     _app.trackModel->R2L(_handleTrackFrameInfo);
                     isDragHide = true;
-//                    _lastX -= frameWidth;
+                    _hideX -= frameWidth;
                     _lastX = mpos->x;
                 }
             }
