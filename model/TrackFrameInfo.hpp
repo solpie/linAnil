@@ -11,7 +11,6 @@
 #endif //SEQTRUAN_TRACKFRAMEINFO_HPP
 
 #include "utils/Linker.hpp"
-#include "utils/Sh1tMacro.hpp"
 #include "ImageLoader.hpp"
 
 class TrackFrameInfo : public OneLinker<TrackFrameInfo> {

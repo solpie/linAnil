@@ -17,7 +17,7 @@ public:
         height = 15;
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
-        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp);
+        add_event_on_context(MouseEvent::UP, onUp);
     }
 
     void onUp(void *e) {

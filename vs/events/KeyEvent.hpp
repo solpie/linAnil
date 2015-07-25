@@ -8,8 +8,8 @@ public:
         cout << "destroy KeyEvent" << endl;
     }
 
-    static constexpr const char *DOWN = "DOWN";
-    static constexpr const char *UP = "UP";
+    static constexpr const char *DOWN = "keyDown";
+    static constexpr const char *UP = "keyUP";
     int key;
     bool isCtrl;
     bool isAlt;

@@ -30,6 +30,7 @@
 #include <exception>
 #include <vs/events/VsEvent.hpp>
 #include <vs/events/KeyEvent.hpp>
+#include <vs/events/MouseEvent.hpp>
 #include "VsObj.hpp"
 
 #define VG_CONTEXT  VsContext::_().getContext()
@@ -341,9 +342,9 @@ public:
         action = act;
         enabeld = 1;
         if (act == GLFW_PRESS)
-            disEvent(VsEvent::STAGE_MOUSE_DOWN);
+            disEvent(MouseEvent::DOWN);
         else if (act == GLFW_RELEASE)
-            disEvent(VsEvent::STAGE_MOUSE_UP);
+            disEvent(MouseEvent::UP);
     }
 
     void setCursor(int x, int y) {

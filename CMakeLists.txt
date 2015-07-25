@@ -50,7 +50,8 @@ view/TitleBar.hpp
 view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
-vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp view/timeline/TrackFrame.hpp vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp)
+vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp
+ vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)

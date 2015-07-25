@@ -10,7 +10,6 @@
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
-#include "TrackFrame.hpp"
 
 int handleIdx = 0;
 enum PressFlag {
@@ -44,7 +43,7 @@ public:
 //        addChild(scrollArea);
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
-        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
+        add_event_on_context(MouseEvent::UP, onUp)
 
 
         setColor(99, 138, 20);
@@ -54,7 +53,6 @@ public:
     void load(TrackInfo *trackInfo) {
         _trackInfo = trackInfo;
         int len = trackInfo->trackFrameInfos->size();
-        TrackFrame *pre = nullptr;
         int frameWidth = _proj->curCompInfo->frameWidth;
     }
 

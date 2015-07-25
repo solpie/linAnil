@@ -16,7 +16,7 @@ public:
 
         add_event_on(_bar, MouseEvent::DOWN, onDown)
         add_event_on(_bar, MouseEvent::UP, onUp)
-        add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
+        add_event_on_context(MouseEvent::UP, onUp)
         add_event_on(_bar, SpriteEvent::DRAW, onDrawBar)
     }
 
