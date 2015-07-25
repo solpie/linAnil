@@ -16,9 +16,9 @@
 #include "viewport/Viewport.hpp"
 #include "KeyInput.hpp"
 
-class UiRoot : public VsObjContainer {
+class Stage : public VsObjContainer {
 public:
-    UiRoot() {
+    Stage() {
 //        add_event_on_context(KeyEvent::DOWN,onKey)
         VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);
         VS_CONTEXT.add(KeyEvent::UP, onKeyUp);
@@ -48,7 +48,7 @@ public:
         vSplitter->addChild(timeline);
 
 
-        cout << typeid(this).name() << "init root" << endl;
+        cout << typeid(this).name() << "init stage" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
     }
@@ -81,7 +81,7 @@ private:
     Viewport *viewport;
 };
 
-void UiRoot::render() {
+void Stage::render() {
 //    drawThumbnails(VG_CONTEXT, 365, 30, 160, 300, images, 12, glfwGetTime());
     VsObjContainer::render();
 }

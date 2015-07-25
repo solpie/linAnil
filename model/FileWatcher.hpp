@@ -7,8 +7,6 @@
 
 #endif //SEQTRUAN_WATCHDOG_HPP
 
-//#include "QThread"
-//#include "QtCore"
 #include <thread>
 #include "windows.h"
 #include "events/Event.hpp"

@@ -1,14 +1,22 @@
-#include <view/UiRoot.hpp>
+#include "Stage.hpp"
 #include "model/App.hpp"
 
-UiRoot *root = nullptr;
+Stage *stage = nullptr;
+
+#include "vs/utils/VsTimer.hpp"
+VsTimer *t;
+void test() {
+    t = new VsTimer(1000);
+    t->start();
+}
 
 void onInitContext(void *e) {
     App()._().init();
-    root = new UiRoot();
+    stage = new Stage();
 
     ImageLoader()._().setContext(VG_CONTEXT);
     _app.test();
+    test();
 }
 
 int main(int argc, char *argv[]) {

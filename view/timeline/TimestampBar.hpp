@@ -44,7 +44,7 @@ public:
 
         {//scroll bar
             float ratio = getContentWidth() / (width);
-            stepValue = ratio;
+            _stepValue = ratio;
             float barWidth = width / ratio;
             int maxValue = (width - barWidth);
 
@@ -93,24 +93,19 @@ public:
             int sY = gY() + 30;
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
-
             for (int fX = -(_value % frameWidth); fX < width; fX += frameWidth) {
                 {//track name
-
                     nvgFontFace(vg, "sans");
                     nvgFontSize(vg, 14.0f);
                     nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
                     nvgFillColor(vg, nvgRGB(240, 240, 240));
-                    sprintf(str, "%d", (fCount++));
+                    sprintf(str, "%d", fCount++);
                     nvgText(vg, gX() + fX + 4, sY, str, nullptr);
 //                    nvgTextBounds(vg, gX() + fX + 4, sY, str, nullptr);
 //                    nvgSave(vg);
-
                 }
-                nvgBeginPath(vg);
-                nvgRect(vg, gX() + fX, fY, 1, 10);
-                nvgFillColor(vg, nvgRGB(20, 20, 20));
-                nvgFill(vg);
+                //tick line
+                fillRect(_3RGB(20), gX() + fX, fY, 1, 10);
             }
         }
         {//cursor tri
@@ -133,20 +128,17 @@ public:
     void setSize(int w, int h) override {
         width = w;
         _cursorFrameHeight = h - height;
-        //test
     }
 
     int getValue() {
-        return _value * stepValue;
+        return _value * _stepValue;
     }
 
-    int contentWidth = 1440 * 2;
-    int stepValue = 1;
 private:
-    int getContentWidth() {
-        int fw = _proj->curCompInfo->frameWidth;
-        int frameCount = _proj->curCompInfo->durationFrame;
+    int _stepValue = 1;
 
+    int getContentWidth() {
+        //todo count when changed
         return _proj->curCompInfo->durationFrame * _proj->curCompInfo->frameWidth;
     }
 

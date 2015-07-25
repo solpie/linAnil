@@ -95,7 +95,6 @@ public:
     bool isMaximized = false;
     int lastWidth;
     int lastHeight;
-
     void initVsContext() {
         actWindow = GetActiveWindow();
 
@@ -202,11 +201,11 @@ public:
             float pxRatio;
 
             double t, dt;
-            if (isPerf) {
+//            if (isPerf) {
                 t = glfwGetTime();
-                dt = t - prevt;
+                _frameTime =dt = t - prevt;
                 prevt = t;
-            }
+//            }
 
 
             glfwGetCursorPos(_window, &mx, &my);
@@ -307,6 +306,10 @@ public:
         disEvent(VsEvent::RENDER);
     }
 
+    double getFrameTime() {
+        return _frameTime;
+    }
+
     void endFrame() {
         popUIEvent();
     }
@@ -391,6 +394,9 @@ protected:
     GLFWwindow *_window;
     map<string, BaseEvent> _uiEvents;
     NVGcontext *nvgContext = nullptr;
+private:
+    double _frameTime;
+
 };
 
 void mouseButton(GLFWwindow *window, int button, int action, int mods) {
