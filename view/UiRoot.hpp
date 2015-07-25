@@ -36,6 +36,9 @@ public:
 
         timeline = new Timeline();
         vSplitter->addChild(timeline);
+
+        hSplitter = new Splitter(Direction::Horizontal);
+        addChild(hSplitter);
         cout << this << "init root" << endl;
 //        Evt_dis(VsEvent::INITED, nullptr)
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
@@ -66,6 +69,8 @@ public:
 private:
     int images[12];
     Splitter *vSplitter;
+    Splitter *hSplitter;
+
     TitleBar *titleBar;
     Timeline *timeline;
     Viewport *viewport;

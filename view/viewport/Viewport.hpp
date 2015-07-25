@@ -1,3 +1,4 @@
+#include <view/tools/ColorWheel.hpp>
 #include "Sprite.hpp"
 
 class Viewport : public VsObjContainer {
@@ -8,6 +9,10 @@ public:
         char file[128];
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
         imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
+        ColorWheel *colorWheel = new ColorWheel;
+        colorWheel->move(300, 300);
+        colorWheel->setSize(300, 300);
+        addChild(colorWheel);
 //        imagei = nvgCreateImage(VG_CONTEXT, "test/test10/image001.png", 0);
     }
 
@@ -44,6 +49,7 @@ public:
     }
 
 private:
+//    ColorWheel *colorWheel;
     int imagei;
     Sprite *transport;
 };
