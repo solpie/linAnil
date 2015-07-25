@@ -33,27 +33,24 @@ public:
 
         hSplitter = new Splitter(Direction::Horizontal);
         addChild(hSplitter);
-//        vSplitter->addChild(hSplitter);
+        hSplitter->height = 720;
+        vSplitter->addChild(hSplitter);
 
         viewport = new Viewport();
-        viewport->move(0, 0);
-        vSplitter->addChild(viewport);
+        viewport->setSize(1280, 720);
+        hSplitter->addChild(viewport);
 
-
-
+        ColorWheel *colorWheel1 = new ColorWheel;
+        colorWheel1->setSize(300, 300);
+        hSplitter->addChild(colorWheel1);
 
         timeline = new Timeline();
         vSplitter->addChild(timeline);
 
 
-        cout << this << "init root" << endl;
-//        Evt_dis(VsEvent::INITED, nullptr)
+        cout << typeid(this).name() << "init root" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
-    }
-
-    void onInitContext() {
-
     }
 
     void onResize() {
@@ -68,7 +65,7 @@ public:
 
     void setSize(int w, int h) override {
         titleBar->resize(w, h);
-        viewport->resize(w, h);
+//        viewport->resize(w, h);
 //        hSplitter->setSize(w, -1);
 //        timeline->setSize(w, h);
         vSplitter->setSize(w, h - titleBar->height);

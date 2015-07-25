@@ -12,15 +12,12 @@ public:
 
         hSplitter = new Splitter(Direction::Horizontal);
         addChild(hSplitter);
-        ColorWheel *colorWheel = new ColorWheel;
-        colorWheel->move(0, 300);
-        colorWheel->setSize(200, 200);
-        hSplitter->addChild(colorWheel);
+//        ColorWheel *colorWheel = new ColorWheel;
+//        colorWheel->move(0, 300);
+//        colorWheel->setSize(200, 200);
+//        hSplitter->addChild(colorWheel);
 
-        ColorWheel *colorWheel1 = new ColorWheel;
-        colorWheel1->move(300, 300);
-        colorWheel1->setSize(300, 300);
-        hSplitter->addChild(colorWheel1);
+
 //        imagei = nvgCreateImage(VG_CONTEXT, "test/test10/image001.png", 0);
     }
 

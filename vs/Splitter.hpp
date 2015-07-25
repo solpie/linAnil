@@ -51,7 +51,6 @@ public:
                 }
             }
 
-
             if (_isPress) {
                 pos mpos = VS_CONTEXT.cursor;
                 int dx = 0, dy = 0;
@@ -62,20 +61,18 @@ public:
                         dy = mpos.y - _lastY;
                     _lastY = mpos.y;
                     if (dy != 0) {
-
                         int my = _bar->y() + dy;
                         limit(my, 0, height - _bar->height)
                         _bar->setY(my);
-                        child1->height = my;
+                        child1->setSize(width, my);
                         child2->setY(_bar->y() + _bar->height);
                         child2->setSize(width, height - _bar->y() - _bar->height);
                     }
                 }
                 else {
-                    //todo
                     VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
                     if (_lastX)
-                        dx = mpos.x - _lastY;
+                        dx = mpos.x - _lastX;
                     _lastX = mpos.x;
                     if (dx != 0) {
                         int mx = _bar->x() + dx;
@@ -105,8 +102,12 @@ public:
             child2 = vsObj;
             if (_dir == Direction::Vertical) {
                 child2->setY(_bar->y() + _bar->height);
+                if (child2->height)
+                    spaceRaito = child1->height / child2->height;
             }
             else {
+                if (child2->width)
+                    spaceRaito = child1->width / child2->width;
                 child2->setX(_bar->x() + _bar->width);
             }
         }
@@ -121,13 +122,17 @@ public:
         VsObj::setSize(w, h);
         if (_dir == Direction::Vertical) {
             _bar->width = w;
-            child1->setSize(w, _bar->y());
-            child2->setSize(w, h - _bar->y() - _bar->height);
+            if (child1)
+                child1->setSize(w, _bar->y());
+            if (child2)
+                child2->setSize(w, h - _bar->y() - _bar->height);
         }
         else {
             _bar->height = h;
-            child1->setSize(_bar->x(), h);
-            child2->setSize(w - _bar->x() - _bar->width, h);
+            if (child1)
+                child1->setSize(_bar->x(), h);
+            if (child2)
+                child2->setSize(w - _bar->x() - _bar->width, h);
         }
     }
 
@@ -138,6 +143,7 @@ public:
 
     int barWidth = 8;
 private:
+    float spaceRaito = 1;
     int _dir;
     bool _isPress = false;
     int _lastX, _lastY;
