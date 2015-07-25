@@ -31,10 +31,7 @@ public:
 
     void onDrawBar(void *e) {
         if (numChildren() < 2)return;
-        nvgBeginPath(vg);
-        nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
-        nvgFillColor(vg, _3RGB(20));
-        nvgFill(vg);
+        fillRect(_3RGB(20), _bar->gX(), _bar->gY(), _bar->width, _bar->height);
         if (_bar->isHover) {
             _justHover = true;
             if (_dir == Direction::Vertical)

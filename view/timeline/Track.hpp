@@ -161,10 +161,9 @@ private:
         int tx;
         int hoverTx = 0;
         int hoverTWidth = 0;
-        int trackStartX = _trackInfo->getStartFrame() * frameWidth;
-
         bool isHoverLeft = false;
-        bool isShowRightArrow = false;
+
+        int trackStartX = _trackInfo->getStartFrame() * frameWidth;
         int dragBarX = 0;
         bool hasThumbDrawing = false;
         int lastTrackFrameHoldCount = 0;
@@ -228,9 +227,9 @@ private:
                         isHoverLeft = true;
                         _pressFlag = PressFlag::Left;
                     }
-                    else {
+                    else
                         _pressFlag = PressFlag::Right;
-                    }
+
                 }
                 else if (!_handleTrackFrameInfo)
                     _handleTrackFrameInfo = tfi;
@@ -240,10 +239,7 @@ private:
         //drag bar
         if (hasThumbDrawing && lastTrackFrameHoldCount) {
             int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1;
-            nvgBeginPath(vg);
-            nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
-            nvgFillColor(vg, _3RGB(20));
-            nvgFill(vg);
+            fillRect( _3RGB(20), dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
         }
 
         if (hoverTx != 0) {//hover mask
