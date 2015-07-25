@@ -39,15 +39,18 @@ public:
                 nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
-            if (_isPress || _bar->isHover) {
-                if (_dir == Direction::Vertical)
-                    VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
-                else
-                    VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
+            if (isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, gX(), gY(), width, height)) {
+                if (_isPress || _bar->isHover) {
+                    if (_dir == Direction::Vertical)
+                        VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
+                    else
+                        VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
+                }
+                else {
+                    VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
+                }
             }
-            else {
-                VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
-            }
+
 
             if (_isPress) {
                 pos mpos = VS_CONTEXT.cursor;
@@ -71,13 +74,18 @@ public:
                 else {
                     //todo
                     VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
-
+                    if (_lastX)
+                        dx = mpos.x - _lastY;
+                    _lastX = mpos.x;
+                    if (dx != 0) {
+                        int mx = _bar->x() + dx;
+                        limit(mx, 0, width - _bar->width)
+                        _bar->setX(mx);
+                        child1->width = mx;
+                        child2->setX(_bar->x() + _bar->width);
+                        child2->setSize(width - _bar->x() - _bar->width, height);
+                    }
                 }
-//                if (_lastX)
-//                    dx = mpos.x - _lastX;
-//                _lastX = mpos.x;
-
-
             }
         }
     }
