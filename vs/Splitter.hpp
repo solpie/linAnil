@@ -33,23 +33,28 @@ public:
     void onDrawBar(void *e) {
         if (numChildren() == 2) {
             nvgBeginPath(vg);
-            nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
+            if (_dir == Direction::Vertical)
+                nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
+            else
+                nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
             if (_isPress || _bar->isHover) {
-//                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
-                VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
+                if (_dir == Direction::Vertical)
+                    VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
+                else
+                    VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
             }
             else {
                 VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
             }
 
             if (_isPress) {
-                glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
                 pos mpos = VS_CONTEXT.cursor;
                 int dx = 0, dy = 0;
 
                 if (_dir == Direction::Vertical) {
+                    VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
                     if (_lastY)
                         dy = mpos.y - _lastY;
                     _lastY = mpos.y;
@@ -65,6 +70,8 @@ public:
                 }
                 else {
                     //todo
+                    VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
+
                 }
 //                if (_lastX)
 //                    dx = mpos.x - _lastX;
@@ -106,10 +113,13 @@ public:
         VsObj::setSize(w, h);
         if (_dir == Direction::Vertical) {
             _bar->width = w;
+            child1->setSize(w, _bar->y());
             child2->setSize(w, h - _bar->y() - _bar->height);
         }
         else {
             _bar->height = h;
+            child1->setSize(_bar->x(), h);
+            child2->setSize(w - _bar->x() - _bar->width, h);
         }
     }
 

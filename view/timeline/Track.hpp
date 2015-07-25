@@ -141,14 +141,6 @@ public:
         _scrollPosX = -x + _trackLeft;
     }
 
-    void resize(int w, int h) {
-        width = w;
-        height = h;
-    }
-
-//    void setHideY(int hy) {
-//        _hy = hy;
-//    }
 
 private:
     int _trackDragBarHeight = 13;

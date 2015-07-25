@@ -30,15 +30,22 @@ public:
         vSplitter = new Splitter(Direction::Vertical);
         vSplitter->setY(titleBar->height);
         addChild(vSplitter);
+
+        hSplitter = new Splitter(Direction::Horizontal);
+        addChild(hSplitter);
+//        vSplitter->addChild(hSplitter);
+
         viewport = new Viewport();
         viewport->move(0, 0);
         vSplitter->addChild(viewport);
 
+
+
+
         timeline = new Timeline();
         vSplitter->addChild(timeline);
 
-        hSplitter = new Splitter(Direction::Horizontal);
-        addChild(hSplitter);
+
         cout << this << "init root" << endl;
 //        Evt_dis(VsEvent::INITED, nullptr)
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
@@ -62,6 +69,7 @@ public:
     void setSize(int w, int h) override {
         titleBar->resize(w, h);
         viewport->resize(w, h);
+//        hSplitter->setSize(w, -1);
 //        timeline->setSize(w, h);
         vSplitter->setSize(w, h - titleBar->height);
     }

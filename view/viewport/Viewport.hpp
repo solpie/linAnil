@@ -9,10 +9,18 @@ public:
         char file[128];
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
         imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
+
+        hSplitter = new Splitter(Direction::Horizontal);
+        addChild(hSplitter);
         ColorWheel *colorWheel = new ColorWheel;
-        colorWheel->move(300, 300);
-        colorWheel->setSize(300, 300);
-        addChild(colorWheel);
+        colorWheel->move(0, 300);
+        colorWheel->setSize(200, 200);
+        hSplitter->addChild(colorWheel);
+
+        ColorWheel *colorWheel1 = new ColorWheel;
+        colorWheel1->move(300, 300);
+        colorWheel1->setSize(300, 300);
+        hSplitter->addChild(colorWheel1);
 //        imagei = nvgCreateImage(VG_CONTEXT, "test/test10/image001.png", 0);
     }
 
@@ -26,30 +34,33 @@ public:
         NVGpaint imgPaint;
 
         nvgImageSize(vg, imagei, &w, &h);
-        imgPaint = nvgImagePattern(vg, gX()+300, gY(), w*.5, h*.5, 0, imagei, 1);
+        imgPaint = nvgImagePattern(vg, gX() + 300, gY(), w * .5, h * .5, 0, imagei, 1);
         nvgBeginPath(vg);
-        nvgRect(vg, gX()+300, gY(), w*.5, h*.5);
+        nvgRect(vg, gX() + 300, gY(), w * .5, h * .5);
         nvgFillPaint(vg, imgPaint);
         nvgFill(vg);
 
         nvgBeginPath(vg);
-        float angle = 180.0f/180.0f*NVG_PI;
-        int refH = h+5;
+        float angle = 180.0f / 180.0f * NVG_PI;
+        int refH = h + 5;
 //        nvgRotate(vg, angle);
-        nvgRect(vg, gX(), gY()+refH, w, h);
-        nvgFillPaint(vg, nvgImagePattern(vg, gX()+w, gY()+h+refH, w, h, NVG_PI, imagei, 1));
+        nvgRect(vg, gX(), gY() + refH, w, h);
+        nvgFillPaint(vg, nvgImagePattern(vg, gX() + w, gY() + h + refH, w, h, NVG_PI, imagei, 1));
         nvgFill(vg);
 
         VS_RENDER_CHILDREN();
     }
 
     void resize(int w, int h) {
-        width = w;
+        hSplitter->setSize(w, h);
+
 //        height = h;
     }
 
 private:
-//    ColorWheel *colorWheel;
+    Splitter *hSplitter;
+
+    //    ColorWheel *colorWheel;
     int imagei;
     Sprite *transport;
 };
