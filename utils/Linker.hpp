@@ -3,10 +3,10 @@
 // Created by manoyuria on 2015/6/21.
 //
 
-#ifndef SEQTRUAN_TEST1_HPP
-#define SEQTRUAN_TEST1_HPP
+#ifndef LINANIL_UTILS_LINKER_HPP
+#define LINANIL_UTILS_LINKER_HPP
 
-#endif //SEQTRUAN_TEST1_HPP
+#endif //LINANIL_UTILS_LINKER_HPP
 
 template<typename CLS>
 class OneLinker {

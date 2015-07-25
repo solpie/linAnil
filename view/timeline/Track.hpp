@@ -147,12 +147,12 @@ private:
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
+    int frameHeight = 40;
 
     void drawTrackFrame() {
         //trackFrame
         int left = _scrollPosX;
         int frameWidth = _proj->curCompInfo->frameWidth;
-        int frameHeight = 40;
 
         int thumbHeight = 0;
         int thumbWidth;
@@ -247,28 +247,36 @@ private:
         }
 
         if (hoverTx != 0) {//hover mask
-            if (!_isPress) {
-                //left block
-                int blockWidth = 5;
-                int blockY = gY() + _trackDragBarHeight + 1;
-                NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
-                NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
-                if (isHoverLeft) {
-                    colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
-                    colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
-                }
-                nvgBeginPath(vg);
-                nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
-                nvgFillColor(vg, colorL);
-                nvgFill(vg);
+            if (!_isPress)
+                drawBlockHint(isHoverLeft, hoverTx, hoverTWidth);
+            else
+                handlePressAndDrag(hoverTx, hoverTx + hoverTWidth);
+        }
+    }
 
-                nvgBeginPath(vg);
-                nvgRect(vg, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
-                nvgFillColor(vg, colorR);
-                nvgFill(vg);
+    void drawBlockHint(bool isHoverLeft, int hoverTx, int hoverTWidth) {
+        //left block
+        int blockWidth = 5;
+        int blockY = gY() + _trackDragBarHeight + 1;
+        NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+        NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+        if (isHoverLeft) {
+            colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+            colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+        }
+        nvgBeginPath(vg);
+        nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
+        nvgFillColor(vg, colorL);
+        nvgFill(vg);
 
+        nvgBeginPath(vg);
+        nvgRect(vg, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
+        nvgFillColor(vg, colorR);
+        nvgFill(vg);
+    }
 
-//            thumbHeight = 45;
+    void drawArrowHint() {
+        //            thumbHeight = 45;
 //            int s1 = 10, s2 = 15, s3 = 7, p4 = 15;
 //            //left arrow
 //            nvgBeginPath(vg);
@@ -297,11 +305,6 @@ private:
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
 //            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
-            }
-            else
-                handlePressAndDrag(hoverTx, hoverTx + hoverTWidth);
-
-        }
     }
 
     int _dragSense = 30;
