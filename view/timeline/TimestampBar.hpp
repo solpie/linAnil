@@ -34,19 +34,18 @@ public:
 
     void updateCursorPos() {
         int frameWidth = _proj->curCompInfo->frameWidth;
-        _cursorFrame = (VS_CONTEXT.cursor.x - gX() + getValue()) / frameWidth;
-        cout << typeid(this).name() << " cursor frame: " << _cursorFrame<<endl;
+        _cursorFrame = (VS_CONTEXT.cursor.x - gX() + _value) / frameWidth;
+        cout << typeid(this).name() << " cursor frame: " << _cursorFrame << endl;
     }
 
     virtual void onDraw() override {
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), width, height);
-        nvgFillColor(vg, nvgRGB(47, 47, 47));
-        nvgFill(vg);
+        //bg
+        fillRect(_3RGB(47), gX(), gY(), width, height);
 
         {//scroll bar
-            float raito = contentWidth / (width);
-            float barWidth = width / raito;
+            float ratio = getContentWidth() / (width);
+            stepValue = ratio;
+            float barWidth = width / ratio;
             int maxValue = (width - barWidth);
 
             if (isPressScrollBar) {
@@ -60,7 +59,7 @@ public:
                     dy = mpos.y - _lastY;
                 _lastY = mpos.y;
                 if (dx != 0 || dy != 0) {
-                    _value += dx * stepValue;
+                    _value += dx;
                     limit(_value, 0, maxValue)
                     disEvent(VsEvent::CHANGED);
                     cout << this << " Width: " << width << endl;
@@ -73,7 +72,7 @@ public:
             nvgFill(vg);
         }
         int frameWidth = _proj->curCompInfo->frameWidth;
-        int cursorPx = gX() + _cursorFrame*frameWidth - getValue();
+        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
 //        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor
@@ -95,7 +94,7 @@ public:
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
 
-            for (int fX = -(getValue() % frameWidth); fX < width; fX += frameWidth) {
+            for (int fX = -(_value % frameWidth); fX < width; fX += frameWidth) {
                 {//track name
 
                     nvgFontFace(vg, "sans");
@@ -135,16 +134,22 @@ public:
         width = w;
         _cursorFrameHeight = h - height;
         //test
-        contentWidth = 2 * width;
     }
 
     int getValue() {
-        return _value;
+        return _value * stepValue;
     }
 
     int contentWidth = 1440 * 2;
     int stepValue = 1;
 private:
+    int getContentWidth() {
+        int fw = _proj->curCompInfo->frameWidth;
+        int frameCount = _proj->curCompInfo->durationFrame;
+
+        return _proj->curCompInfo->durationFrame * _proj->curCompInfo->frameWidth;
+    }
+
     int _value = 0;
     int _lastX, _lastY;
     int _cursorFrameHeight = 300;

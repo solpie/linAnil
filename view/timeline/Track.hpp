@@ -11,7 +11,6 @@
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
 
-int handleIdx = 0;
 enum PressFlag {
     Left = 1, Right
 };
@@ -36,24 +35,15 @@ public:
         vSlider->setY(32);
         addChild(vSlider);
 
-//        scrollArea = new VsObjContainer();
-//        scrollArea->width = width;
-//        scrollArea->height = height;
-//        scrollArea->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
-//        addChild(scrollArea);
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
 
-
         setColor(99, 138, 20);
-        load(trackInfo);
-    };
+    }
 
-    void load(TrackInfo *trackInfo) {
+    void setTrackInfo(TrackInfo *trackInfo) {
         _trackInfo = trackInfo;
-        int len = trackInfo->trackFrameInfos->size();
-        int frameWidth = _proj->curCompInfo->frameWidth;
     }
 
     void onUp(void *e) {
@@ -125,12 +115,8 @@ public:
         drawTrackFrame();
 
 
-        {//bottom border
-            nvgBeginPath(vg);
-            nvgFillColor(vg, _3RGB(52));
-            nvgRect(vg, gX(), gY() + height - 1, width, 1);
-            nvgFill(vg);
-        }
+        //bottom border
+        fillRect(_3RGB(52), gX(), gY() + height - 1, width, 1);
 
         VsObjContainer::render();
     }

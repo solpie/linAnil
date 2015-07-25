@@ -69,7 +69,7 @@ public:
 //        if (!imageLoader) {
 //            imageLoader = new ImageLoader();
 //        }
-//        imageLoader->load(path);
+//        imageLoader->setTrackInfo(path);
 //        imageLoader->loadFunc = [] {
 //            qDebug() << this << "loadFunc";;
 //        };

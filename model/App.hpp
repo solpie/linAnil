@@ -38,7 +38,7 @@ public:
 //        App()._().curCompInfo->newTrack("newTrack2");
 //        App()._().curCompInfo->newTrack("newTrack2");
 //        App()._().curCompInfo->newTrack("curry", "D:/projects/SeqTruanCpp/test/test10/");
-//        App()._().curCompInfo->audioPlayback->load("D:/projects/SeqTruanCpp/test/mp3.mp3");
+//        App()._().curCompInfo->audioPlayback->setTrackInfo("D:/projects/SeqTruanCpp/test/mp3.mp3");
 //        App()._().curCompInfo->audioPlayback->play();
     }
 

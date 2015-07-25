@@ -92,11 +92,11 @@ public:
             if (_dir == Direction::Vertical) {
                 child2->setY(_bar->y() + _bar->height);
                 if (child2->height)
-                    spaceRaito = child1->height / child2->height;
+                    spaceRatio = child1->height / child2->height;
             }
             else {
                 if (child2->width)
-                    spaceRaito = child1->width / child2->width;
+                    spaceRatio = child1->width / child2->width;
                 child2->setX(_bar->x() + _bar->width);
             }
         }
@@ -132,7 +132,7 @@ public:
 
     int barWidth = 8;
 private:
-    float spaceRaito = 1;
+    float spaceRatio = 1;
     int _dir;
     bool _isPress = false;
     bool _justHover = false;

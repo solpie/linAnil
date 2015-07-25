@@ -60,7 +60,7 @@ public:
             while (itr != boost::filesystem::recursive_directory_iterator()) {
                 if (itr->path().extension() == ".png") {
                     ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
-                    cout << typeid(this).name() << " load image: " << imgInfo->path << " " << imgInfo->width << " " <<
+                    cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " << imgInfo->width << " " <<
                     imgInfo->height << " id:" << imgInfo->id << endl;
 
                     TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
