@@ -194,10 +194,7 @@ private:
 
             hasThumbDrawing = true;
             //white bg
-            nvgBeginPath(vg);
-            nvgRect(vg, tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
-            nvgFillColor(vg, _3RGB(255));
-            nvgFill(vg);
+            fillRect(_3RGB(255), tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
 
             //thumb
             nvgBeginPath(vg);
@@ -239,7 +236,7 @@ private:
         //drag bar
         if (hasThumbDrawing && lastTrackFrameHoldCount) {
             int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1;
-            fillRect( _3RGB(20), dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
+            fillRect(_3RGB(20), dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
         }
 
         if (hoverTx != 0) {//hover mask
@@ -260,15 +257,8 @@ private:
             colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
             colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
         }
-        nvgBeginPath(vg);
-        nvgRect(vg, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
-        nvgFillColor(vg, colorL);
-        nvgFill(vg);
-
-        nvgBeginPath(vg);
-        nvgRect(vg, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
-        nvgFillColor(vg, colorR);
-        nvgFill(vg);
+        fillRect(colorL, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
+        fillRect(colorR, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
     }
 
     void drawArrowHint() {
