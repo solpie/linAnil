@@ -17,7 +17,6 @@ public:
         add_event_on(_bar, MouseEvent::DOWN, onDown)
         add_event_on(_bar, MouseEvent::UP, onUp)
         add_event_on_context(VsEvent::STAGE_MOUSE_UP, onUp)
-
         add_event_on(_bar, SpriteEvent::DRAW, onDrawBar)
     }
 
@@ -33,28 +32,24 @@ public:
     void onDrawBar(void *e) {
         if (numChildren() == 2) {
             nvgBeginPath(vg);
-            if (_dir == Direction::Vertical)
-                nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
-            else
-                nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
+            nvgRect(vg, _bar->gX(), _bar->gY(), _bar->width, _bar->height);
             nvgFillColor(vg, _3RGB(20));
             nvgFill(vg);
-            if (isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, gX(), gY(), width, height)) {
-                if (_isPress || _bar->isHover) {
-                    if (_dir == Direction::Vertical)
-                        VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
-                    else
-                        VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
-                }
-                else {
-                    VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
-                }
+            if (_bar->isHover) {
+                _justHover = true;
+                if (_dir == Direction::Vertical)
+                    VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
+                else
+                    VS_CONTEXT.setCursor(GLFW_HRESIZE_CURSOR);
+            }
+            else if (_justHover) {
+                _justHover = false;
+                VS_CONTEXT.setCursor(GLFW_ARROW_CURSOR);
             }
 
             if (_isPress) {
                 pos mpos = VS_CONTEXT.cursor;
                 int dx = 0, dy = 0;
-
                 if (_dir == Direction::Vertical) {
                     VS_CONTEXT.setCursor(GLFW_VRESIZE_CURSOR);
                     if (_lastY)
@@ -78,7 +73,7 @@ public:
                         int mx = _bar->x() + dx;
                         limit(mx, 0, width - _bar->width)
                         _bar->setX(mx);
-                        child1->width = mx;
+                        child1->setSize(mx, height);
                         child2->setX(_bar->x() + _bar->width);
                         child2->setSize(width - _bar->x() - _bar->width, height);
                     }
@@ -146,6 +141,7 @@ private:
     float spaceRaito = 1;
     int _dir;
     bool _isPress = false;
+    bool _justHover = false;
     int _lastX, _lastY;
     VsObj *child1 = nullptr;
     VsObj *child2 = nullptr;

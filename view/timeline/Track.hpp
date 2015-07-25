@@ -62,7 +62,7 @@ public:
         if (_isPress && isDragHide) {
             VS_CONTEXT.showCursor();
 //            if (_pressFlag == PressFlag::Left)
-                VS_CONTEXT.setCursorPos(_hideX, _hideY);
+            VS_CONTEXT.setCursorPos(_hideX, _hideY);
 //            else if(_pressFlag == PressFlag::Right))
 //                V
             _proj->curCompInfo->clearRemoveFrame();
@@ -77,7 +77,7 @@ public:
         _hideX = VS_CONTEXT.cursor.x;
         _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
-        VsEvent *vse =new VsEvent();
+        VsEvent *vse = new VsEvent();
         vse->type = VsEvent::SELECTED;
         disEvent(vse);
         setSelected(true);
@@ -165,15 +165,10 @@ private:
 
         bool isHoverLeft = false;
         bool isShowRightArrow = false;
-        int dragBarX;
+        int dragBarX = 0;
+        bool hasThumbDrawing = false;
         int lastTrackFrameHoldCount = 0;
-//        TrackFrameInfo *head=new TrackFrameInfo;
-//        while(head) {
-//
-//            int d;
-//
-//            head = head->next;
-//        }
+        bool isCut = false;
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             lastTrackFrameHoldCount = tfi->getHoldFrame();
             tx = gX() + left + trackStartX;
@@ -188,10 +183,17 @@ private:
             thumbWidth = frameWidth * tfi->getHoldFrame();
             if (tx < gX() + _trackLeft) {
                 left += thumbWidth;
-                continue;
+                if (tx + frameWidth > gX() + _trackLeft) {
+                    isCut = true;
+                    nvgScissor(vg, gX() + _trackLeft, gY(), frameWidth, height);
+                }
+                else
+                    continue;
             }
             else
                 left += thumbWidth;
+
+            hasThumbDrawing = true;
             //white bg
             nvgBeginPath(vg);
             nvgRect(vg, tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
@@ -211,7 +213,10 @@ private:
             vsLineWidthColor(vg, 1, _3RGB(20));
             vsLineRect(vg, tx, gY() + _trackDragBarHeight, frameWidth * tfi->getHoldFrame(), frameHeight);
             nvgFill(vg);
-
+            if (isCut) {
+                isCut = false;
+                nvgResetScissor(vg);
+            }
             //hover check
             if (hoverTx == 0 &&
                 isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackDragBarHeight, thumbWidth,
@@ -230,9 +235,10 @@ private:
                 else if (!_handleTrackFrameInfo)
                     _handleTrackFrameInfo = tfi;
             }
-
         }
-        if (lastTrackFrameHoldCount) {//drag bar
+
+        //drag bar
+        if (hasThumbDrawing && lastTrackFrameHoldCount) {
             int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1;
             nvgBeginPath(vg);
             nvgRect(vg, dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
