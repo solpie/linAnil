@@ -79,7 +79,7 @@ public:
     }
 
     ImageInfo *getCurrentImageInfo() {
-        if (_trackFrameIdx) {
+        if (_trackFrameIdx > -1) {
             TrackFrameInfo *tfi = trackFrameInfos->at(_trackFrameIdx);
             if (tfi)
                 return tfi->imageInfo;
@@ -95,6 +95,6 @@ protected:
 
     double _opacity = 255;
 private:
-    int _trackFrameIdx = 0;
+    int _trackFrameIdx = -1;
 
 };
