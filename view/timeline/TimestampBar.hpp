@@ -75,7 +75,7 @@ public:
         int frameWidth = _proj->curCompInfo->frameWidth;
 
 //        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
-        int cursorPx = gX() + _proj->curCompInfo->getCurrentFrame() * frameWidth - _value;
+        int cursorPx = gX() + _proj->curCompInfo->getCurrentFrame() * frameWidth - getValue();
 //        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor
@@ -96,7 +96,7 @@ public:
             int sY = gY() + 30;
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
-            for (int fX = -(_value % frameWidth); fX < width; fX += frameWidth) {
+            for (int fX = -(getValue() % frameWidth); fX < width; fX += frameWidth) {
                 {//track name
                     nvgFontFace(vg, "sans");
                     nvgFontSize(vg, 14.0f);

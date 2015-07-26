@@ -1,31 +1,45 @@
 #include <view/tools/ColorWheel.hpp>
 #include "Sprite.hpp"
 
+#define VIEWPORT_WIDTH 1280
+#define VIEWPORT_HEIGHT 720
+
 class Viewport : public VsObjContainer {
 
 public:
     Viewport() {
-        height = 720;
         char file[128];
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
         imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
 
         hSplitter = new Splitter(Direction::Horizontal);
         addChild(hSplitter);
-//        ColorWheel *colorWheel = new ColorWheel;
-//        colorWheel->move(0, 300);
-//        colorWheel->setSize(200, 200);
-//        hSplitter->addChild(colorWheel);
-
-
-//        imagei = nvgCreateImage(VG_CONTEXT, "test/test10/image001.png", 0);
+        width = VIEWPORT_WIDTH;
+        height = VIEWPORT_HEIGHT;
     }
 
     void render() override {
         fillRect(_3RGB(80), gX(), gY(), width, height);
 
 
-//        int w, h;
+        ImageInfo *imageInfo;
+        vector<TrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
+        for (int i = trkInfos->size() - 1; i > -1; --i) {
+            imageInfo = ((TrackInfo *) trkInfos->at(i))->getCurrentImageInfo();
+            if (imageInfo) {
+                nvgBeginPath(vg);
+                nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
+                nvgFillPaint(vg, nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale, 0,
+                                                 imageInfo->id, 1));
+                nvgFill(vg);
+            }
+
+        }
+        VS_RENDER_CHILDREN();
+    }
+
+    void rotation() {
+        //        int w, h;
 //        NVGpaint imgPaint;
 //
 //        nvgImageSize(vg, imagei, &w, &h);
@@ -43,32 +57,24 @@ public:
 //        nvgFillPaint(vg, nvgImagePattern(vg, gX() + w, gY() + h + refH, w, h, NVG_PI, imagei, 1));
 //        nvgFill(vg);
 
-        ImageInfo *imageInfo;
-        vector<TrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
-        for (int i = trkInfos->size() - 1; i > -1; --i) {
-            imageInfo = ((TrackInfo *) trkInfos->at(i))->getCurrentImageInfo();
-            if (imageInfo) {
-                nvgBeginPath(vg);
-                nvgRect(vg, gX(), gY(), imageInfo->width, imageInfo->height);
-                nvgFillPaint(vg, nvgImagePattern(vg, gX(), gY(), imageInfo->width, imageInfo->height, 0,
-                                                 imageInfo->id, 1));
-                nvgFill(vg);
-            }
-
-        }
-        VS_RENDER_CHILDREN();
     }
 
-    void resize(int w, int h) {
-        hSplitter->setSize(w, h);
 
-//        height = h;
-    }
+    virtual void setSize(int w, int h) override;
 
 private:
     Splitter *hSplitter;
-
-    //    ColorWheel *colorWheel;
     int imagei;
     Sprite *transport;
+    float scale = 1;
+
 };
+
+void Viewport::setSize(int w, int h) {
+    VsObj::setSize(w, h);
+    float sx = float(w) / VIEWPORT_WIDTH;
+
+    scale = float(h) / VIEWPORT_HEIGHT;
+    if (scale > sx)
+        scale = sx;
+}

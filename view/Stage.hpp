@@ -40,7 +40,6 @@ public:
         vSplitter->addChild(hSplitter);
 
         viewport = new Viewport();
-        viewport->setSize(1280, 720);
         hSplitter->addChild(viewport);
 
         ColorWheel *colorWheel1 = new ColorWheel;
