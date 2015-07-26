@@ -66,7 +66,7 @@ public:
             nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
             sprintf(str, "%d%%", _value * 100 / (maxValue - minValue + 1));
-            nvgText(vg, gX() + tx, gY() - 20, str, nullptr);
+            nvgText(vg, gX() + width*.5, gY() - 20, str, nullptr);
         }
     }
 
@@ -87,6 +87,7 @@ private:
         int px = VS_CONTEXT.cursor.x - gX();
         limit(px, 0, width)
         _value = px * (maxValue - minValue + 1) / width;
+        disEvent(VsEvent::CHANGED);
     }
 
 };

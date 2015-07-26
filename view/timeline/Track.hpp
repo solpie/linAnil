@@ -34,6 +34,7 @@ public:
         vSlider->setValue(100);
         vSlider->setX(200);
         vSlider->setY(32);
+        add_event_on(vSlider, VsEvent::CHANGED, onOpacity)
         addChild(vSlider);
 
         add_event(MouseEvent::DOWN, onDown);
@@ -346,6 +347,10 @@ private:
 
     void onVisible(void *e) {
         _trackInfo->visible = trackVisibleBox->isChecked;
+    }
+
+    void onOpacity(void *e) {
+        _trackInfo->setOpacity(double(vSlider->getValue())/(100));
     }
 
     int _hy;

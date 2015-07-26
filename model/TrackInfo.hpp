@@ -93,7 +93,7 @@ protected:
     int _endFrame = 1;
     int _startFrame = 1;
 
-    double _opacity = 255;
+    double _opacity = 1;
 private:
     int _trackFrameIdx = -1;
 

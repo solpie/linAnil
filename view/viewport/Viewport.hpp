@@ -34,7 +34,7 @@ public:
                     nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
                     nvgFillPaint(vg,
                                  nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale, 0,
-                                                 imageInfo->id, 1));
+                                                 imageInfo->id, trkInfo->getOpacity()));
                     nvgFill(vg);
                 }
             }
