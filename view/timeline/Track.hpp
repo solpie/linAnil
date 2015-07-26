@@ -57,6 +57,9 @@ public:
         }
         _pressFlag = 0;
         _isPress = false;
+        if(_handleTrackFrameInfo) {
+            dumpTrackFrameInfo(_handleTrackFrameInfo);
+        }
         _handleTrackFrameInfo = nullptr;
     }
 

@@ -96,7 +96,7 @@ public:
         handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() + 1);
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() + 1);
-        }, handleTrackFrame);
+        }, handleTrackFrame->next);
     }
 
     void R2L(TrackFrameInfo *handleTrackFrame) {

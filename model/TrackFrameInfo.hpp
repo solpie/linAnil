@@ -77,7 +77,7 @@ public:
 
     double opacity;//
 
-    ImageInfo *imageInfo= nullptr;
+    ImageInfo *imageInfo = nullptr;
 protected:
     int _trackInfoIdx;
 
@@ -88,3 +88,11 @@ protected:
     int idx;
 
 };
+
+void dumpTrackFrameInfo(TrackFrameInfo *tfi) {
+    cout<<"dumpTrackFrameInfo() idx:"<<tfi->getIdx()
+            <<" start:"<<tfi->getStartFrame()
+            <<" hold:"<<tfi->getHoldFrame()
+            <<" end:"<<tfi->getEndFrame()<<endl;
+
+}

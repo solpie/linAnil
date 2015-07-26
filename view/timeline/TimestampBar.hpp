@@ -10,6 +10,9 @@ public:
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
+
+        colLeft = nvgRGBA(255, 255, 255, 128);
+        colRight = nvgRGBA(255, 255, 255, 10);
     }
 
     void onUp(void *e) {
@@ -34,7 +37,7 @@ public:
 
     void updateCursorPos() {
         int frameWidth = _proj->curCompInfo->frameWidth;
-        int cursorFrame = (VS_CONTEXT.cursor.x - gX() + _value) / frameWidth;
+        int cursorFrame = (VS_CONTEXT.cursor.x - gX() + getValue()) / frameWidth;
         _proj->curCompInfo->setCurrentFrame(cursorFrame);
         cout << typeid(this).name() << " cursor frame: " << cursorFrame << endl;
     }
@@ -72,10 +75,12 @@ public:
             nvgFillColor(vg, nvgRGB(88, 88, 88));
             nvgFill(vg);
         }
+        int scrollValue = getValue();
+
         int frameWidth = _proj->curCompInfo->frameWidth;
 
 //        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
-        int cursorPx = gX() + _proj->curCompInfo->getCurrentFrame() * frameWidth - getValue();
+        int cursorPx = gX() + _proj->curCompInfo->getCurrentFrame() * frameWidth - scrollValue;
 //        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor
@@ -85,18 +90,28 @@ public:
                 //
                 nvgBeginPath(vg);
                 nvgRect(vg, cursorPx, gY() + height, frameWidth, _cursorFrameHeight);
-                nvgFillColor(vg, _3RGBA(200, 128));
+                nvgFillPaint(vg, nvgLinearGradient(vg, cursorPx + frameWidth - 10, gY() + height, cursorPx + frameWidth,
+                                                   gY() + height,
+                                                   colRight, colLeft));
                 nvgFill(vg);
+                nvgBeginPath(vg);
+                nvgRect(vg, cursorPx, gY() + height, frameWidth, _cursorFrameHeight);
+                nvgFillPaint(vg, nvgLinearGradient(vg, cursorPx, gY() + height, cursorPx + 10, gY() + height,
+                                                   colLeft, colRight));
+                nvgFill(vg);
+
+                fillRect(nvgRGBA(COLOR_TITLEBAR_BOTTOM_BORDER, 180), cursorPx, gY() + height - 15, frameWidth, 15)
+
             }
 
         }
         {//timestamp
             int fY = gY() + height - 10;
-            int fCount = (getValue() / frameWidth);
+            int fCount = scrollValue / frameWidth;
             int sY = gY() + 30;
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
-            for (int fX = -(getValue() % frameWidth); fX < width; fX += frameWidth) {
+            for (int fX = -(scrollValue % frameWidth); fX < width; fX += frameWidth) {
                 {//track name
                     nvgFontFace(vg, "sans");
                     nvgFontSize(vg, 14.0f);
@@ -112,14 +127,14 @@ public:
             }
         }
         //cursor tri
-        if (cursorPx > gX()) {
-            nvgBeginPath(vg);
-            nvgMoveTo(vg, cursorPx - 10, gY() + scrollBarHeight + 5);
-            nvgLineTo(vg, cursorPx + 10, gY() + scrollBarHeight + 5);
-            nvgLineTo(vg, cursorPx, gY() + scrollBarHeight + 15);
-            nvgFillColor(vg, _3RGB(200));
-            nvgFill(vg);
-        }
+//        if (cursorPx > gX()) {
+//            nvgBeginPath(vg);
+//            nvgMoveTo(vg, cursorPx - 10, gY() + scrollBarHeight + 5);
+//            nvgLineTo(vg, cursorPx + 10, gY() + scrollBarHeight + 5);
+//            nvgLineTo(vg, cursorPx, gY() + scrollBarHeight + 15);
+//            nvgFillColor(vg, _3RGB(200));
+//            nvgFill(vg);
+//        }
 //        nvgSave(vg);
 
         VS_RENDER_CHILDREN();
@@ -142,6 +157,8 @@ private:
         return _proj->curCompInfo->durationFrame * _proj->curCompInfo->frameWidth;
     }
 
+    NVGcolor colLeft;
+    NVGcolor colRight;
     int _value = 0;
     int _lastX, _lastY;
     int _cursorFrameHeight = 300;
