@@ -152,6 +152,7 @@ private:
         bool hasThumbDrawing = false;
         int lastTrackFrameHoldCount = 0;
         bool isCut = false;
+        int currentRenderFrame = _proj->curCompInfo->getCurrentFrame();
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             lastTrackFrameHoldCount = tfi->getHoldFrame();
             tx = gX() + left + trackStartX;
@@ -161,6 +162,14 @@ private:
                 dragBarX = tx;
                 if (dragBarX < gX() + _trackLeft)
                     dragBarX = gX() + _trackLeft;
+            }
+
+            {//update render frame idx
+                if (currentRenderFrame > -1 && currentRenderFrame >= tfi->getStartFrame() &&
+                    currentRenderFrame <= tfi->getEndFrame()) {
+                    _trackInfo->setCurrenTrackFrameIdx(tfi->getIdx());
+                    currentRenderFrame = -1;//break;
+                }
             }
 
             thumbWidth = frameWidth * tfi->getHoldFrame();

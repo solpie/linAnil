@@ -20,8 +20,6 @@ public:
     TrackInfo(string name) {
         this->name = name;
         trackFrameInfos = new vector<TrackFrameInfo *>();
-
-
     };
     string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
@@ -71,6 +69,24 @@ public:
     }
 
     bool isSelected = false;
+
+    int getCurrenTrackFrameIdx() {
+        return _trackFrameIdx;
+    }
+
+    void setCurrenTrackFrameIdx(int v) {
+        _trackFrameIdx = v;
+    }
+
+    ImageInfo *getCurrentImageInfo() {
+        if (_trackFrameIdx) {
+            TrackFrameInfo *tfi = trackFrameInfos->at(_trackFrameIdx);
+            if (tfi)
+                return tfi->imageInfo;
+        }
+        return nullptr;
+    }
+
 protected:
     TrackFrameInfo *_head = nullptr;
 
@@ -79,6 +95,6 @@ protected:
 
     double _opacity = 255;
 private:
-    int _trackFrameIdx;
+    int _trackFrameIdx = 0;
 
 };

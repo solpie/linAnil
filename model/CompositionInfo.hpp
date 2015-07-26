@@ -175,8 +175,15 @@ public:
         _currentFrame = v;
     }
 
-    void ppCurrentFrame() {
+    void increaseCurrentFrame() {
         ++_currentFrame;
+        for (TrackInfo *trkInfo:*_trackInfos) {
+
+        }
+    }
+
+    vector<TrackInfo *> *getTrackInfos() {
+        return _trackInfos;
     }
 
 private:

@@ -61,7 +61,7 @@ private:
     }
 
     void onTick(void *e) {
-        _projInfo->curCompInfo->ppCurrentFrame();
+        _projInfo->curCompInfo->increaseCurrentFrame();
     }
 
     ProjectInfo *_projInfo;

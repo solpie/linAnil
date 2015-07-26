@@ -34,8 +34,9 @@ public:
 
     void updateCursorPos() {
         int frameWidth = _proj->curCompInfo->frameWidth;
-        _cursorFrame = (VS_CONTEXT.cursor.x - gX() + _value) / frameWidth;
-        cout << typeid(this).name() << " cursor frame: " << _cursorFrame << endl;
+        int cursorFrame = (VS_CONTEXT.cursor.x - gX() + _value) / frameWidth;
+        _proj->curCompInfo->setCurrentFrame(cursorFrame);
+        cout << typeid(this).name() << " cursor frame: " << cursorFrame << endl;
     }
 
     virtual void onDraw() override {
@@ -74,7 +75,7 @@ public:
         int frameWidth = _proj->curCompInfo->frameWidth;
 
 //        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
-        int cursorPx = gX() +_proj->curCompInfo->getCurrentFrame() * frameWidth - _value;
+        int cursorPx = gX() + _proj->curCompInfo->getCurrentFrame() * frameWidth - _value;
 //        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor
@@ -110,18 +111,15 @@ public:
                 fillRect(_3RGB(20), gX() + fX, fY, 1, 10);
             }
         }
-        {//cursor tri
-            if (cursorPx > gX()) {
-                nvgBeginPath(vg);
-                nvgMoveTo(vg, cursorPx - 10, gY() + scrollBarHeight + 5);
-                nvgLineTo(vg, cursorPx + 10, gY() + scrollBarHeight + 5);
-                nvgLineTo(vg, cursorPx, gY() + scrollBarHeight + 15);
-                nvgFillColor(vg, _3RGB(200));
-                nvgFill(vg);
-            }
-
+        //cursor tri
+        if (cursorPx > gX()) {
+            nvgBeginPath(vg);
+            nvgMoveTo(vg, cursorPx - 10, gY() + scrollBarHeight + 5);
+            nvgLineTo(vg, cursorPx + 10, gY() + scrollBarHeight + 5);
+            nvgLineTo(vg, cursorPx, gY() + scrollBarHeight + 15);
+            nvgFillColor(vg, _3RGB(200));
+            nvgFill(vg);
         }
-
 //        nvgSave(vg);
 
         VS_RENDER_CHILDREN();
@@ -150,6 +148,5 @@ private:
     int scrollBarHeight = 20;
     bool isPressScrollBar = false;
     bool isPressTimestamp = false;
-    int _cursorFrame = 1;
 };
 
