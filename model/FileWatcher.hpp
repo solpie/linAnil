@@ -9,7 +9,7 @@
 
 #include <thread>
 #include "windows.h"
-#include "events/Event.hpp"
+#include "Evt.hpp"
 using namespace std;
 void work(string absPath) {
     HANDLE hDir = CreateFile(
@@ -46,7 +46,7 @@ class FileWatcher{
 public:
     FileWatcher() {
 //        moveToThread(&t);
-//        t.start();
+//        t.play();
     }
 
     ~FileWatcher() {

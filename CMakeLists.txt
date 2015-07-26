@@ -18,7 +18,7 @@ include_directories(vs)
 set(SOURCE_FILES main.cpp)
 
 add_executable(linAnil ${SOURCE_FILES}
-events/Event.hpp
+events/Evt.hpp
 model/CompositionInfo.hpp
 model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
@@ -51,7 +51,7 @@ view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
 vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp
- vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp)
+ vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)

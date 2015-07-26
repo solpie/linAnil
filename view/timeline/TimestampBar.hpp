@@ -72,7 +72,9 @@ public:
             nvgFill(vg);
         }
         int frameWidth = _proj->curCompInfo->frameWidth;
-        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
+
+//        int cursorPx = gX() + _cursorFrame * frameWidth - _value;
+        int cursorPx = gX() +_proj->curCompInfo->getCurrentFrame() * frameWidth - _value;
 //        int cursorPx = gX() + _cursorPos - getValue();
 
         {//cursor

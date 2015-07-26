@@ -6,31 +6,51 @@
 #include <GLFW/glfw3.h>
 #include <vs/utils/VsTimer.hpp>
 #include <vs/events/TimerEvent.hpp>
+#include <events/PlaybackEvent.hpp>
 
 #ifndef LINANIL_FRAMEPLAYBACK_HPP
 #define LINANIL_FRAMEPLAYBACK_HPP
 
 #endif //LINANIL_FRAMEPLAYBACK_HPP
 
+#include "PlaybackState.hpp"
+
 class FramesPlayback {
 public:
     FramesPlayback(ProjectInfo *projInfo) {
         _projInfo = projInfo;
+        Evt_add(PlaybackEvent::TOGGLE, onToggle)
     }
 
-    void start() {
+    void play() {
         init();
         timer->start();
+        state = PlaybackState::PLAY;
+    }
+
+    void pause() {
+        timer->stop();
+        state = PlaybackState::PAUSE;
     }
 
     void stop() {
-        timer->stop();
+        pause();
+        curFrameIdx = 1;
     }
 
-    int state = 0;
+    int state = PlaybackState::PAUSE;
     int frameRate;
     int curFrameIdx;
 private:
+    void onToggle(void *e) {
+        if (state == PlaybackState::PAUSE) {
+            play();
+        }
+        else if (state == PlaybackState::PLAY) {
+            pause();
+        }
+    }
+
     void init() {
         if (!timer) {
             if (_projInfo->curCompInfo) {
@@ -41,9 +61,9 @@ private:
     }
 
     void onTick(void *e) {
-        ++_projInfo->curCompInfo->currentFrame;
+        _projInfo->curCompInfo->ppCurrentFrame();
     }
 
     ProjectInfo *_projInfo;
-    VsTimer *timer= nullptr;
+    VsTimer *timer = nullptr;
 };

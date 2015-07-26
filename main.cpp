@@ -19,10 +19,10 @@ int main(int argc, char *argv[]) {
     VS_CONTEXT.add(VsEvent::INITED, onInitContext);
     VS_CONTEXT.run();
 //    FileWatcher *f = new FileWatcher();
-//    f->start("c:\\test");
+//    f->play("c:\\test");
 //    MainWin *m = new MainWin();
 //    m->show();
-//    m->start();
+//    m->play();
 //    App()._().test();
 //    while (1) { }
 //    while (!m->isClose) { }

@@ -9,5 +9,5 @@
 #define LINANIL_UI_HPP
 
 #endif //LINANIL_UI_HPP
-#include "events/Event.hpp"
+#include "Evt.hpp"
 #include "vs/Sprite.hpp"

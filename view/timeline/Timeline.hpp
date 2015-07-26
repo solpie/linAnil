@@ -10,7 +10,7 @@
 
 
 #include <model/TrackInfo.hpp>
-#include "events/Event.hpp"
+#include "events/Evt.hpp"
 #include <events/TrackModelEvent.hpp>
 #include <vs/ScrollBar.hpp>
 #include <model/App.hpp>
@@ -67,8 +67,10 @@ public:
         selectTrack = get_dispatcher(Track);
     }
 
-    void onNewTrack(TrackInfo *trackInfo) {
+    void onNewTrack(void* e) {
+        TrackInfo* trackInfo= get_paylaod(TrackInfo);
         Track *newTrack = new Track(trackInfo);
+//        _trackInfo->getTail();
 //        newTrack->setHideY(trackToolBar->height);
         add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
         addChildAt(newTrack, 0);

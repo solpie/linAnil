@@ -26,6 +26,8 @@ public:
 //        delete type;
     }
 
+    void *payload = nullptr;
+
     void *target = nullptr;
     string type;
     bool isAccept= false;

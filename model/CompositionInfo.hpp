@@ -29,7 +29,6 @@ public:
         _trackFrameInfotoRemoves = new vector<TrackFrameInfo *>();
     }
 
-    int currentFrame = 1;
     int width;
     int height;
     int frameRate;
@@ -60,7 +59,8 @@ public:
             while (itr != boost::filesystem::recursive_directory_iterator()) {
                 if (itr->path().extension() == ".png") {
                     ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
-                    cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " << imgInfo->width << " " <<
+                    cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " << imgInfo->width <<
+                    " " <<
                     imgInfo->height << " id:" << imgInfo->id << endl;
 
                     TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
@@ -86,7 +86,10 @@ public:
 //        if (sizeof(trackInfo->trackFrameInfos) > sequencePlayback->endFrameIdx) {
 //            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
 //        }
-        Evt_dis(TrackModelEvent::NEW_TRACK, trackInfo);
+//        Evt_dis(TrackModelEvent::NEW_TRACK);
+        BaseEvent *e = new BaseEvent;
+        e->payload = trackInfo;
+        Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
     }
 
     void R2R(TrackFrameInfo *handleTrackFrame) {
@@ -168,10 +171,17 @@ public:
         return _currentFrame;
     }
 
+    void setCurrentFrame(int v) {
+        _currentFrame = v;
+    }
+
+    void ppCurrentFrame() {
+        ++_currentFrame;
+    }
 
 private:
     //
-    int _currentFrame;
+    int _currentFrame = 1;
 
     void removeTrackFrameInfo(TrackFrameInfo *tfi, TrackInfo *trackInfo) {
         vector<TrackFrameInfo *>::iterator i = trackInfo->trackFrameInfos->begin();

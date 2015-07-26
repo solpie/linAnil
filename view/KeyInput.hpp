@@ -15,7 +15,7 @@ void onKeyDown(void *e) {
     if (keyEvent->key == GLFW_KEY_ESCAPE)
         VS_CONTEXT.close();
     else if (keyEvent->key == GLFW_KEY_SPACE) {
-        Evt_dis(PlaybackEvent::TOGGLE, nullptr)
+        Evt_ins.disEvent(PlaybackEvent::TOGGLE);
     }
 }
 

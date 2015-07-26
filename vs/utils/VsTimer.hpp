@@ -12,6 +12,7 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <vs/events/TimerEvent.hpp>
 #include "events/EventDispatcher.hpp"
 
 class Busy {
@@ -69,11 +70,15 @@ private:
     int _tickCount = 0;
 
     void _onRender() {
-        _lastFrameTime += VS_CONTEXT.getFrameTime();
-        if (_lastFrameTime > _delayInSec) {
-            ++_tickCount;
+        if (_isBusy) {
+            _lastFrameTime += VS_CONTEXT.getFrameTime();
+            if (_lastFrameTime > _delayInSec) {
+                ++_tickCount;
 //            cout << typeid(this).name() << "sec " <<_tickCount<< endl;
-            _lastFrameTime = _delayInSec - _lastFrameTime;
+
+                _lastFrameTime = _delayInSec - _lastFrameTime;
+                disEvent(TimerEvent::TICK);
+            }
         }
     }
 
