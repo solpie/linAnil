@@ -8,9 +8,9 @@ class Viewport : public VsObjContainer {
 
 public:
     Viewport() {
-        char file[128];
+//        char file[128];
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
-        imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
+//        imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
 
         hSplitter = new Splitter(Direction::Horizontal);
         addChild(hSplitter);
@@ -19,14 +19,14 @@ public:
     }
 
     void render() override {
-        fillRect(_3RGB(80), gX(), gY(), width, height);
-
+        //bg
+//        fillRect(_3RGB(80), gX(), gY(), width, height);
 
         ImageInfo *imageInfo;
         TrackInfo *trkInfo;
         vector<TrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
         for (int i = trkInfos->size() - 1; i > -1; --i) {
-            trkInfo = (TrackInfo *) trkInfos->at(i);
+            trkInfo = trkInfos->at(i);
             if (trkInfo->visible) {
                 imageInfo = trkInfo->getCurrentImageInfo();
                 if (imageInfo) {
@@ -68,7 +68,7 @@ public:
 
 private:
     Splitter *hSplitter;
-    int imagei;
+//    int imagei;
     Sprite *transport;
     float scale = 1;
 
