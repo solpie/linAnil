@@ -177,9 +177,9 @@ public:
 
     void increaseCurrentFrame() {
         ++_currentFrame;
-        for (TrackInfo *trkInfo:*_trackInfos) {
-
-        }
+    }
+    void decreaseCurrentFrame() {
+        --_currentFrame;
     }
 
     vector<TrackInfo *> *getTrackInfos() {

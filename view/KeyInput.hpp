@@ -17,6 +17,12 @@ void onKeyDown(void *e) {
     else if (keyEvent->key == GLFW_KEY_SPACE) {
         Evt_ins.disEvent(PlaybackEvent::TOGGLE);
     }
+    else if (keyEvent->key == GLFW_KEY_F) {
+        Evt_ins.disEvent(PlaybackEvent::FORWARD);
+    }
+    else if (keyEvent->key == GLFW_KEY_D) {
+        Evt_ins.disEvent(PlaybackEvent::BACKWARD);
+    }
 }
 
 void onKeyUp(void *e) {

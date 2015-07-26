@@ -20,6 +20,8 @@ public:
     FramesPlayback(ProjectInfo *projInfo) {
         _projInfo = projInfo;
         Evt_add(PlaybackEvent::TOGGLE, onToggle)
+        Evt_add(PlaybackEvent::FORWARD, onForward)
+        Evt_add(PlaybackEvent::BACKWARD, onBackward)
     }
 
     void play() {
@@ -42,6 +44,14 @@ public:
     int frameRate;
     int curFrameIdx;
 private:
+    void onForward(void *e) {
+        _projInfo->curCompInfo->increaseCurrentFrame();
+    }
+
+    void onBackward(void *e) {
+        _projInfo->curCompInfo->decreaseCurrentFrame();
+    }
+
     void onToggle(void *e) {
         if (state == PlaybackState::PAUSE) {
             play();
