@@ -13,12 +13,15 @@
 #include "vs/events/VsEvent.hpp"
 #include "TitleBar.hpp"
 #include <Splitter.hpp>
+#include <view/playback/FramesPlayback.hpp>
 #include "viewport/Viewport.hpp"
 #include "KeyInput.hpp"
 
 class Stage : public VsObjContainer {
 public:
     Stage() {
+
+        framesPlayback = new FramesPlayback(_proj);
 //        add_event_on_context(KeyEvent::DOWN,onKey)
         VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);
         VS_CONTEXT.add(KeyEvent::UP, onKeyUp);
@@ -72,7 +75,7 @@ public:
     }
 
 private:
-    int images[12];
+    FramesPlayback *framesPlayback;
     Splitter *vSplitter;
     Splitter *hSplitter;
 

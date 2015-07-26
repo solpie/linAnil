@@ -1,13 +1,8 @@
 #include "Stage.hpp"
-#include "model/App.hpp"
 
 Stage *stage = nullptr;
 
-#include "vs/utils/VsTimer.hpp"
-VsTimer *t;
 void test() {
-    t = new VsTimer(1000);
-    t->start();
 }
 
 void onInitContext(void *e) {

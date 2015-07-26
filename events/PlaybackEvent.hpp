@@ -13,5 +13,5 @@ public:
     static constexpr const char *PLAY = "PLAY";
     static constexpr const char *PAUSE = "PAUSE";
     static constexpr const char *STOP = "STOP";
-
+    static constexpr const char *TOGGLE = "togglePlayPause";
 };

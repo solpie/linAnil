@@ -21,12 +21,12 @@ public:
 
     void init() {
         projInfo = new ProjectInfo;
+        //default Comp
     }
 
 
     void test() {
         projInfo->newComposition("comp1", 1280, 720, 24, 300);
-
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
         projInfo->curCompInfo->newTrack("number", "D:/projects/linAnil/test/test30/");

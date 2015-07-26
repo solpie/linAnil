@@ -67,12 +67,13 @@ public:
 private:
     double _lastFrameTime;
     int _tickCount = 0;
+
     void _onRender() {
         _lastFrameTime += VS_CONTEXT.getFrameTime();
         if (_lastFrameTime > _delayInSec) {
             ++_tickCount;
 //            cout << typeid(this).name() << "sec " <<_tickCount<< endl;
-            _lastFrameTime = 0;
+            _lastFrameTime = _delayInSec - _lastFrameTime;
         }
     }
 
