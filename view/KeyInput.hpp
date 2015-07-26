@@ -10,10 +10,14 @@
 
 #include "vs/events/KeyEvent.hpp"
 #include "events/PlaybackEvent.hpp"
+
 void onKeyDown(void *e) {
     KeyEvent *keyEvent = (KeyEvent *) e;
-    if (keyEvent->key == GLFW_KEY_ESCAPE)
+    if (keyEvent->key == GLFW_KEY_F4 && keyEvent->isAlt)
         VS_CONTEXT.close();
+    else if (keyEvent->key == GLFW_KEY_ESCAPE) {
+        Evt_ins.disEvent(PlaybackEvent::STOP);
+    }
     else if (keyEvent->key == GLFW_KEY_SPACE) {
         Evt_ins.disEvent(PlaybackEvent::TOGGLE);
     }

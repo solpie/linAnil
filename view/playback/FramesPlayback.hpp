@@ -20,12 +20,14 @@ public:
     FramesPlayback(ProjectInfo *projInfo) {
         _projInfo = projInfo;
         Evt_add(PlaybackEvent::TOGGLE, onToggle)
+        Evt_add(PlaybackEvent::STOP, onStop)
         Evt_add(PlaybackEvent::FORWARD, onForward)
         Evt_add(PlaybackEvent::BACKWARD, onBackward)
     }
 
     void play() {
         init();
+        _lastStopFrame = _proj->curCompInfo->getCurrentFrame();
         timer->start();
         state = PlaybackState::PLAY;
     }
@@ -37,18 +39,21 @@ public:
 
     void stop() {
         pause();
-        curFrameIdx = 1;
+        _projInfo->curCompInfo->setCurrentFrame(_lastStopFrame);
     }
-
     int state = PlaybackState::PAUSE;
-    int frameRate;
-    int curFrameIdx;
 private:
+    int _lastStopFrame=1;
+    void onStop(void *e) {
+        stop();
+    }
     void onForward(void *e) {
+        _lastStopFrame = _proj->curCompInfo->getCurrentFrame();
         _projInfo->curCompInfo->increaseCurrentFrame();
     }
 
     void onBackward(void *e) {
+        _lastStopFrame = _proj->curCompInfo->getCurrentFrame();
         _projInfo->curCompInfo->decreaseCurrentFrame();
     }
 

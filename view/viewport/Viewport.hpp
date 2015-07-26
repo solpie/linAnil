@@ -23,17 +23,21 @@ public:
 
 
         ImageInfo *imageInfo;
+        TrackInfo *trkInfo;
         vector<TrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
         for (int i = trkInfos->size() - 1; i > -1; --i) {
-            imageInfo = ((TrackInfo *) trkInfos->at(i))->getCurrentImageInfo();
-            if (imageInfo) {
-                nvgBeginPath(vg);
-                nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
-                nvgFillPaint(vg, nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale, 0,
+            trkInfo = (TrackInfo *) trkInfos->at(i);
+            if (trkInfo->visible) {
+                imageInfo = trkInfo->getCurrentImageInfo();
+                if (imageInfo) {
+                    nvgBeginPath(vg);
+                    nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
+                    nvgFillPaint(vg,
+                                 nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale, 0,
                                                  imageInfo->id, 1));
-                nvgFill(vg);
+                    nvgFill(vg);
+                }
             }
-
         }
         VS_RENDER_CHILDREN();
     }

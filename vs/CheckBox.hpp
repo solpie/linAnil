@@ -19,8 +19,9 @@ public:
     bool isChecked = false;
 
 protected:
-    void onUp(MouseEvent *e) {
+    void onUp(void *e) {
         isChecked = !isChecked;
+        disEvent(VsEvent::CHANGED);
     }
 
     virtual void onDraw() override {

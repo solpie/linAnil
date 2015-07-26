@@ -27,6 +27,7 @@ public:
         trackVisibleBox->isChecked = true;
         trackVisibleBox->setX(200);
         trackVisibleBox->setY(10);
+        add_event_on(trackVisibleBox, VsEvent::CHANGED, onVisible)
         addChild(trackVisibleBox);
 
         vSlider = new Slider();
@@ -57,7 +58,7 @@ public:
         }
         _pressFlag = 0;
         _isPress = false;
-        if(_handleTrackFrameInfo) {
+        if (_handleTrackFrameInfo) {
             dumpTrackFrameInfo(_handleTrackFrameInfo);
         }
         _handleTrackFrameInfo = nullptr;
@@ -341,6 +342,10 @@ private:
             }
         }
 
+    }
+
+    void onVisible(void *e) {
+        _trackInfo->visible = trackVisibleBox->isChecked;
     }
 
     int _hy;
