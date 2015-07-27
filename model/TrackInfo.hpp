@@ -11,27 +11,20 @@
 #endif //SEQTRUAN_TRACKINFO_HPP
 
 #include "vs/VsColor.hpp"
+#include "BaseTrackInfo.hpp"
 
 using namespace std;
 
 
-class TrackInfo : public OneLinker<TrackInfo> {
+class TrackInfo : public BaseTrackInfo {
 public:
-    TrackInfo(string name) {
-        this->name = name;
+    TrackInfo(string n, int t) : BaseTrackInfo(n, t) {
         trackFrameInfos = new vector<TrackFrameInfo *>();
     };
-    string name;
     vector<TrackFrameInfo *> *trackFrameInfos;
-    int idx;
-    VsColor color;
-
-    int getEndFrame() {
-        return _endFrame;
-    }
 
 
-    int getFrameCount() {
+    int getFrameCount() override {
         int count = 0;
         for (TrackFrameInfo *trackFrameInfo:*trackFrameInfos) {
             count += trackFrameInfo->getHoldFrame();
@@ -42,18 +35,11 @@ public:
 
     int getCurTrackFrameIdx() { return _trackFrameIdx; };
 
-    int getStartFrame() { return _startFrame; }
-
-    void setStartFrame(int v) {
-        _startFrame = v;
-        _endFrame = v + getFrameCount();
-    }
 
     double getOpacity() { return _opacity; }
 
     void setOpacity(double v) { _opacity = v; }
 
-    bool visible = true;
 
     void append(TrackFrameInfo *a) {
         trackFrameInfos->push_back(a);
@@ -90,11 +76,7 @@ public:
 protected:
     TrackFrameInfo *_head = nullptr;
 
-    int _endFrame = 1;
-    int _startFrame = 1;
-
     double _opacity = 1;
 private:
     int _trackFrameIdx = -1;
-
 };

@@ -17,7 +17,6 @@
 
 using namespace boost;
 
-#include <stack>
 #include <view/Theme.hpp>
 #include "events/TrackModelEvent.hpp"
 #include "ImageLoader.hpp"
@@ -46,9 +45,9 @@ public:
     }
 
 
-    void newTrack(string name, string dirname = "") {
+    void newTrack(string name, string dirname = "", int type = TrackType::Image) {
 //    Evt_add("type", func1);
-        TrackInfo *trackInfo = new TrackInfo(name);
+        TrackInfo *trackInfo = new TrackInfo(name, type);
         trackInfo->idx = _trackInfos->size();
         _trackInfos->push_back(trackInfo);
         if (_trackInfo == nullptr)
