@@ -18,7 +18,6 @@ public:
     }
 
     ProjectInfo *projInfo;
-
     void init() {
         projInfo = new ProjectInfo;
         //default Comp

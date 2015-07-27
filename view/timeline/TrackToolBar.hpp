@@ -14,7 +14,7 @@
 class TrackToolBar : public VsObjContainer {
 public:
     TrackToolBar() {
-        height = 45;
+        height = 36;
         width = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     }
 

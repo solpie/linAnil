@@ -6,7 +6,7 @@
 class TimestampBar : public Sprite {
 public:
     TimestampBar() {
-        height = 45;
+        height = 35;
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
@@ -70,10 +70,42 @@ public:
                 }
             }
             int barX = float(_value);
+
+
+
+
+
+
+//            nvgBeginPath(vg);
+//            nvgRoundedRect(vg, gX() + barX, gY() + 2, barWidth, scrollBarHeight, 5);
+//            nvgStrokeColor(vg, _3RGB(20));
+//            nvgStrokeWidth(vg, 1);
+//            nvgStroke(vg);
+//            nvgFillPaint(vg, nvgLinearGradient(vg, gX() + barX, gY()+2, gX() + barX, gY() + scrollBarHeight,
+//                                               _3RGB(76), _3RGB(64)));
+//            nvgFill(vg);
+
+            int gBarX = gX() + barX;
+
             nvgBeginPath(vg);
-            nvgRect(vg, gX() + barX, gY(), barWidth, scrollBarHeight);
-            nvgFillColor(vg, nvgRGB(88, 88, 88));
-            nvgFill(vg);
+            vsLineWidthColor(vg, 1, _3RGB(30));
+            vsLineRect(vg, gBarX, gY(), barWidth, scrollBarHeight);
+            vsLine(vg);
+
+
+            nvgBeginPath(vg);
+            vsLineWidthColor(vg, 1, _3RGB(90));
+            vsLineRect(vg, gBarX + 1, gY() + 1, barWidth - 2, scrollBarHeight - 2);
+            vsLine(vg);
+            fillRect(_3RGB(80), gBarX + 2, gY() + 2, barWidth - 4, scrollBarHeight - 4)
+
+            if (isMouseInRect(gBarX, gY(), barWidth, scrollBarHeight)) {
+                fillRect(_3RGB(100), gBarX + 4, gY() + 4, 2, 6)
+                fillRect(_3RGB(100), gBarX + barWidth - 6, gY() + 4, 2, 6)
+            }
+
+//            fillRect(_3RGB(20), gX() + barX + 5, gY()+1, barWidth - 10, 1)
+//            fillRect(_3RGB(88), gX() + barX + 4, gY()+1, barWidth - 8, 1)
         }
         int scrollValue = getValue();
 
@@ -101,19 +133,18 @@ public:
                 nvgFill(vg);
 
                 fillRect(nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER), cursorPx, gY() + height - 18, frameWidth, 3)
-
             }
 
         }
         //border
-        int borderTop =gY() + height - 20;
-        fillRect(nvgRGB(29,29,29), gX(), borderTop, width, 1)
-        fillRect(nvgRGB(54,54,54), gX(), borderTop+1, width, 1)
+        int borderTop = gY() + height - 20;
+        fillRect(nvgRGB(29, 29, 29), gX(), borderTop, width, 1)
+        fillRect(nvgRGB(54, 54, 54), gX(), borderTop + 1, width, 1)
 
         {//timestamp
             int fY = gY() + height - 10;
             int fCount = scrollValue / frameWidth;
-            int sY = gY() + 30;
+            int sY = gY() + 20;
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
             for (int fX = -(scrollValue % frameWidth); fX < width; fX += frameWidth) {
@@ -166,7 +197,7 @@ private:
     int _value = 0;
     int _lastX, _lastY;
     int _cursorFrameHeight = 300;
-    int scrollBarHeight = 20;
+    int scrollBarHeight = 15;
     bool isPressScrollBar = false;
     bool isPressTimestamp = false;
 };

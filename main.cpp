@@ -1,8 +1,10 @@
 #include "Stage.hpp"
-
 Stage *stage = nullptr;
 
+#include "view/timeline/WaveForm.hpp"
 void test() {
+    WaveForm w;
+    w.test();
 }
 
 void onInitContext(void *e) {

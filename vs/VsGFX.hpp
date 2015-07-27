@@ -29,7 +29,7 @@ void vsLineTo(NVGcontext *vg, int x, int y) {
         if (x > _lineInfo.x)
             nvgRect(vg, _lineInfo.x, _lineInfo.y, x - _lineInfo.x, _lineInfo.width);
         else if (x < _lineInfo.x)
-            nvgRect(vg, x, y, _lineInfo.x - x, _lineInfo.width);
+            nvgRect(vg, x, y, _lineInfo.x - x+1, _lineInfo.width);
     }
     else if (x == _lineInfo.x) {
         if (y > _lineInfo.y)
@@ -42,13 +42,17 @@ void vsLineTo(NVGcontext *vg, int x, int y) {
     _lineInfo.x = x;
     _lineInfo.y = y;
 }
-
+//inner frame line
 void vsLineRect(NVGcontext *vg, int x, int y, int width, int height) {
     vsMoveTo(vg, x, y);
-    vsLineTo(vg, x + width, y);
-    vsLineTo(vg, x + width, y + height);
-    vsLineTo(vg, x, y + height);
+    vsLineTo(vg, x + width-1, y);
+    vsLineTo(vg, x + width-1, y + height-1);
+    vsLineTo(vg, x, y + height-1);
     vsLineTo(vg, x, y);
+}
+
+void vsLine(NVGcontext *vg) {
+    nvgFill(vg);
 }
 
 #define fillRect(col, x, y, w, h) vg=VG_CONTEXT;\

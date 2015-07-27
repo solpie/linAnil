@@ -51,10 +51,11 @@ view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
 vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp
- vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp)
+ vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp view/timeline/WaveForm.hpp view/timeline/AudioTrack.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)
+target_link_libraries(linAnil :libsndfile.dll.a)
 #target_link_libraries(linAnil :libwinpthread.a)
 #target_link_libraries(linAnil :libglew32.dll.a)
 #target_link_libraries(linAnil :libglew32.a)
@@ -66,6 +67,11 @@ set(BIN_DIR ${CMAKE_CXX_COMPILER}/../../bin)
 file(COPY ${BIN_DIR}/libwinpthread-1.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glew32.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glfw3.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libsndfile-1.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libFLAC-8.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libogg-0.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libvorbis-0.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libvorbisenc-2.dll DESTINATION .)
 
 #copy res
 file(GLOB FONTS "vs/fonts/*.ttf")
