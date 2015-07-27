@@ -12,8 +12,8 @@
 class AudioTrack : public Sprite {
 public:
     AudioTrack() {
-        samples = new vector<float>;
+
     }
 
-    vector<float> *samples;
+
 };
