@@ -87,6 +87,7 @@ public:
 //            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
 //        }
 //        Evt_dis(TrackModelEvent::NEW_TRACK);
+        updateContentEndFrame();
         BaseEvent *e = new BaseEvent;
         e->payload = trackInfo;
         Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
@@ -97,6 +98,7 @@ public:
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() + 1);
         }, handleTrackFrame->next);
+        updateContentEndFrame();
     }
 
     void R2L(TrackFrameInfo *handleTrackFrame) {
@@ -104,6 +106,7 @@ public:
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() - 1);
         }, handleTrackFrame);
+        updateContentEndFrame();
 //        dumpTrackFrameIdx(trackInfo);
     }
 
@@ -151,7 +154,7 @@ public:
         else {
             removeTrackFrameInfo(handleTrackFrame, trackInfo);
         }
-
+        updateContentEndFrame();
         dumpTrackFrameIdx(trackInfo);
     }
 
@@ -176,19 +179,40 @@ public:
     }
 
     void increaseCurrentFrame() {
-        ++_currentFrame;
+        _currentFrame = (_currentFrame % _contentEndFrame) + 1;
     }
+
     void decreaseCurrentFrame() {
-        --_currentFrame;
+        if (_currentFrame == 1)
+            _currentFrame = _contentEndFrame;
+        else
+            --_currentFrame;
     }
 
     vector<TrackInfo *> *getTrackInfos() {
         return _trackInfos;
     }
 
+    //
+    void updateContentEndFrame() {
+        if (_trackInfo) {
+            int endFrame = 0;
+
+            _trackInfo->foreach([&](TrackInfo *trkInfo) {
+                endFrame = trkInfo->trackFrameInfos->back()->getEndFrame();
+                if (endFrame > _contentEndFrame)
+                    _contentEndFrame = endFrame;
+            });
+
+            cout << typeid(this).name() << " update content end frame:" << _contentEndFrame << endl;
+        }
+    }
+
 private:
     //
     int _currentFrame = 1;
+
+    int _contentEndFrame = 0;
 
     void removeTrackFrameInfo(TrackFrameInfo *tfi, TrackInfo *trackInfo) {
         vector<TrackFrameInfo *>::iterator i = trackInfo->trackFrameInfos->begin();
@@ -210,9 +234,7 @@ private:
     }
 
 
-    vector<TrackFrameInfo *> *_trackFrameInfotoRemoves;
-
-
     TrackInfo *_trackInfo = nullptr;
+    vector<TrackFrameInfo *> *_trackFrameInfotoRemoves;
     vector<TrackInfo *> *_trackInfos;
 };

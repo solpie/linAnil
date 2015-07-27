@@ -41,7 +41,8 @@ public:
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
 
-        setColor(99, 138, 20);
+//        setColor(99, 138, 20);
+        setColor(52, 52, 52);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -66,9 +67,8 @@ public:
     }
 
     void onDown(void *e) {
-        _lastX = _lastY = 0;
-        _hideX = VS_CONTEXT.cursor.x;
-        _hideY = VS_CONTEXT.cursor.y;
+        _lastX = _hideX = VS_CONTEXT.cursor.x;
+        _lastY = _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
         VsEvent *vse = new VsEvent();
         vse->type = VsEvent::SELECTED;
@@ -169,13 +169,14 @@ private:
                     dragBarX = gX() + _trackLeft;
             }
 
-            {//update render frame idx
-                if (currentRenderFrame > -1 && currentRenderFrame >= tfi->getStartFrame() &&
-                    currentRenderFrame <= tfi->getEndFrame()) {
-                    _trackInfo->setCurrenTrackFrameIdx(tfi->getIdx());
-                    currentRenderFrame = -1;//break;
-                }
+            //update render frame idx
+            if (currentRenderFrame > -1
+                && currentRenderFrame >= tfi->getStartFrame() + _trackInfo->getStartFrame() - 1
+                && currentRenderFrame <= tfi->getEndFrame() + _trackInfo->getStartFrame() - 1) {
+                _trackInfo->setCurrenTrackFrameIdx(tfi->getIdx());
+                currentRenderFrame = -1;//break;
             }
+
 
             thumbWidth = frameWidth * tfi->getHoldFrame();
             if (tx < gX() + _trackLeft) {
@@ -233,8 +234,7 @@ private:
 
         //drag bar
         if (hasThumbDrawing && lastTrackFrameHoldCount) {
-            int dragWidth = tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1;
-            fillRect(_3RGB(20), dragBarX, gY() + 1, dragWidth, _trackDragBarHeight);
+            drawDragBar(dragBarX, tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1);
         }
 
         if (hoverTx != 0) {//hover mask
@@ -245,10 +245,32 @@ private:
         }
     }
 
+    void drawDragBar(int dragBarX, int dragWidth) {
+        fillRect(_3RGB(29), dragBarX, gY(), dragWidth, 1);
+        fillRect(_3RGB(60), dragBarX, gY() + 1, dragWidth, 1);
+        if (_isPress && isMouseInRect(dragBarX, gY(), dragWidth, _trackDragBarHeight + 2)) {
+            int dx = VS_CONTEXT.cursor.x - _lastX;
+            if (dx != 0) {
+                if (dx < -_dragSense) {
+                    _trackInfo->setStartFrame(_trackInfo->getStartFrame() - 1);
+                    _lastX = VS_CONTEXT.cursor.x;
+                }
+                else if (dx > _dragSense) {
+                    _trackInfo->setStartFrame(_trackInfo->getStartFrame() + 1);
+                    _lastX = VS_CONTEXT.cursor.x;
+                }
+            }
+            fillRect(_3RGB(52), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+        }
+        else {
+            fillRect(_3RGB(47), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+        }
+    }
+
     void drawBlockHint(bool isHoverLeft, int hoverTx, int hoverTWidth) {
         //left block
         int blockWidth = 5;
-        int blockY = gY() + _trackDragBarHeight + 1;
+        int blockY = gY() + _trackDragBarHeight + 2;
         NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
         NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
         if (isHoverLeft) {
@@ -350,7 +372,7 @@ private:
     }
 
     void onOpacity(void *e) {
-        _trackInfo->setOpacity(double(vSlider->getValue())/(100));
+        _trackInfo->setOpacity(double(vSlider->getValue()) / (100));
     }
 
     int _hy;

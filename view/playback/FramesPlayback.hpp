@@ -41,12 +41,16 @@ public:
         pause();
         _projInfo->curCompInfo->setCurrentFrame(_lastStopFrame);
     }
+
     int state = PlaybackState::PAUSE;
 private:
-    int _lastStopFrame=1;
+    int _lastStopFrame = 1;
+
     void onStop(void *e) {
-        stop();
+        if (timer)
+            stop();
     }
+
     void onForward(void *e) {
         _lastStopFrame = _proj->curCompInfo->getCurrentFrame();
         _projInfo->curCompInfo->increaseCurrentFrame();

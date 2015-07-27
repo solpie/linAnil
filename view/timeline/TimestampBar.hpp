@@ -100,11 +100,16 @@ public:
                                                    colLeft, colRight));
                 nvgFill(vg);
 
-                fillRect(nvgRGBA(COLOR_TITLEBAR_BOTTOM_BORDER, 180), cursorPx, gY() + height - 15, frameWidth, 15)
+                fillRect(nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER), cursorPx, gY() + height - 18, frameWidth, 3)
 
             }
 
         }
+        //border
+        int borderTop =gY() + height - 20;
+        fillRect(nvgRGB(29,29,29), gX(), borderTop, width, 1)
+        fillRect(nvgRGB(54,54,54), gX(), borderTop+1, width, 1)
+
         {//timestamp
             int fY = gY() + height - 10;
             int fCount = scrollValue / frameWidth;
@@ -112,16 +117,15 @@ public:
             char str[10];
             nvgScissor(vg, gX(), gY(), width, height);
             for (int fX = -(scrollValue % frameWidth); fX < width; fX += frameWidth) {
-                {//track name
-                    nvgFontFace(vg, "sans");
-                    nvgFontSize(vg, 14.0f);
-                    nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-                    nvgFillColor(vg, nvgRGB(240, 240, 240));
-                    sprintf(str, "%d", fCount++);
-                    nvgText(vg, gX() + fX + 4, sY, str, nullptr);
+                //track name
+                nvgFontFace(vg, "sans");
+                nvgFontSize(vg, 14.0f);
+                nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+                nvgFillColor(vg, nvgRGB(240, 240, 240));
+                sprintf(str, "%d", fCount++);
+                nvgText(vg, gX() + fX + 4, sY, str, nullptr);
 //                    nvgTextBounds(vg, gX() + fX + 4, sY, str, nullptr);
 //                    nvgSave(vg);
-                }
                 //tick line
                 fillRect(_3RGB(20), gX() + fX, fY, 1, 10);
             }
