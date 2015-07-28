@@ -21,6 +21,7 @@ using namespace boost;
 #include <view/Theme.hpp>
 #include "events/TrackModelEvent.hpp"
 #include "ImageLoader.hpp"
+#include "AudioTrackInfo.hpp"
 
 class CompositionInfo {
 public:
@@ -46,7 +47,7 @@ public:
     }
 
 
-    void newTrack(string name, string dirname = "", int type=TrackType::Image) {
+    void newTrack(string name, string dirname = "", int type = TrackType::Image) {
 //    Evt_add("type", func1);
         if (type == TrackType::Image) {
             TrackInfo *trackInfo = new TrackInfo(name, TrackType::Image);
@@ -95,7 +96,8 @@ public:
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
         else if (type == TrackType::Audio) {
-
+            AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(name);
+            audioTrackInfo->load(dirname);
         }
 
     }

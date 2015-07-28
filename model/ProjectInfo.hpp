@@ -17,7 +17,7 @@ public:
 
     CompositionInfo *curCompInfo = nullptr;
 
-    void newComposition(string name, int width, int height, int frameRate, int duration) {
+    CompositionInfo * newComposition(string name, int width, int height, int frameRate, int duration) {
         CompositionInfo *comp = new CompositionInfo();
         comp->name = name;
         comp->width = width;
@@ -26,5 +26,6 @@ public:
         comp->durationFrame = duration;
         if (!curCompInfo)
             curCompInfo = comp;
+        return comp;
     }
 };

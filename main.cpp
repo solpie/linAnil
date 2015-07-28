@@ -2,8 +2,6 @@
 Stage *stage = nullptr;
 
 //test
-//#include "view/timeline/WaveForm.hpp"
-#include "model/AudioTrackInfo.hpp"
 void test() {
 //    WaveForm w;
 //    w.test();
