@@ -28,7 +28,7 @@ private:
         int left = _scrollPosX + gX() + _trackLeft;
 
         //todo save to bitmap
-//        drawWaveLineMix(_audioTrackInfo->mix);
+        drawWaveLineMix(_audioTrackInfo->mix);
 
 //        drawWaveLine(_audioTrackInfo->chR,false);
 
@@ -52,12 +52,12 @@ private:
     void drawWaveLineMix(vector<float> *chL){
         int left = _scrollPosX + gX() + _trackLeft;
         int py = gY() + height / 2;
+
         nvgBeginPath(vg);
         nvgMoveTo(vg, left, py);
         for (int i = 0; i < chL->size(); i += _step) {
             nvgLineTo(vg, left + i / _step, py - (chL->at(i) * height));
         }
-//        nvgLineTo(vg, left, py);
         nvgStrokeColor(vg, _3RGB(200));
         nvgStroke(vg);
     }

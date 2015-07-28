@@ -60,8 +60,11 @@ vs/events/ErrorEvent.hpp
 view/viewport/Viewport.hpp
  vs/events/KeyEvent.hpp
  view/tools/ColorWheel.hpp
- vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp
-view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp)
+ model/AudioTrackInfo.hpp
+ view/playback/altest.hpp
+ vs/VsGFX.hpp
+ vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp
+view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)
@@ -72,6 +75,7 @@ target_link_libraries(linAnil openAL32)
 #target_link_libraries(linAnil libglew32)
 #target_link_libraries(linAnil libglfw3)
 target_link_libraries(linAnil sndfile)
+target_link_libraries(linAnil portaudio)
 #target_link_libraries(linAnil :libogg.dll.a)
 #target_link_libraries(linAnil :libogg.a)
 #target_link_libraries(linAnil :libvorbis.a)

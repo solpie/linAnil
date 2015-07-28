@@ -2,10 +2,13 @@
 Stage *stage = nullptr;
 
 //test
+#include "model/AudioTrackInfo.hpp"
+#include "view/playback/altest.hpp"
 void test() {
 //    WaveForm w;
 //    w.test();
 //    test1();
+    test2();
 }
 
 void onInitContext(void *e) {
