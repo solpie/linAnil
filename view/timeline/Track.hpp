@@ -10,12 +10,12 @@
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
 #include "vs/Sprite.hpp"
-
+#include "BaseTrack.hpp"
 enum PressFlag {
     Left = 1, Right
 };
 
-class Track : public OneLinker<Track>, public Sprite {
+class Track : public BaseTrack {
 public:
     Track(TrackInfo *trackInfo) {
         _trackInfo = trackInfo;

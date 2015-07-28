@@ -23,19 +23,24 @@ public:
 //        fillRect(_3RGB(80), gX(), gY(), width, height);
 
         ImageInfo *imageInfo;
+        BaseTrackInfo *trkInfob;
         TrackInfo *trkInfo;
-        vector<TrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
+        vector<BaseTrackInfo *> *trkInfos = _proj->curCompInfo->getTrackInfos();
         for (int i = trkInfos->size() - 1; i > -1; --i) {
-            trkInfo = trkInfos->at(i);
-            if (trkInfo->visible) {
-                imageInfo = trkInfo->getCurrentImageInfo();
-                if (imageInfo) {
-                    nvgBeginPath(vg);
-                    nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
-                    nvgFillPaint(vg,
-                                 nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale, 0,
-                                                 imageInfo->id, trkInfo->getOpacity()));
-                    nvgFill(vg);
+            trkInfob = trkInfos->at(i);
+            if (trkInfob->type == TrackType::Image) {
+                trkInfo = (TrackInfo *) trkInfob;
+                if (trkInfo->visible) {
+                    imageInfo = trkInfo->getCurrentImageInfo();
+                    if (imageInfo) {
+                        nvgBeginPath(vg);
+                        nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
+                        nvgFillPaint(vg,
+                                     nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale,
+                                                     imageInfo->height * scale, 0,
+                                                     imageInfo->id, trkInfo->getOpacity()));
+                        nvgFill(vg);
+                    }
                 }
             }
         }

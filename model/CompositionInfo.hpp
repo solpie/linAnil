@@ -26,7 +26,7 @@ using namespace boost;
 class CompositionInfo {
 public:
     CompositionInfo() {
-        _trackInfos = new vector<TrackInfo *>();
+        _trackInfos = new vector<BaseTrackInfo *>();
         _trackFrameInfotoRemoves = new vector<TrackFrameInfo *>();
     }
 
@@ -53,8 +53,8 @@ public:
             TrackInfo *trackInfo = new TrackInfo(name, TrackType::Image);
             trackInfo->idx = _trackInfos->size();
             _trackInfos->push_back(trackInfo);
-            if (_trackInfo == nullptr)
-                _trackInfo = trackInfo;
+            if (_trackInfoHead == nullptr)
+                _trackInfoHead = trackInfo;
             TrackFrameInfo *pre = nullptr;
             if (dirname != "") {
                 boost::filesystem::recursive_directory_iterator itr(dirname);
@@ -139,11 +139,10 @@ public:
             TrackFrameInfo *delTfi = _trackFrameInfotoRemoves->back();
             _trackFrameInfotoRemoves->pop_back();
 
-
             //insert
             delTfi->setPre(handleTrackFrame->pre);
             handleTrackFrame->setPre(delTfi);
-            _trackInfo->trackFrameInfos->insert(_trackInfo->trackFrameInfos->begin() + delTfi->getIdx(), delTfi);
+            _trackInfoHead->trackFrameInfos->insert(_trackInfoHead->trackFrameInfos->begin() + delTfi->getIdx(), delTfi);
             handleTrackFrame->foreach([](TrackFrameInfo *tfiBackward) {
                 tfiBackward->setIdx(tfiBackward->getIdx() + 1);
             }, handleTrackFrame);
@@ -198,16 +197,16 @@ public:
             --_currentFrame;
     }
 
-    vector<TrackInfo *> *getTrackInfos() {
+    vector<BaseTrackInfo *> *getTrackInfos() {
         return _trackInfos;
     }
 
     //
     void updateContentEndFrame() {
-        if (_trackInfo) {
+        if (_trackInfoHead) {
             int endFrame = 0;
 
-            _trackInfo->foreach([&](TrackInfo *trkInfo) {
+            _trackInfoHead->foreach([&](TrackInfo *trkInfo) {
                 endFrame = trkInfo->trackFrameInfos->back()->getEndFrame();
                 if (endFrame > _contentEndFrame)
                     _contentEndFrame = endFrame;
@@ -243,7 +242,7 @@ private:
     }
 
 
-    TrackInfo *_trackInfo = nullptr;
+    TrackInfo *_trackInfoHead = nullptr;
     vector<TrackFrameInfo *> *_trackFrameInfotoRemoves;
-    vector<TrackInfo *> *_trackInfos;
+    vector<BaseTrackInfo *> *_trackInfos;
 };

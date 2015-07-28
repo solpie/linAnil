@@ -61,7 +61,7 @@ view/viewport/Viewport.hpp
  vs/events/KeyEvent.hpp
  view/tools/ColorWheel.hpp
  vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp view/timeline/WaveForm.hpp
-view/timeline/AudioTrack.hpp)
+view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)

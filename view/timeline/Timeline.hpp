@@ -18,6 +18,7 @@
 #include "TrackToolBar.hpp"
 #include "Track.hpp"
 #include "TimestampBar.hpp"
+#include "AudioTrack.hpp"
 
 class Timeline : public VsObjContainer {
 public:
@@ -67,27 +68,35 @@ public:
         selectTrack = get_dispatcher(Track);
     }
 
-    void onNewTrack(void* e) {
-        TrackInfo* trackInfo= get_paylaod(TrackInfo);
-        Track *newTrack = new Track(trackInfo);
-//        _trackInfo->getTail();
+    void onNewTrack(void *e) {
+        BaseTrackInfo *trkInfob = get_paylaod(BaseTrackInfo);
+        if (trkInfob->type == TrackType::Image) {
+            TrackInfo *trackInfo = get_paylaod(TrackInfo);
+            Track *newTrack = new Track(trackInfo);
+//        _trackInfoHead->getTail();
 //        newTrack->setHideY(trackToolBar->height);
-        add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
-        addChildAt(newTrack, 0);
-        if (!headTrack) {
-            headTrack = newTrack;
-            newTrack->setY(trackToolBar->height);
+            add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
+            addChildAt(newTrack, 0);
+            if (!headTrack) {
+                headTrack = newTrack;
+                newTrack->setY(trackToolBar->height);
+            }
+            else {
+                Track *tail = headTrack->getTail();
+                newTrack->setY(tail->y() + tail->height);
+                newTrack->setPre(tail);
+            }
+            int totalHeight = 0;
+            headTrack->foreach([&](Track *track) {
+                totalHeight += track->height;
+            });
+            vScrollBar->setContent(totalHeight);
         }
-        else {
-            Track *tail = headTrack->getTail();
-            newTrack->setY(tail->y() + tail->height);
-            newTrack->setPre(tail);
+        else if (trkInfob->type == TrackType::Audio) {
+            AudioTrackInfo *audioTrackInfo = get_paylaod(AudioTrackInfo);
+            AudioTrack *audioTrack = new AudioTrack();
+
         }
-        int totalHeight = 0;
-        headTrack->foreach([&](Track *track) {
-            totalHeight += track->height;
-        });
-        vScrollBar->setContent(totalHeight);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
