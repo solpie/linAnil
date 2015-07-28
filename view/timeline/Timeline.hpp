@@ -70,33 +70,39 @@ public:
 
     void onNewTrack(void *e) {
         BaseTrackInfo *trkInfob = get_paylaod(BaseTrackInfo);
+        BaseTrack *newBaseTrack;
         if (trkInfob->type == TrackType::Image) {
             TrackInfo *trackInfo = get_paylaod(TrackInfo);
             Track *newTrack = new Track(trackInfo);
+            newBaseTrack = newTrack;
 //        _trackInfoHead->getTail();
 //        newTrack->setHideY(trackToolBar->height);
-            add_event_on(newTrack, VsEvent::SELECTED, onSelTrack)
-            addChildAt(newTrack, 0);
-            if (!headTrack) {
-                headTrack = newTrack;
-                newTrack->setY(trackToolBar->height);
-            }
-            else {
-                Track *tail = headTrack->getTail();
-                newTrack->setY(tail->y() + tail->height);
-                newTrack->setPre(tail);
-            }
-            int totalHeight = 0;
-            headTrack->foreach([&](Track *track) {
-                totalHeight += track->height;
-            });
-            vScrollBar->setContent(totalHeight);
+
         }
         else if (trkInfob->type == TrackType::Audio) {
             AudioTrackInfo *audioTrackInfo = get_paylaod(AudioTrackInfo);
-            AudioTrack *audioTrack = new AudioTrack();
-
+            AudioTrack *audioTrack = new AudioTrack(audioTrackInfo);
+            newBaseTrack = audioTrack;
         }
+
+
+
+        add_event_on(newBaseTrack, VsEvent::SELECTED, onSelTrack)
+        addChildAt(newBaseTrack, 0);
+        if (!headTrack) {
+            headTrack = newBaseTrack;
+            newBaseTrack->setY(trackToolBar->height);
+        }
+        else {
+            BaseTrack *tail = headTrack->getTail();
+            newBaseTrack->setY(tail->y() + tail->height);
+            newBaseTrack->setPre(tail);
+        }
+        int totalHeight = 0;
+        headTrack->foreach([&](BaseTrack *track) {
+            totalHeight += track->height;
+        });
+        vScrollBar->setContent(totalHeight);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -148,7 +154,7 @@ public:
 private:
     TrackToolBar *trackToolBar;
 //    Track *t;
-    Track *headTrack = nullptr;
+    BaseTrack *headTrack = nullptr;
     TrackInfo *_trackInfo = nullptr;
     ScrollBar *vScrollBar;
     TimestampBar *timestampBar;

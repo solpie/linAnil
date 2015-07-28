@@ -91,6 +91,8 @@ public:
 //        }
 //        Evt_dis(TrackModelEvent::NEW_TRACK);
             updateContentEndFrame();
+
+
             BaseEvent *e = new BaseEvent;
             e->payload = trackInfo;
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
@@ -98,6 +100,9 @@ public:
         else if (type == TrackType::Audio) {
             AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(name);
             audioTrackInfo->load(dirname);
+            BaseEvent *e = new BaseEvent;
+            e->payload = audioTrackInfo;
+            Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
 
     }

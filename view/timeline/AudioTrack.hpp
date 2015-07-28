@@ -7,13 +7,27 @@
 
 #endif //LINANIL_AUDIOTRACK_HPP
 
-#include "Sprite.hpp"
+#include "BaseTrack.hpp"
 
-class AudioTrack : public Sprite {
+class AudioTrack : public BaseTrack {
 public:
-    AudioTrack() {
+    AudioTrack(AudioTrackInfo *audioTrackInfo) : BaseTrack((BaseTrackInfo *) audioTrackInfo) {
+        _audioTrackInfo = audioTrackInfo;
+        setColor(99, 138, 20);
 
     }
 
+    virtual void onDraw() override {
+        BaseTrack::drawBase();
+        drawWaveForm();
+        VS_RENDER_CHILDREN();
+    }
+
+private:
+    void drawWaveForm() {
+
+    }
+
+    AudioTrackInfo *_audioTrackInfo;
 
 };

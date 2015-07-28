@@ -9,19 +9,17 @@
 
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
-#include "vs/Sprite.hpp"
 #include "BaseTrack.hpp"
+
 enum PressFlag {
     Left = 1, Right
 };
 
 class Track : public BaseTrack {
 public:
-    Track(TrackInfo *trackInfo) {
+    Track(TrackInfo *trackInfo) : BaseTrack((BaseTrackInfo *) trackInfo) {
         _trackInfo = trackInfo;
 
-        width = 1024;
-        height = 55;
 
         trackVisibleBox = new CheckBox();
         trackVisibleBox->isChecked = true;
@@ -37,11 +35,8 @@ public:
         add_event_on(vSlider, VsEvent::CHANGED, onOpacity)
         addChild(vSlider);
 
-        add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
-
-//        setColor(99, 138, 20);
         setColor(52, 52, 52);
     }
 
@@ -59,6 +54,8 @@ public:
             _proj->curCompInfo->clearRemoveFrame();
         }
         _pressFlag = 0;
+
+
         _isPress = false;
         if (_handleTrackFrameInfo) {
             dumpTrackFrameInfo(_handleTrackFrameInfo);
@@ -66,64 +63,32 @@ public:
         _handleTrackFrameInfo = nullptr;
     }
 
-    void onDown(void *e) {
+    void onDown(void *e) override {
+        BaseTrack::onDown(e);
         _lastX = _hideX = VS_CONTEXT.cursor.x;
         _lastY = _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
-        VsEvent *vse = new VsEvent();
-        vse->type = VsEvent::SELECTED;
-        disEvent(vse);
-        setSelected(true);
+
+
+//        VsEvent *vse = new VsEvent();
+//        vse->type = VsEvent::SELECTED;
+//        disEvent(vse);
+//        setSelected(true);
     }
 
-    void setSelected(bool v) {
-        cout << this << " setSelected() " << _trackInfo->name << endl;
-        _trackInfo->isSelected = v;
+    void setSelected(bool v) override {
+        BaseTrack::setSelected(v);
         if (v) _proj->curCompInfo->dumpTrackFrameIdx(_trackInfo);
     }
 
-    void setColor(int r, int g, int b) {
-        _trackInfo->color.r = r;
-        _trackInfo->color.g = g;
-        _trackInfo->color.b = b;
-        float h, s, v;
-        RGBtoHSV(r, g, b, h, s, v);
-        limit(v, v + 30, 255)
-        float lightR, lightG, lightB;
-        HSVtoRGB(h, s, v, lightR, lightG, lightB);
-        selColor.r = lightR;
-        selColor.g = lightG;
-        selColor.b = lightB;
-    }
 
     virtual void onDraw() override {
-        if (parent && gY() < parent->gY())
-            return;
-        {//bg
-            nvgBeginPath(vg);
-            nvgRect(vg, gX(), gY(), width, height);
-            if (_trackInfo->isSelected)
-                nvgFillColor(vg, nvgRGBA(selColor.r, selColor.g, selColor.b, 255));
-            else
-                nvgFillColor(vg, nvgRGBA(_trackInfo->color.r, _trackInfo->color.g, _trackInfo->color.b, 255));
-            nvgFill(vg);
-        }
+        BaseTrack::drawBase();
 
-        {//track name
-            nvgFontFace(vg, "sans");
-            nvgFontSize(vg, 14.0f);
-            nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-            nvgFillColor(vg, nvgRGBA(240, 240, 240, 192));
-            nvgText(vg, gX() + 5, gY() + 5, _trackInfo->name.c_str(), nullptr);
-        }
 
         drawTrackFrame();
 
-
-        //bottom border
-        fillRect(_3RGB(52), gX(), gY() + height - 1, width, 1);
-
-        VsObjContainer::render();
+        VS_RENDER_CHILDREN();
     }
 
     void scrollX(int x) {
@@ -375,12 +340,10 @@ private:
         _trackInfo->setOpacity(double(vSlider->getValue()) / (100));
     }
 
-    int _hy;
     int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     int _scrollPosX = _trackLeft;
     int _lastX, _lastY;
     int _hideX, _hideY;
-    VsColor selColor;
     TrackInfo *_trackInfo;
     Slider *vSlider;
     CheckBox *trackVisibleBox;
