@@ -12,6 +12,22 @@ public:
         width = 1024;
         height = 55;
         _baseTrackInfo = baseTrackInfo;
+
+
+        trackVisibleBox = new CheckBox();
+        trackVisibleBox->isChecked = true;
+        trackVisibleBox->setX(200);
+        trackVisibleBox->setY(10);
+        add_event_on(trackVisibleBox, VsEvent::CHANGED, onVisible)
+        addChild(trackVisibleBox);
+
+        vSlider = new Slider();
+        vSlider->setValue(100);
+        vSlider->setX(200);
+        vSlider->setY(32);
+        add_event_on(vSlider, VsEvent::CHANGED, onOpacity)
+        addChild(vSlider);
+
         add_event(MouseEvent::DOWN, onDown);
 
     }
@@ -59,9 +75,15 @@ public:
         cout << this << " setSelected() " << _baseTrackInfo->name << endl;
         _baseTrackInfo->isSelected = v;
     }
+    void scrollX(int x) {
+        _scrollPosX = -x + _trackLeft;
+    }
     VsColor selColor;
 protected:
-
+    virtual void onOpacity(void *e) {}
+    virtual void onVisible(void *e) {
+        _baseTrackInfo->visible = trackVisibleBox->isChecked;
+    }
 
     virtual void onDown(void *e) {
         VsEvent *vse = new VsEvent();
@@ -69,7 +91,13 @@ protected:
         disEvent(vse);
         setSelected(true);
     }
+    int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
+    int _scrollPosX = _trackLeft;
 
     BaseTrackInfo *_baseTrackInfo;
+
+
+    Slider *vSlider;
+    CheckBox *trackVisibleBox;
 };
 

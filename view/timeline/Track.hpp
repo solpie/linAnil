@@ -20,21 +20,6 @@ public:
     Track(TrackInfo *trackInfo) : BaseTrack((BaseTrackInfo *) trackInfo) {
         _trackInfo = trackInfo;
 
-
-        trackVisibleBox = new CheckBox();
-        trackVisibleBox->isChecked = true;
-        trackVisibleBox->setX(200);
-        trackVisibleBox->setY(10);
-        add_event_on(trackVisibleBox, VsEvent::CHANGED, onVisible)
-        addChild(trackVisibleBox);
-
-        vSlider = new Slider();
-        vSlider->setValue(100);
-        vSlider->setX(200);
-        vSlider->setY(32);
-        add_event_on(vSlider, VsEvent::CHANGED, onOpacity)
-        addChild(vSlider);
-
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
         setColor(52, 52, 52);
@@ -84,16 +69,11 @@ public:
 
     virtual void onDraw() override {
         BaseTrack::drawBase();
-
-
         drawTrackFrame();
-
         VS_RENDER_CHILDREN();
     }
 
-    void scrollX(int x) {
-        _scrollPosX = -x + _trackLeft;
-    }
+
 
 
 private:
@@ -332,19 +312,13 @@ private:
 
     }
 
-    void onVisible(void *e) {
-        _trackInfo->visible = trackVisibleBox->isChecked;
-    }
 
-    void onOpacity(void *e) {
+    void onOpacity(void *e) override {
         _trackInfo->setOpacity(double(vSlider->getValue()) / (100));
     }
 
-    int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
-    int _scrollPosX = _trackLeft;
     int _lastX, _lastY;
     int _hideX, _hideY;
     TrackInfo *_trackInfo;
-    Slider *vSlider;
-    CheckBox *trackVisibleBox;
+
 };

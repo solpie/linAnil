@@ -35,8 +35,10 @@ public:
         };
         chL = new vector<float>;
         chR = new vector<float>;
-        vector<float> *s = getSamples(infile, &sfinfo, 2048, 0, 1);
+        getSamples(infile, &sfinfo, 2048, 0, 1);
         sf_close(infile);
+
+        updateMix();
     }
 
     vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, int channel, int step = 1) {
@@ -105,13 +107,24 @@ public:
         return samples;
     }
 
-    void getSampleL(int step) {
 
+    void updateMix() {
+        if (mix)
+            mix->clear();
+        else
+            mix = new vector<float>;
+
+        float val;
+        for (int i = 0; i < chL->size(); ++i) {
+            val = (chL->at(i) + chR->at(i)) * .5;
+            mix->push_back(val);
+        }
     }
 
     vector<float> *chL;
     vector<float> *chR;
 
+    vector<float> *mix = nullptr;
 private:
     int _step;
 };

@@ -57,7 +57,7 @@ public:
     }
 
     void onScrollH(void *e) {
-        headTrack->foreach([this](Track *track) {
+        headTrack->foreach([this](BaseTrack *track) {
             track->scrollX(timestampBar->getValue());
         });
     }

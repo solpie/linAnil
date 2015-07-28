@@ -4,11 +4,5 @@
     <file url="file://$PROJECT_DIR$/events" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/utils" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/utils/Singleton.hpp" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/common.c" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/common.h" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/sfconfig.h" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/sfendian.h" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/sndfile.cpp" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/utils/snd/sndfile.h" charset="GBK" />
   </component>
 </project>
