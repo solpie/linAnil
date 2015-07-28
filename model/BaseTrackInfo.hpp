@@ -1,7 +1,7 @@
 //
 // Created by toramisu on 2015/7/27.
 //
-
+#pragma once
 
 #ifndef LINANIL_BASETRACKINFO_HPP
 #define LINANIL_BASETRACKINFO_HPP
@@ -23,7 +23,7 @@ public:
         name = n;
         type = t;
     }
-
+    bool isSelected = false;
     bool visible = true;
     std::string name;
     int type;

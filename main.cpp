@@ -1,10 +1,13 @@
 #include "Stage.hpp"
 Stage *stage = nullptr;
 
-#include "view/timeline/WaveForm.hpp"
+//test
+//#include "view/timeline/WaveForm.hpp"
+#include "model/AudioTrackInfo.hpp"
 void test() {
-    WaveForm w;
-    w.test();
+//    WaveForm w;
+//    w.test();
+//    test1();
 }
 
 void onInitContext(void *e) {

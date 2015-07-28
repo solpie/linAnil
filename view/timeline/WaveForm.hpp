@@ -15,7 +15,7 @@
 /* libsndfile can handle more than 6 channels but we'll restrict it to 6. */
 #define        MAX_CHANNELS    6
 
-static vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, int channel) {
+static vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, int channel, int step = 1) {
     int x = 0;
     int channels;
     long frames_per_buf, buffer_len;
@@ -47,7 +47,7 @@ static vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, i
     float *samples1 = new float[frames_per_buf];
     while ((sf_read_float(infile, data, buffer_len)) > 0) {
         int frame;
-        for (frame = 0; frame < frames_per_buf; frame++) {
+        for (frame = 0; frame < frames_per_buf; frame += step) {
             int ch;
             for (ch = 0; ch < info->channels; ch++) {
                 if (channel > 0 && ch + 1 != channel)
@@ -130,7 +130,7 @@ public:
 
 //        AGC agc;
 //        calc_peak(infile, &sfinfo, 1024, 0, &agc);
-        vector<float>  *s = getSamples(infile, &sfinfo, 2048, 0);
+        vector<float> *s = getSamples(infile, &sfinfo, 2048, 0,1);
 //        vector<float>  *s = getSamples(infile, &sfinfo, 1024, 0);
         cout << "get Samples: " << s->size() << endl;
 

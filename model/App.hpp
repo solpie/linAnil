@@ -18,6 +18,7 @@ public:
     }
 
     ProjectInfo *projInfo;
+
     void init() {
         projInfo = new ProjectInfo;
         //default Comp
@@ -30,8 +31,8 @@ public:
 //        App()._().curCompInfo->newTrack("newTrack");
         projInfo->curCompInfo->newTrack("number", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
-        projInfo->curCompInfo->newTrack("newTrack4");
-        projInfo->curCompInfo->newTrack("newTrack5");
+        projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
+//        projInfo->curCompInfo->newTrack("newTrack5");
 //        App()._().curCompInfo->newTrack("newTrack2");
 //        App()._().curCompInfo->newTrack("newTrack2");
 //        App()._().curCompInfo->newTrack("newTrack2");

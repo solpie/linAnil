@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -fpermissive")
 add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
 #dynamic link
-#link_libraries(-lnanovg -lglfw3 -lglew32.dll -lopengl32)
+#link_libraries(-lnanovg -lopengl32)
 
 link_libraries(-lnanovg -lglfw3 -lglew32 -lopengl32)
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic")
@@ -50,12 +50,35 @@ view/TitleBar.hpp
 view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
-vs/events/SpriteEvent.hpp view/timeline/TimestampBar.hpp model/ProjectInfo.hpp view/PopupMenu.hpp vs/Splitter.hpp vs/Rect.hpp vs/events/ErrorEvent.hpp view/viewport/Viewport.hpp
- vs/events/KeyEvent.hpp view/tools/ColorWheel.hpp vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp view/timeline/WaveForm.hpp view/timeline/AudioTrack.hpp)
+vs/events/SpriteEvent.hpp
+view/timeline/TimestampBar.hpp
+model/ProjectInfo.hpp
+view/PopupMenu.hpp
+vs/Splitter.hpp
+vs/Rect.hpp
+vs/events/ErrorEvent.hpp
+view/viewport/Viewport.hpp
+ vs/events/KeyEvent.hpp
+ view/tools/ColorWheel.hpp
+ vs/VsGFX.hpp vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp view/timeline/WaveForm.hpp
+view/timeline/AudioTrack.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)
-target_link_libraries(linAnil :libsndfile.dll.a)
+
+target_link_libraries(linAnil openAL32)
+
+#target_link_libraries(linAnil :libsndfile.dll.a)
+#target_link_libraries(linAnil libglew32)
+#target_link_libraries(linAnil libglfw3)
+target_link_libraries(linAnil sndfile)
+#target_link_libraries(linAnil :libogg.dll.a)
+#target_link_libraries(linAnil :libogg.a)
+#target_link_libraries(linAnil :libvorbis.a)
+#target_link_libraries(linAnil :libvorbisenc.a)
+#target_link_libraries(linAnil :libFLAC.a)
+#target_link_libraries(linAnil :libFLAC++.a)
+
 #target_link_libraries(linAnil :libwinpthread.a)
 #target_link_libraries(linAnil :libglew32.dll.a)
 #target_link_libraries(linAnil :libglew32.a)
@@ -72,6 +95,7 @@ file(COPY ${BIN_DIR}/libFLAC-8.dll DESTINATION .)
 file(COPY ${BIN_DIR}/libogg-0.dll DESTINATION .)
 file(COPY ${BIN_DIR}/libvorbis-0.dll DESTINATION .)
 file(COPY ${BIN_DIR}/libvorbisenc-2.dll DESTINATION .)
+file(COPY ${BIN_DIR}/OpenAL32.dll DESTINATION .)
 
 #copy res
 file(GLOB FONTS "vs/fonts/*.ttf")

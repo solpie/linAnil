@@ -46,51 +46,58 @@ public:
     }
 
 
-    void newTrack(string name, string dirname = "") {
+    void newTrack(string name, string dirname = "", int type=TrackType::Image) {
 //    Evt_add("type", func1);
-        TrackInfo *trackInfo = new TrackInfo(name);
-        trackInfo->idx = _trackInfos->size();
-        _trackInfos->push_back(trackInfo);
-        if (_trackInfo == nullptr)
-            _trackInfo = trackInfo;
-        TrackFrameInfo *pre = nullptr;
-        if (dirname != "") {
-            boost::filesystem::recursive_directory_iterator itr(dirname);
-            while (itr != boost::filesystem::recursive_directory_iterator()) {
-                if (itr->path().extension() == ".png") {
-                    ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
-                    cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " << imgInfo->width <<
-                    " " <<
-                    imgInfo->height << " id:" << imgInfo->id << endl;
+        if (type == TrackType::Image) {
+            TrackInfo *trackInfo = new TrackInfo(name, TrackType::Image);
+            trackInfo->idx = _trackInfos->size();
+            _trackInfos->push_back(trackInfo);
+            if (_trackInfo == nullptr)
+                _trackInfo = trackInfo;
+            TrackFrameInfo *pre = nullptr;
+            if (dirname != "") {
+                boost::filesystem::recursive_directory_iterator itr(dirname);
+                while (itr != boost::filesystem::recursive_directory_iterator()) {
+                    if (itr->path().extension() == ".png") {
+                        ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
+                        cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " <<
+                        imgInfo->width <<
+                        " " <<
+                        imgInfo->height << " id:" << imgInfo->id << endl;
 
-                    TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
-                    trackFrameInfo->imageInfo = imgInfo;
-                    pre = trackFrameInfo->setPre(pre);
-                    trackFrameInfo->setTrackInfoIdx(trackInfo->idx);
-                    trackFrameInfo->setIdx(trackInfo->trackFrameInfos->size());
-                    trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
-                    trackFrameInfo->setHoldFrame(1);
-                    trackInfo->append(trackFrameInfo);
-                    if (!trackInfo->getHeadTrackFrameInfo())
-                        trackInfo->setHead(trackFrameInfo);
+                        TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
+                        trackFrameInfo->imageInfo = imgInfo;
+                        pre = trackFrameInfo->setPre(pre);
+                        trackFrameInfo->setTrackInfoIdx(trackInfo->idx);
+                        trackFrameInfo->setIdx(trackInfo->trackFrameInfos->size());
+                        trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
+                        trackFrameInfo->setHoldFrame(1);
+                        trackInfo->append(trackFrameInfo);
+                        if (!trackInfo->getHeadTrackFrameInfo())
+                            trackInfo->setHead(trackFrameInfo);
 
 
-                    ++itr;
+                        ++itr;
+                    }
                 }
             }
-        }
-        else {//empty frame
+            else {//empty frame
 
-        }
-        cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
+            }
+            cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
 //        if (sizeof(trackInfo->trackFrameInfos) > sequencePlayback->endFrameIdx) {
 //            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
 //        }
 //        Evt_dis(TrackModelEvent::NEW_TRACK);
-        updateContentEndFrame();
-        BaseEvent *e = new BaseEvent;
-        e->payload = trackInfo;
-        Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
+            updateContentEndFrame();
+            BaseEvent *e = new BaseEvent;
+            e->payload = trackInfo;
+            Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
+        }
+        else if (type == TrackType::Audio) {
+
+        }
+
     }
 
     void R2R(TrackFrameInfo *handleTrackFrame) {
