@@ -72,6 +72,10 @@ public:
     virtual void setSize(int w, int h) override;
 
 private:
+    void drawCompTabs() {
+
+    }
+
     Splitter *hSplitter;
 //    int imagei;
     Sprite *transport;

@@ -5,11 +5,11 @@
 class ProjectInfo {
 public:
     ProjectInfo() {
-        _comps = new vector<CompositionInfo *>;
+        comps = new vector<CompositionInfo *>;
     }
 
     string name;
-    vector<CompositionInfo *> *_comps;
+    vector<CompositionInfo *> *comps;
 
     void save(string path) {
 
@@ -26,6 +26,7 @@ public:
         comp->durationFrame = duration;
         if (!curCompInfo)
             curCompInfo = comp;
+        comps->push_back(comp);
         return comp;
     }
 };

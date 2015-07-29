@@ -64,7 +64,7 @@ view/viewport/Viewport.hpp
  view/playback/altest.hpp
  vs/VsGFX.hpp
  vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp
-view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp)
+view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp)
 
 target_link_libraries(linAnil :libboost_system-mt.a)
 target_link_libraries(linAnil :libboost_filesystem-mt.a)

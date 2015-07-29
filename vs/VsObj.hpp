@@ -66,13 +66,13 @@ public:
         if (h > -1)
             height = h;
     }
+    VsObj *parent = nullptr;
+
 
     virtual void render() {
         updateZDepth();
     }
-
-    VsObj *parent = nullptr;
-    int zdepth = -1;
 protected:
+    int zdepth = -1;
     NVGcontext *vg = nullptr;
 };

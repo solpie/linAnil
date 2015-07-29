@@ -32,14 +32,9 @@ public:
         comp->newTrack("number", "D:/projects/linAnil/test/test30/");
         comp->newTrack("audio track", "test/test.wav", TrackType::Audio);
         comp->newTrack("curry", "D:/projects/linAnil/test/test10/");
-//        projInfo->curCompInfo->newTrack("newTrack5");
-//        App()._().curCompInfo->newTrack("newTrack2");
-//        App()._().curCompInfo->newTrack("newTrack2");
-//        App()._().curCompInfo->newTrack("newTrack2");
-//        App()._().curCompInfo->newTrack("newTrack2");
-//        App()._().curCompInfo->newTrack("curry", "D:/projects/SeqTruanCpp/test/test10/");
-//        App()._().curCompInfo->audioPlayback->setTrackInfo("D:/projects/SeqTruanCpp/test/mp3.mp3");
-//        App()._().curCompInfo->audioPlayback->play();
+        //todo comp2
+//        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
+//        comp2->newTrack("number2", "D:/projects/linAnil/test/test30/");
     }
 
 };

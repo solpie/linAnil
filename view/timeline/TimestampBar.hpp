@@ -138,8 +138,8 @@ public:
         }
         //border
         int borderTop = gY() + height - 20;
-        fillRect(nvgRGB(29, 29, 29), gX(), borderTop, width, 1)
-        fillRect(nvgRGB(54, 54, 54), gX(), borderTop + 1, width, 1)
+        fillRect(nvgRGB(COLOR_PANEL_BORDER_DARK), gX(), borderTop, width, 1)
+        fillRect(nvgRGB(COLOR_PANEL_BORDER_LIGHT), gX(), borderTop + 1, width, 1)
 
         {//timestamp
             int fY = gY() + height - 10;

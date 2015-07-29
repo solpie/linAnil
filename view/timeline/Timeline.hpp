@@ -19,6 +19,7 @@
 #include "Track.hpp"
 #include "TimestampBar.hpp"
 #include "AudioTrack.hpp"
+#include "CompTabs.hpp"
 
 class Timeline : public VsObjContainer {
 public:
@@ -39,6 +40,8 @@ public:
 
         addChild(vScrollBar);
 
+
+        _tracks = new vector<Track*>;
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
@@ -106,20 +109,20 @@ public:
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
-        _trackInfo = trackInfo;
+//        _trackInfo = trackInfo;
         TrackInfo *t = trackInfo;
         Track *trk;
         Track *preTrack = nullptr;
-        while (t) {
-            trk = new Track(trackInfo);
-            if (preTrack)
-                trk->setY(preTrack->gY() + preTrack->height);
-            else
-                trk->setY(trackToolBar->height);
-            addChild(trk);
-            preTrack = trk;
-            t = t->next;
-        }
+//        while (t) {
+//            trk = new Track(trackInfo);
+//            if (preTrack)
+//                trk->setY(preTrack->gY() + preTrack->height);
+//            else
+//                trk->setY(trackToolBar->height);
+//            addChild(trk);
+//            preTrack = trk;
+//            t = t->next;
+//        }
     }
 
     virtual void render() override {
@@ -128,8 +131,6 @@ public:
         nvgFillColor(vg, nvgRGB(29, 29, 29));
         //
         nvgFill(vg);
-        if (_trackInfo)
-            renderTrackInfo(_trackInfo);
 
         VsObjContainer::render();
         {//border
@@ -146,22 +147,16 @@ public:
         headTrack->foreach([this](Track *track) {
             track->width = width;
         });
-        vScrollBar->setSize(-1, h - trackToolBar->height);
         timestampBar->setSize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
+        vScrollBar->setSize(-1, h - trackToolBar->height);
     }
 
 
 private:
+    vector<Track*> *_tracks;
     TrackToolBar *trackToolBar;
-//    Track *t;
     BaseTrack *headTrack = nullptr;
-    TrackInfo *_trackInfo = nullptr;
     ScrollBar *vScrollBar;
     TimestampBar *timestampBar;
-
-    void renderTrackInfo(TrackInfo *trackInfo) {
-        if (trackInfo->next)
-            renderTrackInfo(trackInfo->next);
-    }
 };
 

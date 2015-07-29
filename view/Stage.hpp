@@ -49,7 +49,8 @@ public:
         timeline = new Timeline();
         vSplitter->addChild(timeline);
 
-
+        compTabs = new CompTabs(_proj);
+        addChild(compTabs);
         cout << typeid(this).name() << "init stage" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
@@ -70,7 +71,10 @@ public:
 //        viewport->resize(w, h);
 //        hSplitter->setSize(w, -1);
 //        timeline->setSize(w, h);
-        vSplitter->setSize(w, h - titleBar->height);
+        vSplitter->setSize(w, h - titleBar->height-compTabs->height);
+
+        compTabs->setSize(w, -1);
+        compTabs->setY(h - compTabs->height);
     }
 
 private:
@@ -81,6 +85,8 @@ private:
     TitleBar *titleBar;
     Timeline *timeline;
     Viewport *viewport;
+
+    CompTabs *compTabs;
 };
 
 void Stage::render() {

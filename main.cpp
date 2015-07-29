@@ -8,7 +8,7 @@ void test() {
 //    WaveForm w;
 //    w.test();
 //    test1();
-    test2();
+//    test2();
 }
 
 void onInitContext(void *e) {

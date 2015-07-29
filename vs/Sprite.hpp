@@ -54,6 +54,20 @@ public:
         onDrawEnd();
     }
 
+
+    bool mouseEnabled = true;
+    bool isHover = false;
+    bool isInteractive;
+
+    int mouseX() {
+        return VS_CONTEXT.cursor.x - gX();
+    }
+
+    int mouseY() {
+        return VS_CONTEXT.cursor.y - gY();
+    }
+
+protected:
     virtual void onDrawBegin() {
         if (mouseEnabled && isInteractive && visible) {
             int mx = VS_CONTEXT.cursor.x;
@@ -96,19 +110,6 @@ public:
     }
 
     virtual void onDrawEnd() { }
-
-
-    bool mouseEnabled = true;
-    bool isHover = false;
-    bool isInteractive;
-
-    int mouseX() {
-        return VS_CONTEXT.cursor.x - gX();
-    }
-
-    int mouseY() {
-        return VS_CONTEXT.cursor.y - gY();
-    }
 
 private:
     bool _ignoreRollOut = true;
