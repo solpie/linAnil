@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include <SDL/SDL_video.h>
 #undef main
 
 
@@ -107,7 +106,7 @@ int test5()
     }
 
     //Load our WAV file from disk
-    sound = Mix_LoadWAV("test\\test2.mp3");
+    sound = Mix_LoadWAV("test\\test.wav");
     if(sound == NULL) {
         printf("Unable to load WAV file: %s\n", Mix_GetError());
     }
@@ -124,16 +123,18 @@ int test5()
     if(channel == -1) {
         printf("Unable to play WAV file: %s\n", Mix_GetError());
     }
-
     //Wait until the sound has stopped playing
-    while(Mix_Playing(channel) != 0);
+//    while(Mix_Playing(channel) != 0);
+    Mix_Playing(channel);
+
+    int ret= Mix_SetMusicPosition(20);
 
     //Release the memory allocated to our sound
-    Mix_FreeChunk(sound);
-
-    //Need to make sure that SDL_mixer and SDL have a chance to clean up
-    Mix_CloseAudio();
-    SDL_Quit();
+//    Mix_FreeChunk(sound);
+//
+//    //Need to make sure that SDL_mixer and SDL have a chance to clean up
+//    Mix_CloseAudio();
+//    SDL_Quit();
 
     //Return success!
     return 0;

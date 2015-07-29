@@ -75,10 +75,13 @@ view/viewport/Viewport.hpp
 vs/events/KeyEvent.hpp
 view/tools/ColorWheel.hpp
 model/AudioTrackInfo.hpp
-view/playback/portaudioTest.hpp
+#view/playback/portaudioTest.hpp
 vs/VsGFX.hpp
 vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp
-view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp view/playback/SDLtes1t.hpp)
+view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
+#view/playback/SDLtes1t.hpp
+view/playback/WavPlayer.hpp
+ )
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)
@@ -107,6 +110,8 @@ target_link_libraries(linAnil nanovg)
 #target_link_libraries(linAnil :libnanovg.a)
 #target_link_libraries(linAnil sndfile)
 target_link_libraries(linAnil portaudio)
+target_link_libraries(linAnil SDL2)
+target_link_libraries(linAnil SDL2_mixer)
 #target_link_libraries(linAnil :libportaudio.a)
 #target_link_libraries(linAnil :libportaudiocpp.a)
 

@@ -6,10 +6,9 @@
 Stage *stage = nullptr;
 //test
 //#include "model/AudioTrackInfo.hpp"
-#include "view/playback/portaudioTest.hpp"
 //#include "view/playback/OpenAltest.hpp"
-//#include "view/playback/SDLtes1t.hpp"
-
+#include "view/playback/SDLtes1t.hpp"
+#include "view/playback/WavPlayer.hpp"
 
 void test() {
 //    WaveForm w;
@@ -20,6 +19,13 @@ void test() {
 //    test6();
 //    test3();
 //    test5();
+    WavPlayer *w = new WavPlayer();
+    w->load("test\\test.wav");
+    w->play();
+////
+//    WavPlayer *w2 = new WavPlayer();
+//    w2->load("test\\test3.wav");
+//    w2->play();
 }
 
 void onInitContext(void *e) {
