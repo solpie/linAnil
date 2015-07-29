@@ -51,7 +51,7 @@ public:
         int vy = vScrollBar->getValue();
         headTrack->setY(trackToolBar->height - vy);
         vy = 0;
-        headTrack->foreach([&](Track *track) {
+        headTrack->foreach([&](BaseTrack *track) {
             if (vy) {
                 track->setY(vy);
             }

@@ -41,6 +41,10 @@ public:
     }
 
 
+    virtual int getEndFrame() override {
+        return trackFrameInfos->back()->getEndFrame();
+    }
+
     int getCurTrackFrameIdx() { return _trackFrameIdx; };
 
 //    int getStartFrame() { return _startFrame; }
@@ -98,3 +102,4 @@ private:
     int _trackFrameIdx = -1;
 
 };
+

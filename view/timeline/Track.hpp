@@ -20,6 +20,15 @@ public:
     Track(TrackInfo *trackInfo) : BaseTrack((BaseTrackInfo *) trackInfo) {
         _trackInfo = trackInfo;
 
+
+        _exHandleL = new Sprite;
+        _exHandleR = new Sprite;
+        _exHandleL->setSize(35, 50);
+        _exHandleR->setSize(35, 50);
+        _exHandleL->isInteractive = true;
+        _exHandleR->isInteractive = true;
+        addChild(_exHandleL);
+        addChild(_exHandleR);
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
         setColor(52, 52, 52);
@@ -31,9 +40,9 @@ public:
 
     void onUp(void *e) {
         if (_isPress && isDragHide) {
-            VS_CONTEXT.showCursor();
+//            VS_CONTEXT.showCursor();
 //            if (_pressFlag == PressFlag::Left)
-            VS_CONTEXT.setCursorPos(_hideX, _hideY);
+//            VS_CONTEXT.setCursorPos(_hideX, _hideY);
 //            else if(_pressFlag == PressFlag::Right))
 //                V
             _proj->curCompInfo->clearRemoveFrame();
@@ -54,11 +63,6 @@ public:
         _lastY = _hideY = VS_CONTEXT.cursor.y;
         _isPress = true;
 
-
-//        VsEvent *vse = new VsEvent();
-//        vse->type = VsEvent::SELECTED;
-//        disEvent(vse);
-//        setSelected(true);
     }
 
     void setSelected(bool v) override {
@@ -72,8 +76,6 @@ public:
         drawTrackFrame();
         VS_RENDER_CHILDREN();
     }
-
-
 
 
 private:
@@ -159,7 +161,9 @@ private:
             }
             //hover check
             if (hoverTx == 0 &&
-                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y, tx, gY() + _trackDragBarHeight, thumbWidth,
+                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y,
+                         tx, gY() + _trackDragBarHeight,
+                         thumbWidth,
                          frameHeight)) {
                 hoverTx = tx;
                 hoverTWidth = tfi->getHoldFrame() * frameHeight;
@@ -178,37 +182,41 @@ private:
         }
 
         //drag bar
+        bool isPressDragBar = false;
         if (hasThumbDrawing && lastTrackFrameHoldCount) {
-            drawDragBar(dragBarX, tx + lastTrackFrameHoldCount * frameWidth - dragBarX + 1);
+            isPressDragBar = drawDragBar(dragBarX, tx + lastTrackFrameHoldCount * frameWidth - dragBarX);
         }
-
+        drawExHandle(dragBarX, tx + lastTrackFrameHoldCount * frameWidth);
         if (hoverTx != 0) {//hover mask
             if (!_isPress)
                 drawBlockHint(isHoverLeft, hoverTx, hoverTWidth);
-            else
-                handlePressAndDrag(hoverTx, hoverTx + hoverTWidth);
+            else if (!isPressDragBar)
+                onDragTrackFrame(hoverTx, hoverTx + hoverTWidth);
         }
     }
 
-    void drawDragBar(int dragBarX, int dragWidth) {
+    bool drawDragBar(int dragBarX, int dragWidth) {
         fillRect(_3RGB(29), dragBarX, gY(), dragWidth, 1);
         fillRect(_3RGB(60), dragBarX, gY() + 1, dragWidth, 1);
         if (_isPress && isMouseInRect(dragBarX, gY(), dragWidth, _trackDragBarHeight + 2)) {
-            int dx = VS_CONTEXT.cursor.x - _lastX;
+//            VS_CONTEXT.setCursorPos(VS_CONTEXT.cursor.x, _hideY);
+            int dx = mouseX() - _lastX;
             if (dx != 0) {
                 if (dx < -_dragSense) {
                     _trackInfo->setStartFrame(_trackInfo->getStartFrame() - 1);
-                    _lastX = VS_CONTEXT.cursor.x;
+                    _lastX = mouseX();
                 }
                 else if (dx > _dragSense) {
                     _trackInfo->setStartFrame(_trackInfo->getStartFrame() + 1);
-                    _lastX = VS_CONTEXT.cursor.x;
+                    _lastX = mouseX();
                 }
             }
             fillRect(_3RGB(52), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+            return true;
         }
         else {
             fillRect(_3RGB(47), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+            return false;
         }
     }
 
@@ -224,6 +232,46 @@ private:
         }
         fillRect(colorL, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
         fillRect(colorR, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);
+    }
+
+    void drawExHandle(int trackX, int trackEndX) {
+        _exHandleL->setX(trackX);
+        _exHandleR->setX(trackEndX);
+
+        fillRect(_3RGB(200), _exHandleL->gX() - _exHandleL->width,
+                 _exHandleL->gY(),
+                 _exHandleL->width,
+                 _exHandleL->height)
+
+
+//        fillRect(_3RGB(200), _exHandleR->gX()+20,
+//                 _exHandleR->gY()+30,
+//                 _exHandleR->width,
+//                 _exHandleR->height)
+
+        nvgBeginPath(vg);
+        nvgCircle(vg, _exHandleR->gX() + 20 + 5,
+                  _exHandleR->gY() + 30, 5);
+        if (_exHandleR->isHover) {
+            nvgFillColor(vg, _3RGB(200));
+        }
+        else {
+            nvgFillColor(vg, _3RGB(120));
+        }
+        nvgFill(vg);
+        nvgBeginPath(vg);
+        nvgCircle(vg, _exHandleR->gX() + 20 + 5,
+                  _exHandleR->gY() + 30, 5);
+        nvgStrokeWidth(vg, 1);
+        nvgStrokeColor(vg, _3RGB(20));
+        nvgStroke(vg);
+
+        vsColoredNodeWire(vg, _exHandleR->gX(),
+                          _exHandleR->gY() + 2,
+                          _exHandleR->gX() + 20,
+                          _exHandleR->gY() + 30,
+                          _3RGB(200), _3RGB(52));
+
     }
 
     void drawArrowHint() {
@@ -263,16 +311,18 @@ private:
     int _pressFlag = 0;
 
 
-    void handlePressAndDrag(int left, int right) {
-        pos *mpos = &VS_CONTEXT.cursor;
+    void onDragTrackFrame(int left, int right) {
         int dx = 0;
         int frameWidth = _proj->curCompInfo->frameWidth;
+        int mx = VS_CONTEXT.cursor.x;
+
         if (_lastX)
-            dx = mpos->x - _lastX;
+            dx = mx - _lastX;
         else
-            _lastX = mpos->x;
+            _lastX = mx;
         if (dx != 0) {
-            VS_CONTEXT.hideCursor();
+//            VS_CONTEXT.hideCursor();
+            VS_CONTEXT.setCursorPos(VS_CONTEXT.cursor.x, _hideY);
             if (_pressFlag == PressFlag::Left) {
                 if (dx > _dragSense) {
                     //fixme when _dragSense < frameWidth
@@ -280,15 +330,14 @@ private:
                     //fixme call L2R L2L when mouse up
                     _proj->curCompInfo->L2R(_handleTrackFrameInfo, _trackInfo);
                     _hideX += frameWidth;
-                    _lastX = mpos->x;
+                    _lastX = mx;
 
                 }
                 else if (dx < -_dragSense) {
                     isDragHide = true;
                     _proj->curCompInfo->L2L(_handleTrackFrameInfo, _trackInfo);
-                    _lastX = mpos->x;
+                    _lastX = mx;
                     _hideX -= frameWidth;
-
                 }
             }
             else if (_pressFlag == PressFlag::Right) {
@@ -299,17 +348,16 @@ private:
                     _proj->curCompInfo->R2R(_handleTrackFrameInfo);
                     isDragHide = true;
                     _hideX += frameWidth;
-                    _lastX = mpos->x;
+                    _lastX = mx;
                 }
                 else if (dx < -_dragSense && _handleTrackFrameInfo->getHoldFrame() > 1) {
                     _proj->curCompInfo->R2L(_handleTrackFrameInfo);
                     isDragHide = true;
                     _hideX -= frameWidth;
-                    _lastX = mpos->x;
+                    _lastX = mx;
                 }
             }
         }
-
     }
 
 
@@ -317,6 +365,8 @@ private:
         _trackInfo->setOpacity(double(vSlider->getValue()) / (100));
     }
 
+    Sprite *_exHandleL;
+    Sprite *_exHandleR;
     int _lastX, _lastY;
     int _hideX, _hideY;
     TrackInfo *_trackInfo;

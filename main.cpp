@@ -1,14 +1,25 @@
-#include "Stage.hpp"
-Stage *stage = nullptr;
+#include <windows.h>
+#include <mmsystem.h>
 
+#include "Stage.hpp"
+
+Stage *stage = nullptr;
 //test
-#include "model/AudioTrackInfo.hpp"
-#include "view/playback/altest.hpp"
+//#include "model/AudioTrackInfo.hpp"
+#include "view/playback/portaudioTest.hpp"
+//#include "view/playback/OpenAltest.hpp"
+//#include "view/playback/SDLtes1t.hpp"
+
+
 void test() {
 //    WaveForm w;
 //    w.test();
 //    test1();
-//    test2();
+//    test2("test\\test.wav");
+//    test2("test\\test3.wav");
+//    test6();
+//    test3();
+//    test5();
 }
 
 void onInitContext(void *e) {

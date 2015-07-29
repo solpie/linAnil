@@ -8,7 +8,7 @@
 #include "vector"
 
 
-#include "sndfile.h"
+//#include "sndfile.h"
 
 #define  MAX_CHANNELS    2
 
@@ -19,93 +19,96 @@ public:
     }
 
     void load(string filename) {
-        SNDFILE *infile;
-        SF_INFO sfinfo;
-        memset(&sfinfo, 0, sizeof(sfinfo));
-        if (!(infile = sf_open(filename.c_str(), SFM_READ, &sfinfo))) {    /* Open failed so print an error message. */
-            cout << typeid(this).name() << " Not able to open input file " << filename << endl;
-            /* Print the error message from libsndfile. */
-            puts(sf_strerror(NULL));
-            return;
-        };
+//        {// get amp
+//            SNDFILE *infile;
+//            SF_INFO sfinfo;
+//            memset(&sfinfo, 0, sizeof(sfinfo));
+//            if (!(infile = sf_open(filename.c_str(), SFM_READ, &sfinfo))) {    /* Open failed so print an error message. */
+//                cout << typeid(this).name() << " Not able to open input file " << filename << endl;
+//                /* Print the error message from libsndfile. */
+//                puts(sf_strerror(NULL));
+//                return;
+//            };
+//
+//            if (sfinfo.channels > MAX_CHANNELS) {
+//                cout << typeid(this).name() << " Not able to process more than 2 channels " << endl;
+//                return;
+//            };
+//            chL = new vector<float>;
+//            chR = new vector<float>;
+//            getSamples(infile, &sfinfo, 2048, 0, 1);
+//            sf_close(infile);
+//
+//            updateMix();
+//        }
 
-        if (sfinfo.channels > MAX_CHANNELS) {
-            cout << typeid(this).name() << " Not able to process more than 2 channels " << endl;
-            return;
-        };
-        chL = new vector<float>;
-        chR = new vector<float>;
-        getSamples(infile, &sfinfo, 2048, 0, 1);
-        sf_close(infile);
-
-        updateMix();
     }
 
-    vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, int channel, int step = 1) {
-        int x = 0;
-        int channels;
-        long frames_per_buf, buffer_len;
-
-        const float frames_per_bin = info->frames / (float) width;
-        const long max_frames_per_bin = ceilf(frames_per_bin);
-        float *data;
-        long f_offset = 0;
-
-        if (channel < 0 || channel >= info->channels) {
-            printf("invalid channel\n");
-            return nullptr;
-        };
-
-        data = malloc(sizeof(float) * max_frames_per_bin * info->channels);
-        if (!data) {
-            printf("out of memory.\n");
-            return nullptr;
-        };
-
-        sf_seek(infile, 0, SEEK_SET);
-
-        channels = (channel > 0) ? 1 : info->channels;
-
-        frames_per_buf = floorf(frames_per_bin);
-        buffer_len = frames_per_buf * info->channels;
-
-        vector<float> *samples = new vector<float>;
-        float *samples1 = new float[frames_per_buf];
-        while ((sf_read_float(infile, data, buffer_len)) > 0) {
-            int frame;
-            for (frame = 0; frame < frames_per_buf; frame += step) {
-                int ch;
-                for (ch = 0; ch < info->channels; ch++) {
-                    if (channel > 0 && ch + 1 != channel)
-                        continue;
-                    if (frame * info->channels + ch > buffer_len) {
-                        fprintf(stderr, "index error!\n");
-                        break;
-                    };
-                    {
-                        const float sample_val = data[frame * info->channels + ch];
-                        if (ch == 0) {
-                            chL->push_back(sample_val);
-                        }
-                        else if (ch == 1) {
-                            chR->push_back(sample_val);
-                        }
-//                        samples->push_back(sample_val);
-                    };
-                };
-            };
-
-            x++;
-            if (x > width) break;
-
-            f_offset += frames_per_buf;
-            frames_per_buf = floorf((x + 1) * frames_per_bin) - f_offset;
-            buffer_len = frames_per_buf * info->channels;
-        };
-
-        free(data);
-        return samples;
-    }
+//    vector<float> *getSamples(SNDFILE *infile, SF_INFO *info, double width, int channel, int step = 1) {
+//        int x = 0;
+//        int channels;
+//        long frames_per_buf, buffer_len;
+//
+//        const float frames_per_bin = info->frames / (float) width;
+//        const long max_frames_per_bin = ceilf(frames_per_bin);
+//        float *data;
+//        long f_offset = 0;
+//
+//        if (channel < 0 || channel >= info->channels) {
+//            printf("invalid channel\n");
+//            return nullptr;
+//        };
+//
+//        data = malloc(sizeof(float) * max_frames_per_bin * info->channels);
+//        if (!data) {
+//            printf("out of memory.\n");
+//            return nullptr;
+//        };
+//
+//        sf_seek(infile, 0, SEEK_SET);
+//
+//        channels = (channel > 0) ? 1 : info->channels;
+//
+//        frames_per_buf = floorf(frames_per_bin);
+//        buffer_len = frames_per_buf * info->channels;
+//
+//        vector<float> *samples = new vector<float>;
+//        float *samples1 = new float[frames_per_buf];
+//        while ((sf_read_float(infile, data, buffer_len)) > 0) {
+//            int frame;
+//            for (frame = 0; frame < frames_per_buf; frame += step) {
+//                int ch;
+//                for (ch = 0; ch < info->channels; ch++) {
+//                    if (channel > 0 && ch + 1 != channel)
+//                        continue;
+//                    if (frame * info->channels + ch > buffer_len) {
+//                        fprintf(stderr, "index error!\n");
+//                        break;
+//                    };
+//                    {
+//                        const float sample_val = data[frame * info->channels + ch];
+//                        if (ch == 0) {
+//                            chL->push_back(sample_val);
+//                        }
+//                        else if (ch == 1) {
+//                            chR->push_back(sample_val);
+//                        }
+////                        samples->push_back(sample_val);
+//                    };
+//                };
+//            };
+//
+//            x++;
+//            if (x > width) break;
+//
+//            f_offset += frames_per_buf;
+//            frames_per_buf = floorf((x + 1) * frames_per_bin) - f_offset;
+//            buffer_len = frames_per_buf * info->channels;
+//        };
+//
+//        free(data);
+//        return samples;
+//    }
 
 
     void updateMix() {

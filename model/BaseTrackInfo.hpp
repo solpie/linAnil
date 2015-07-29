@@ -42,7 +42,7 @@ public:
         return _lengthFrame;
     }
 
-    int getEndFrame() {
+    virtual int getEndFrame() {
         return _endFrame;
     }
 

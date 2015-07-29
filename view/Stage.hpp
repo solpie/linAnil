@@ -20,7 +20,6 @@
 class Stage : public VsObjContainer {
 public:
     Stage() {
-
         framesPlayback = new FramesPlayback(_proj);
 //        add_event_on_context(KeyEvent::DOWN,onKey)
         VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);

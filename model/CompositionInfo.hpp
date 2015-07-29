@@ -211,8 +211,8 @@ public:
         if (_trackInfoHead) {
             int endFrame = 0;
 
-            _trackInfoHead->foreach([&](TrackInfo *trkInfo) {
-                endFrame = trkInfo->trackFrameInfos->back()->getEndFrame();
+            _trackInfoHead->foreach([&](BaseTrackInfo *trkInfo) {
+                endFrame = trkInfo->getEndFrame();
                 if (endFrame > _contentEndFrame)
                     _contentEndFrame = endFrame;
             });

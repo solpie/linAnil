@@ -10,11 +10,11 @@
 
 #include <stdio.h>
 
-#ifdef NANOVG_GLEW
+//#ifdef NANOVG_GLEW
 
 #include <GL/glew.h>
 
-#endif
+//#endif
 #ifdef __APPLE__
 #	define GLFW_INCLUDE_GLCOREARB
 #endif
@@ -332,7 +332,6 @@ public:
 
     void hideCursor() {
         glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
     }
 
     void showCursor() {

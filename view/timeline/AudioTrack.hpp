@@ -28,7 +28,7 @@ private:
         int left = _scrollPosX + gX() + _trackLeft;
 
         //todo save to bitmap
-        drawWaveLineMix(_audioTrackInfo->mix);
+//        drawWaveLineMix(_audioTrackInfo->mix);
 
 //        drawWaveLine(_audioTrackInfo->chR,false);
 
