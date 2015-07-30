@@ -7,7 +7,7 @@ using namespace std;
 
 #include "utils/Singleton.hpp"
 #include "nanovg/nanovg.h"
-
+#include "libpng16/png.h"
 class ImageInfo {
 public:
     int id = -1;
@@ -29,9 +29,10 @@ public:
         imgInfo->path = absPath;
         nvgImageSize(_vg, imgInfo->id, &imgInfo->width, &imgInfo->height);
         _images[absPath] = imgInfo;
+        //todo create thumb image
         return imgInfo;
     }
-
+    //
 private:
     map<string, ImageInfo *> _images;
     NVGcontext *_vg;

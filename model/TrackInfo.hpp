@@ -94,9 +94,6 @@ public:
 protected:
     TrackFrameInfo *_head = nullptr;
 
-//    int _endFrame = 1;
-//    int _startFrame = 1;
-
     double _opacity = 1;
 private:
     int _trackFrameIdx = -1;
