@@ -82,7 +82,7 @@ vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/eve
 view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
 #view/playback/SDLtes1t.hpp
 view/playback/WavPlayer.hpp
- view/playback/FFmpegTest.hpp test/Test.hpp)
+ view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp)
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)
@@ -109,10 +109,10 @@ target_link_libraries(linAnil glfw3)
 target_link_libraries(linAnil nanovg)
 #target_link_libraries(linAnil :libglfw3.a)
 #target_link_libraries(linAnil :libnanovg.a)
-#target_link_libraries(linAnil sndfile)
+target_link_libraries(linAnil sndfile)
 target_link_libraries(linAnil portaudio)
-target_link_libraries(linAnil SDL2)
-target_link_libraries(linAnil SDL2_mixer)
+#target_link_libraries(linAnil SDL2)
+#target_link_libraries(linAnil SDL2_mixer)
 
 #target_link_libraries(linAnil :libavcodec.a)
 #target_link_libraries(linAnil :libavformat.a)
@@ -122,11 +122,11 @@ target_link_libraries(linAnil SDL2_mixer)
 #target_link_libraries(linAnil avutil)
 #target_link_libraries(linAnil avresample)
 
-target_link_libraries(linAnil :avcodec.lib)
-target_link_libraries(linAnil :avformat.lib)
-target_link_libraries(linAnil :avutil.lib)
+#target_link_libraries(linAnil :avcodec.lib)
+#target_link_libraries(linAnil :avformat.lib)
+#target_link_libraries(linAnil :avutil.lib)
 #target_link_libraries(linAnil :avfilter.lib)
-target_link_libraries(linAnil :swresample.lib)
+#target_link_libraries(linAnil :swresample.lib)
 
 #target_link_libraries(linAnil :libportaudio.a)
 #target_link_libraries(linAnil :libportaudiocpp.a)
@@ -144,6 +144,8 @@ file(COPY ${BIN_DIR}/glew32.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glfw3.dll DESTINATION .)
 #sound
 file(COPY ${BIN_DIR}/libportaudio-2.dll DESTINATION .)
+file(COPY ${BIN_DIR}/avcodec-56.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libcelt0-2.dll DESTINATION .)
 #file(COPY ${BIN_DIR}/libsndfile-1.dll DESTINATION .)
 #file(COPY ${BIN_DIR}/libFLAC-8.dll DESTINATION .)
 #file(COPY ${BIN_DIR}/libogg-0.dll DESTINATION .)
