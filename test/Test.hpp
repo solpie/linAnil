@@ -20,7 +20,7 @@ void testMain() {
 
 //    testSnd();
 
-    AudioPlayback *audioPlayback = new AudioPlayback;
-    audioPlayback->load("test\\test.wav");
-    audioPlayback->play();
+//    AudioPlayback *audioPlayback = new AudioPlayback;
+//    audioPlayback->load("test\\test.wav");
+//    audioPlayback->play();
 }

@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.2)
 project(linAnil)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -fpermissive" )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPTW32_STATIC_LIB -fno-aggressive-loop-optimizations" )
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -static -std=c++11 -fpermissive" )
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPTW32_STATIC_LIB -fno-aggressive-loop-optimizations" )
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -s -std=c++11 -fpermissive")
 add_definitions(-DNANOVG_GLEW -D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-DGLEW_STATIC)
-add_definitions(-DGLEW_NO_GLU)
+#add_definitions(-DGLEW_NO_GLU)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bstatic -lglew32")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bstatic -lnanovg")
@@ -82,7 +81,7 @@ vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/eve
 view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
 #view/playback/SDLtes1t.hpp
 view/playback/WavPlayer.hpp
- view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp)
+ view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp model/Settings.hpp)
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)
@@ -140,17 +139,20 @@ target_link_libraries(linAnil portaudio)
 #COPY dll
 set(BIN_DIR ${CMAKE_CXX_COMPILER}/../../bin)
 file(COPY ${BIN_DIR}/libwinpthread-1.dll DESTINATION .)
+#openGL
 file(COPY ${BIN_DIR}/glew32.dll DESTINATION .)
 file(COPY ${BIN_DIR}/glfw3.dll DESTINATION .)
 #sound
 file(COPY ${BIN_DIR}/libportaudio-2.dll DESTINATION .)
-file(COPY ${BIN_DIR}/avcodec-56.dll DESTINATION .)
-file(COPY ${BIN_DIR}/libcelt0-2.dll DESTINATION .)
-#file(COPY ${BIN_DIR}/libsndfile-1.dll DESTINATION .)
-#file(COPY ${BIN_DIR}/libFLAC-8.dll DESTINATION .)
-#file(COPY ${BIN_DIR}/libogg-0.dll DESTINATION .)
-#file(COPY ${BIN_DIR}/libvorbis-0.dll DESTINATION .)
-#file(COPY ${BIN_DIR}/libvorbisenc-2.dll DESTINATION .)
+#file(COPY ${BIN_DIR}/avcodec-56.dll DESTINATION .)
+#file(COPY ${BIN_DIR}/libcelt0-2.dll DESTINATION .)
+#sndfile
+file(COPY ${BIN_DIR}/libsndfile-1.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libFLAC-8.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libogg-0.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libvorbis-0.dll DESTINATION .)
+file(COPY ${BIN_DIR}/libvorbisenc-2.dll DESTINATION .)
+#openAL
 #file(COPY ${BIN_DIR}/OpenAL32.dll DESTINATION .)
 
 #copy res
