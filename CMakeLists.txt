@@ -17,7 +17,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bs
 
 #link_libraries(-lglew32 -lnanovg -lglfw3 -lopengl32 -lportaudio)
 link_libraries( -lnanovg -lglew32 -lopengl32)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bstatic -lglfw3")
+#link_libraries( -lavcodec -lavformat -lavutil)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bstatic -lavresample")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bstatic -lportaudio")
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread  -Wl,-Bdynamic")
@@ -81,7 +82,7 @@ vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/eve
 view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
 #view/playback/SDLtes1t.hpp
 view/playback/WavPlayer.hpp
- )
+ view/playback/FFmpegTest.hpp test/Test.hpp)
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)
@@ -112,6 +113,21 @@ target_link_libraries(linAnil nanovg)
 target_link_libraries(linAnil portaudio)
 target_link_libraries(linAnil SDL2)
 target_link_libraries(linAnil SDL2_mixer)
+
+#target_link_libraries(linAnil :libavcodec.a)
+#target_link_libraries(linAnil :libavformat.a)
+#target_link_libraries(linAnil :libavutil.a)
+#target_link_libraries(linAnil avcodec)
+#target_link_libraries(linAnil avformat)
+#target_link_libraries(linAnil avutil)
+#target_link_libraries(linAnil avresample)
+
+target_link_libraries(linAnil :avcodec.lib)
+target_link_libraries(linAnil :avformat.lib)
+target_link_libraries(linAnil :avutil.lib)
+#target_link_libraries(linAnil :avfilter.lib)
+target_link_libraries(linAnil :swresample.lib)
+
 #target_link_libraries(linAnil :libportaudio.a)
 #target_link_libraries(linAnil :libportaudiocpp.a)
 

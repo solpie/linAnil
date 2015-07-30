@@ -11,4 +11,6 @@ $pacman -S mingw-w64-x86_64-boost
 
 $pacman -S mingw-w64-x86_64-portaudio
 
+$pacman -S mingw-w64-x86_64-ffmpeg
+
 ```
