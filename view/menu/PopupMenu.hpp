@@ -43,11 +43,10 @@ public:
 protected:
     virtual void onDraw() override {
         //auto hide
-        if (mouseX() < -50 || mouseY() < -50 || mouseY() > height + 100 || mouseX() > width + 100) {
+        if (mouseX() < -50 || mouseY() < -30 || mouseY() > height + 100 || mouseX() > width + 100) {
             hide();
         }
         //
-        int textY = 5;
         fillRoundRect(nvgRGBA(THEME_COLOR_PANEL, 200), gX(), gY(), width, height, THEME_MENU_RADIUS)
         fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), gX() + THEME_MENU_RADIUS, gY(),
                  width - THEME_MENU_RADIUS * 2, 1)
@@ -57,19 +56,18 @@ protected:
         nvgFontSize(vg, THEME_FONT_SIZE_TITLE);
         nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         nvgFillColor(vg, nvgRGB(240, 240, 240));
-        nvgText(vg, gX() + 5, gY() + textY + 2, _title, nullptr);
+        nvgText(vg, gX() + 5, gY() + 10, _title, nullptr);
 
-        fillRect(nvgRGB(THEME_COLOR_PANEL_BORDER_DARK), gX(), gY() + _titleHeigh - 1, width, 1)
 
         //items
-        textY = gY() + _titleHeigh + 2;
+        int textY = gY() + _titleHeigh + 2;
         if (_menuItems) {
             int gmy = VS_CONTEXT.cursor.y;
             bool isSelect = false;
             for (MenuItem *menuItem:*_menuItems) {
                 isSelect = (gmy > textY && gmy < textY + _itemHeight) && isHover;
                 if (isSelect) {
-                    fillRect(nvgRGB(THEME_MENU_COL_SELECT), gX(), textY, width, _itemHeight)
+                    fillRect(nvgRGB(THEME_MENU_COL_SELECT), gX() + 1, textY + 2, 4, _itemHeight - 2)
                 }
 
                 nvgBeginPath(vg);
@@ -80,8 +78,11 @@ protected:
                     nvgFillColor(vg, nvgRGB(THEME_MENU_COL_SELECT_TEXT));
                 else
                     nvgFillColor(vg, nvgRGB(240, 240, 240));
-                nvgText(vg, gX() + 5, textY, menuItem->text.c_str(), nullptr);
-
+                nvgText(vg, gX() + 10, textY, menuItem->text.c_str(), nullptr);
+//                if (!isSelect) {
+                fillRect(nvgRGB(THEME_COLOR_PANEL_BORDER_DARK), gX(), textY, width, 1)
+                fillRect(nvgRGB(THEME_COL_PANEL_BORDER_LIGHT), gX(), textY + 1, width, 1)
+//                }
                 textY += _itemHeight;
             }
         }

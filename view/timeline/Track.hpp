@@ -20,7 +20,6 @@ public:
     Track(TrackInfo *trackInfo) : BaseTrack((BaseTrackInfo *) trackInfo) {
         _trackInfo = trackInfo;
 
-
         _exHandleL = new Sprite;
         _exHandleR = new Sprite;
         _exHandleL->setSize(35, 50);
@@ -32,6 +31,7 @@ public:
         add_event(MouseEvent::UP, onUp);
         add_event_on_context(MouseEvent::UP, onUp)
         setColor(52, 52, 52);
+
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -85,10 +85,31 @@ private:
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
     int frameHeight = 40;
 
+//    void drawFrameIdx()
+//    {
+//
+//    }
     void drawTrackFrame() {
+        int frameWidth = _proj->curCompInfo->frameWidth;
+
+        //drag bar
+        int dragBarX = 0;
+        int dragBarWidth = 0;
+
+        dragBarX = gX() + _trackInfo->getStartFrame() * frameWidth + _scrollPosX;
+        if (dragBarX < gX() + _trackPanelWidth)
+            dragBarX = gX() + _trackPanelWidth;
+        int lastFrameX = (_trackInfo->getEndFrame()) * frameWidth + _scrollPosX;
+        int lastTrackFrameHoldCount = _trackInfo->trackFrameInfos->back()->getHoldFrame();
+
+        dragBarWidth = lastFrameX +lastTrackFrameHoldCount  * frameWidth - dragBarX;
+        bool isPressDragBar = false;
+        isPressDragBar = drawDragBar(dragBarX, dragBarWidth);
+        //expand handle
+        drawExHandle(dragBarX, lastFrameX + lastTrackFrameHoldCount * frameWidth);
+
         //trackFrame
         int left = _scrollPosX;
-        int frameWidth = _proj->curCompInfo->frameWidth;
 
         int thumbHeight = 0;
         int thumbWidth;
@@ -100,20 +121,16 @@ private:
         bool isHoverLeft = false;
 
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
-        int dragBarX = 0;
         bool hasThumbDrawing = false;
-        int lastTrackFrameHoldCount = 0;
         bool isCut = false;
         int currentRenderFrame = _proj->curCompInfo->getCurrentFrame();
+        vector<int> *frameXs = new vector<int>;
+
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
-            lastTrackFrameHoldCount = tfi->getHoldFrame();
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
                 thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 thumbY = gY() + _trackDragBarHeight - (thumbHeight - frameHeight) * .5;
-                dragBarX = tx;
-                if (dragBarX < gX() + _trackLeft)
-                    dragBarX = gX() + _trackLeft;
             }
 
             //update render frame idx
@@ -126,17 +143,21 @@ private:
 
 
             thumbWidth = frameWidth * tfi->getHoldFrame();
-            if (tx < gX() + _trackLeft) {
+            if (tx < gX() + _trackPanelWidth) {
                 left += thumbWidth;
-                if (tx + frameWidth > gX() + _trackLeft) {
+                if (tx + frameWidth > gX() + _trackPanelWidth) {
                     isCut = true;
-                    nvgScissor(vg, gX() + _trackLeft, gY(), frameWidth, height);
+                    nvgScissor(vg, gX() + _trackPanelWidth, gY(), frameWidth, height);
                 }
                 else
                     continue;
             }
             else
                 left += thumbWidth;
+            if (tx > gX() + width)
+                break;
+
+            frameXs->push_back(tx);
 
             hasThumbDrawing = true;
             //white bg
@@ -160,11 +181,14 @@ private:
                 nvgResetScissor(vg);
             }
             //hover check
-            if (hoverTx == 0 &&
-                isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y,
-                         tx, gY() + _trackDragBarHeight,
-                         thumbWidth,
-                         frameHeight)) {
+            bool isInFrame;
+            isInFrame = isInRect(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y,
+                                 tx, gY() + _trackDragBarHeight,
+                                 thumbWidth,
+                                 frameHeight);
+
+
+            if (hoverTx == 0 && isInFrame) {
                 hoverTx = tx;
                 hoverTWidth = tfi->getHoldFrame() * frameHeight;
                 if (!_isPress) {
@@ -179,45 +203,48 @@ private:
                 else if (!_handleTrackFrameInfo)
                     _handleTrackFrameInfo = tfi;
             }
-        }
 
-        //drag bar
-        bool isPressDragBar = false;
-        if (hasThumbDrawing && lastTrackFrameHoldCount) {
-            isPressDragBar = drawDragBar(dragBarX, tx + lastTrackFrameHoldCount * frameWidth - dragBarX);
-        }
-        drawExHandle(dragBarX, tx + lastTrackFrameHoldCount * frameWidth);
+        }//end loop
+
+
+
+
         if (hoverTx != 0) {//hover mask
             if (!_isPress)
                 drawBlockHint(isHoverLeft, hoverTx, hoverTWidth);
             else if (!isPressDragBar)
                 onDragTrackFrame(hoverTx, hoverTx + hoverTWidth);
         }
+        else if (_pressFlag == PressFlag::Right && _handleTrackFrameInfo) {
+            onDragTrackFrame(hoverTx, hoverTx + hoverTWidth);
+        }
     }
 
     bool drawDragBar(int dragBarX, int dragWidth) {
-        fillRect(_3RGB(29), dragBarX, gY(), dragWidth, 1);
-        fillRect(_3RGB(60), dragBarX, gY() + 1, dragWidth, 1);
-        if (_isPress && isMouseInRect(dragBarX, gY(), dragWidth, _trackDragBarHeight + 2)) {
+        if (_trackInfo->trackFrameInfos->size()) {
+            fillRect(_3RGB(29), dragBarX, gY(), dragWidth, 1);
+            fillRect(_3RGB(60), dragBarX, gY() + 1, dragWidth, 1);
+            if (_isPress && isMouseInRect(dragBarX, gY(), dragWidth, _trackDragBarHeight + 2)) {
 //            VS_CONTEXT.setCursorPos(VS_CONTEXT.cursor.x, _hideY);
-            int dx = mouseX() - _lastX;
-            if (dx != 0) {
-                if (dx < -_dragSense) {
-                    _trackInfo->setStartFrame(_trackInfo->getStartFrame() - 1);
-                    _lastX = mouseX();
+                int dx = mouseX() - _lastX;
+                if (dx != 0) {
+                    if (dx < -_dragSense) {
+                        _trackInfo->setStartFrame(_trackInfo->getStartFrame() - 1);
+                        _lastX = mouseX();
+                    }
+                    else if (dx > _dragSense) {
+                        _trackInfo->setStartFrame(_trackInfo->getStartFrame() + 1);
+                        _lastX = mouseX();
+                    }
                 }
-                else if (dx > _dragSense) {
-                    _trackInfo->setStartFrame(_trackInfo->getStartFrame() + 1);
-                    _lastX = mouseX();
-                }
+                fillRect(_3RGB(52), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+                return true;
             }
-            fillRect(_3RGB(52), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
-            return true;
+            else {
+                fillRect(_3RGB(47), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
+            }
         }
-        else {
-            fillRect(_3RGB(47), dragBarX, gY() + 2, dragWidth, _trackDragBarHeight);
-            return false;
-        }
+        return false;
     }
 
     void drawBlockHint(bool isHoverLeft, int hoverTx, int hoverTWidth) {
@@ -315,7 +342,6 @@ private:
         int dx = 0;
         int frameWidth = _proj->curCompInfo->frameWidth;
         int mx = VS_CONTEXT.cursor.x;
-
         if (_lastX)
             dx = mx - _lastX;
         else

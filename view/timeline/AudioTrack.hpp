@@ -29,7 +29,7 @@ public:
 
 private:
     void drawWaveForm() {
-        int left = _scrollPosX + gX() + _trackLeft;
+        int left = _scrollPosX + gX() + _trackPanelWidth;
 
         //todo save to bitmap
 //        drawWaveLineMix(_audioTrackInfo->mix);
@@ -39,7 +39,7 @@ private:
     }
 
     void drawWaveLine(vector<float> *chL, bool isLeft) {
-        int left = _scrollPosX + gX() + _trackLeft;
+        int left = _scrollPosX + gX() + _trackPanelWidth;
         int py;
         if (isLeft)
             py = gY() + height / 4;
@@ -56,7 +56,7 @@ private:
     }
 
     void drawWaveLineMix(vector<float> *chL) {
-        int left = _scrollPosX + gX() + _trackLeft;
+        int left = _scrollPosX + gX() + _trackPanelWidth;
         int py = gY() + height / 2;
 
         nvgBeginPath(vg);
@@ -69,11 +69,11 @@ private:
     }
 
     void drawWaveLineSampleMix(vector<float> *samples) {
-        int left = _scrollPosX + gX() + _trackLeft;
+        int left = _scrollPosX + gX() + _trackPanelWidth;
         int py = gY() + height / 2;
         int sampleHeight;
         int sampleX;
-        int showL = gX() + _trackLeft;
+        int showL = gX() + _trackPanelWidth;
         int showR = gX() + width;
         int sw = _sampleWidth - 1;
         nvgSave(vg);

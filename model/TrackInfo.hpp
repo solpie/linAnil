@@ -18,7 +18,7 @@ using namespace std;
 
 class TrackInfo : public BaseTrackInfo {
 public:
-    TrackInfo(string n,int t): BaseTrackInfo(n, t) {
+    TrackInfo(string n, int t) : BaseTrackInfo(n, t) {
         name = n;
         trackFrameInfos = new vector<TrackFrameInfo *>();
     };
@@ -42,7 +42,7 @@ public:
 
 
     virtual int getEndFrame() override {
-        return trackFrameInfos->back()->getEndFrame();
+        return getStartFrame() + trackFrameInfos->back()->getEndFrame()-1;
     }
 
     int getCurTrackFrameIdx() { return _trackFrameIdx; };

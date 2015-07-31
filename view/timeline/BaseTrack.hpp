@@ -76,7 +76,7 @@ public:
         _baseTrackInfo->isSelected = v;
     }
     void scrollX(int x) {
-        _scrollPosX = -x + _trackLeft;
+        _scrollPosX = -x + _trackPanelWidth;
     }
     VsColor selColor;
 protected:
@@ -91,8 +91,8 @@ protected:
         disEvent(vse);
         setSelected(true);
     }
-    int _trackLeft = TIMELINE_TRACK_PANEL_DEF_WIDTH;
-    int _scrollPosX = _trackLeft;
+    int _trackPanelWidth = TIMELINE_TRACK_PANEL_DEF_WIDTH;
+    int _scrollPosX = _trackPanelWidth;
 
     BaseTrackInfo *_baseTrackInfo;
 

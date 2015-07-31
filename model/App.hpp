@@ -30,8 +30,8 @@ public:
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
         comp->newTrack("number", "D:/projects/linAnil/test/test30/");
-        comp->newTrack("audio track", "test/test.wav", TrackType::Audio);
         comp->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        comp->newTrack("audio track", "test/test.wav", TrackType::Audio);
         //todo comp2
 //        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
 //        comp2->newTrack("number2", "D:/projects/linAnil/test/test30/");
