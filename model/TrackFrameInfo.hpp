@@ -43,7 +43,6 @@ public:
     }
 
     void setHoldFrame(int v) {
-        int dCount = v - _holdFrame;
         _holdFrame = v;
         _endFrame = _startFrame + _holdFrame - 1;
     }

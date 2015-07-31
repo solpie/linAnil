@@ -71,6 +71,7 @@ public:
         fillRect(_3RGB(52), gX(), gY() + height - 1, width, 1);
     }
 
+
     virtual void setSelected(bool v) {
         cout << this << " setSelected() " << _baseTrackInfo->name << endl;
         _baseTrackInfo->isSelected = v;

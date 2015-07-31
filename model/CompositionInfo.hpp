@@ -161,7 +161,7 @@ public:
         }
 
         if (handleTrackFrame->getHoldFrame() > 1) {
-            handleTrackFrame->setStartFrame(handleTrackFrame->getStartFrame() - 1);
+            handleTrackFrame->setStartFrame(handleTrackFrame->getStartFrame() + 1);
             handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() - 1);
         }
         else {

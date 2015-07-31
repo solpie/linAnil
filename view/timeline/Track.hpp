@@ -102,7 +102,7 @@ private:
         int lastFrameX = (_trackInfo->getEndFrame()) * frameWidth + _scrollPosX;
         int lastTrackFrameHoldCount = _trackInfo->trackFrameInfos->back()->getHoldFrame();
 
-        dragBarWidth = lastFrameX +lastTrackFrameHoldCount  * frameWidth - dragBarX;
+        dragBarWidth = lastFrameX + lastTrackFrameHoldCount * frameWidth - dragBarX;
         bool isPressDragBar = false;
         isPressDragBar = drawDragBar(dragBarX, dragBarWidth);
         //expand handle
@@ -121,10 +121,8 @@ private:
         bool isHoverLeft = false;
 
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
-        bool hasThumbDrawing = false;
         bool isCut = false;
         int currentRenderFrame = _proj->curCompInfo->getCurrentFrame();
-        vector<int> *frameXs = new vector<int>;
 
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             tx = gX() + left + trackStartX;
@@ -157,9 +155,17 @@ private:
             if (tx > gX() + width)
                 break;
 
-            frameXs->push_back(tx);
 
-            hasThumbDrawing = true;
+            //frame idx
+            char str[10];
+            nvgFontFace(vg, "sans");
+            nvgFontSize(vg, THEME_FONT_SIZE_NORMAL);
+            nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+            nvgFillColor(vg, nvgRGB(240, 240, 240));
+//            sprintf(str, "%d", tfi->getIdx() + 1);
+            sprintf(str, "%d", tfi->getStartFrame());
+            nvgText(vg, tx, gY() + 1, str, nullptr);
+
             //white bg
             fillRect(_3RGB(255), tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
 
