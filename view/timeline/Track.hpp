@@ -99,14 +99,14 @@ private:
         dragBarX = gX() + _trackInfo->getStartFrame() * frameWidth + _scrollPosX;
         if (dragBarX < gX() + _trackPanelWidth)
             dragBarX = gX() + _trackPanelWidth;
-        int lastFrameX = (_trackInfo->getEndFrame()) * frameWidth + _scrollPosX;
-        int lastTrackFrameHoldCount = _trackInfo->trackFrameInfos->back()->getHoldFrame();
+        int lastFrameX = (_trackInfo->getEndFrame()+1) * frameWidth + _scrollPosX;
+//        int lastTrackFrameHoldCount = _trackInfo->trackFrameInfos->back()->getHoldFrame();
 
-        dragBarWidth = lastFrameX + lastTrackFrameHoldCount * frameWidth - dragBarX;
+        dragBarWidth = lastFrameX  - dragBarX;
         bool isPressDragBar = false;
         isPressDragBar = drawDragBar(dragBarX, dragBarWidth);
         //expand handle
-        drawExHandle(dragBarX, lastFrameX + lastTrackFrameHoldCount * frameWidth);
+        drawExHandle(dragBarX, lastFrameX);
 
         //trackFrame
         int left = _scrollPosX;
@@ -162,9 +162,21 @@ private:
             nvgFontSize(vg, THEME_FONT_SIZE_NORMAL);
             nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
             nvgFillColor(vg, nvgRGB(240, 240, 240));
-//            sprintf(str, "%d", tfi->getIdx() + 1);
-            sprintf(str, "%d", tfi->getStartFrame());
+            sprintf(str, "%d", tfi->getIdx() + 1);
+//            sprintf(str, "%d", tfi->getStartFrame());
             nvgText(vg, tx, gY() + 1, str, nullptr);
+
+            if (tfi->getHoldFrame() > 1) {
+                fillRect(_3RGBA(255,50),tx+frameWidth,thumbY,thumbWidth-frameWidth,thumbHeight)
+
+                nvgFontFace(vg, "sans");
+                nvgFontSize(vg, THEME_FONT_SIZE_NORMAL);
+                nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
+                nvgFillColor(vg, nvgRGB(240, 240, 240));
+//            sprintf(str, "%d", tfi->getIdx() + 1);
+                sprintf(str, "%d", tfi->getHoldFrame());
+                nvgText(vg, tx + thumbWidth - 5, gY() + 15, str, nullptr);
+            }
 
             //white bg
             fillRect(_3RGB(255), tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
@@ -211,7 +223,6 @@ private:
             }
 
         }//end loop
-
 
 
 

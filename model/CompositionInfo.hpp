@@ -119,7 +119,7 @@ public:
         handleTrackFrame->setHoldFrame(handleTrackFrame->getHoldFrame() - 1);
         handleTrackFrame->foreach([](TrackFrameInfo *tfi) {
             tfi->setStartFrame(tfi->getStartFrame() - 1);
-        }, handleTrackFrame);
+        }, handleTrackFrame->next);
         updateContentEndFrame();
 //        dumpTrackFrameIdx(trackInfo);
     }
@@ -139,6 +139,7 @@ public:
     }
 
     void L2R(TrackFrameInfo *handleTrackFrame, TrackInfo *trackInfo) {
+        //fixme has bug
         cout << typeid(this).name() << " L2R: " << handleTrackFrame->getIdx() << endl;
         if (!_trackFrameInfotoRemoves->empty()) {
             TrackFrameInfo *delTfi = _trackFrameInfotoRemoves->back();
