@@ -99,10 +99,10 @@ private:
         dragBarX = gX() + _trackInfo->getStartFrame() * frameWidth + _scrollPosX;
         if (dragBarX < gX() + _trackPanelWidth)
             dragBarX = gX() + _trackPanelWidth;
-        int lastFrameX = (_trackInfo->getEndFrame()+1) * frameWidth + _scrollPosX;
+        int lastFrameX = (_trackInfo->getEndFrame() + 1) * frameWidth + _scrollPosX;
 //        int lastTrackFrameHoldCount = _trackInfo->trackFrameInfos->back()->getHoldFrame();
 
-        dragBarWidth = lastFrameX  - dragBarX;
+        dragBarWidth = lastFrameX - dragBarX;
         bool isPressDragBar = false;
         isPressDragBar = drawDragBar(dragBarX, dragBarWidth);
         //expand handle
@@ -123,6 +123,7 @@ private:
         int trackStartX = _trackInfo->getStartFrame() * frameWidth;
         bool isCut = false;
         int currentRenderFrame = _proj->curCompInfo->getCurrentFrame();
+        int frameBgY = gY() + _trackDragBarHeight;
 
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             tx = gX() + left + trackStartX;
@@ -167,8 +168,8 @@ private:
             nvgText(vg, tx, gY() + 1, str, nullptr);
 
             if (tfi->getHoldFrame() > 1) {
-                fillRect(_3RGBA(255,50),tx+frameWidth,thumbY,thumbWidth-frameWidth,thumbHeight)
-
+                fillRect(_3RGBA(255, 50), tx + frameWidth, frameBgY, thumbWidth - frameWidth,
+                         frameHeight)
                 nvgFontFace(vg, "sans");
                 nvgFontSize(vg, THEME_FONT_SIZE_NORMAL);
                 nvgTextAlign(vg, NVG_ALIGN_RIGHT | NVG_ALIGN_TOP);
@@ -179,7 +180,7 @@ private:
             }
 
             //white bg
-            fillRect(_3RGB(255), tx, gY() + _trackDragBarHeight, frameWidth, frameHeight);
+            fillRect(_3RGB(255), tx, frameBgY, frameWidth, frameHeight);
 
             //thumb
             nvgBeginPath(vg);
@@ -223,7 +224,6 @@ private:
             }
 
         }//end loop
-
 
 
         if (hoverTx != 0) {//hover mask
@@ -279,42 +279,40 @@ private:
     }
 
     void drawExHandle(int trackX, int trackEndX) {
-        _exHandleL->setX(trackX);
-        _exHandleR->setX(trackEndX);
+        if (trackEndX > gX() + _trackPanelWidth) {
 
-        fillRect(_3RGB(200), _exHandleL->gX() - _exHandleL->width,
-                 _exHandleL->gY(),
-                 _exHandleL->width,
-                 _exHandleL->height)
+            _exHandleL->setX(trackX);
+            _exHandleR->setX(trackEndX);
+
+//        fillRect(_3RGB(200), _exHandleL->gX() - _exHandleL->width,
+//                 _exHandleL->gY(),
+//                 _exHandleL->width,
+//                 _exHandleL->height)
 
 
-//        fillRect(_3RGB(200), _exHandleR->gX()+20,
-//                 _exHandleR->gY()+30,
-//                 _exHandleR->width,
-//                 _exHandleR->height)
+            nvgBeginPath(vg);
+            nvgCircle(vg, _exHandleR->gX() + 20 + 5,
+                      _exHandleR->gY() + 30, 5);
+            if (_exHandleR->isHover) {
+                nvgFillColor(vg, _3RGB(200));
+            }
+            else {
+                nvgFillColor(vg, _3RGB(120));
+            }
+            nvgFill(vg);
+            nvgBeginPath(vg);
+            nvgCircle(vg, _exHandleR->gX() + 20 + 5,
+                      _exHandleR->gY() + 30, 5);
+            nvgStrokeWidth(vg, 1);
+            nvgStrokeColor(vg, _3RGB(20));
+            nvgStroke(vg);
 
-        nvgBeginPath(vg);
-        nvgCircle(vg, _exHandleR->gX() + 20 + 5,
-                  _exHandleR->gY() + 30, 5);
-        if (_exHandleR->isHover) {
-            nvgFillColor(vg, _3RGB(200));
+            vsColoredNodeWire(vg, _exHandleR->gX(),
+                              _exHandleR->gY() + 2,
+                              _exHandleR->gX() + 20,
+                              _exHandleR->gY() + 30,
+                              _3RGB(200), _3RGB(52));
         }
-        else {
-            nvgFillColor(vg, _3RGB(120));
-        }
-        nvgFill(vg);
-        nvgBeginPath(vg);
-        nvgCircle(vg, _exHandleR->gX() + 20 + 5,
-                  _exHandleR->gY() + 30, 5);
-        nvgStrokeWidth(vg, 1);
-        nvgStrokeColor(vg, _3RGB(20));
-        nvgStroke(vg);
-
-        vsColoredNodeWire(vg, _exHandleR->gX(),
-                          _exHandleR->gY() + 2,
-                          _exHandleR->gX() + 20,
-                          _exHandleR->gY() + 30,
-                          _3RGB(200), _3RGB(52));
 
     }
 
