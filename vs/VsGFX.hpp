@@ -124,3 +124,9 @@ nvgBeginPath(vg);\
 nvgRect(vg, x, y, w, h);\
 nvgFillColor(vg, col);\
 nvgFill(vg);
+
+#define fillRoundRect(col, x, y, w, h,r) vg=VG_CONTEXT;\
+nvgBeginPath(vg);\
+nvgRoundedRect(vg, x, y, w, h,r);\
+nvgFillColor(vg, col);\
+nvgFill(vg);

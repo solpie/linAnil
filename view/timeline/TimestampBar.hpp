@@ -9,10 +9,15 @@ public:
         height = 35;
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
+        add_event(MouseEvent::RIGHT_UP, onRightUp);
         add_event_on_context(MouseEvent::UP, onUp)
 
         colLeft = nvgRGBA(255, 255, 255, 128);
         colRight = nvgRGBA(255, 255, 255, 10);
+    }
+
+    void onRightUp(void *e) {
+
     }
 
     void onUp(void *e) {
@@ -132,7 +137,7 @@ public:
                                                    colLeft, colRight));
                 nvgFill(vg);
 
-                fillRect(nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER), cursorPx, gY() + height - 18, frameWidth, 3)
+                fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), cursorPx, gY() + height - 18, frameWidth, 3)
             }
 
         }

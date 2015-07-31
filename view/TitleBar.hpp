@@ -148,7 +148,7 @@ public:
 
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY() + height - 3, width, 3);
-        nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+        nvgFillColor(vg, nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER));
         nvgFill(vg);
 
         VS_RENDER_CHILDREN();

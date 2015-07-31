@@ -67,7 +67,7 @@ view/Theme.hpp
 vs/events/SpriteEvent.hpp
 view/timeline/TimestampBar.hpp
 model/ProjectInfo.hpp
-view/PopupMenu.hpp
+view/menu/PopupMenu.hpp
 vs/Splitter.hpp
 vs/Rect.hpp
 vs/events/ErrorEvent.hpp
@@ -81,7 +81,7 @@ vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/eve
 view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
 #view/playback/SDLtes1t.hpp
 view/playback/WavPlayer.hpp
- view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp model/Settings.hpp)
+ view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp model/Settings.hpp view/menu/MenuItem.hpp)
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)

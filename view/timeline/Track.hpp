@@ -287,7 +287,7 @@ private:
 //            nvgLineTo(vg, hoverTx - s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
-//            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+//            nvgFillColor(vg, nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
 //
 //
@@ -302,7 +302,7 @@ private:
 //            nvgLineTo(vg, hoverTx + s2, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1 - s3 + p4 + p4 - s3);
 //            nvgLineTo(vg, hoverTx, gY() + _trackDragBarHeight + s1);
-//            nvgFillColor(vg, nvgRGB(COLOR_TITLEBAR_BOTTOM_BORDER));
+//            nvgFillColor(vg, nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER));
 //            nvgFill(vg);
     }
 

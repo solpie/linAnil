@@ -15,9 +15,6 @@
 #include <GL/glew.h>
 
 //#endif
-#ifdef __APPLE__
-#	define GLFW_INCLUDE_GLCOREARB
-#endif
 
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -95,6 +92,7 @@ public:
     bool isMaximized = false;
     int lastWidth;
     int lastHeight;
+
     void initVsContext() {
         actWindow = GetActiveWindow();
 
@@ -202,9 +200,9 @@ public:
 
             double t, dt;
 //            if (isPerf) {
-                t = glfwGetTime();
-                _frameTime =dt = t - prevt;
-                prevt = t;
+            t = glfwGetTime();
+            _frameTime = dt = t - prevt;
+            prevt = t;
 //            }
 
 
@@ -283,7 +281,7 @@ public:
         MoveWindow(actWindow, r.left + dx, r.top + dy, width, height, TRUE);
     }
 
-    unsigned int buttons;
+    int buttons;
     int mods;
     int enabeld;
     int action;
@@ -338,15 +336,24 @@ public:
         glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
-    void setMouseButton(unsigned int button, unsigned int mod, int act) {
+    void setMouseButton(int button, int mod, int act) {
         buttons = button;
         mods = mod;
         action = act;
         enabeld = 1;
-        if (act == GLFW_PRESS)
-            disEvent(MouseEvent::DOWN);
-        else if (act == GLFW_RELEASE)
-            disEvent(MouseEvent::UP);
+        if (button == GLFW_MOUSE_BUTTON_1) {
+            if (act == GLFW_PRESS)
+                disEvent(MouseEvent::DOWN);
+            else if (act == GLFW_RELEASE)
+                disEvent(MouseEvent::UP);
+        }
+        else if (button == GLFW_MOUSE_BUTTON_2) {
+            if (act == GLFW_PRESS)
+                disEvent(MouseEvent::RIGHT_DOWN);
+            else if (act == GLFW_RELEASE)
+                disEvent(MouseEvent::RIGHT_UP);
+        }
+
     }
 
     void setCursor(int x, int y) {
@@ -360,7 +367,7 @@ public:
     void setKey(int key, int action, int mods) {
         KeyEvent *keyEvent = new KeyEvent();
         keyEvent->key = key;
-        keyEvent->isShift = mods & GLFW_MOD_SHIFT ;
+        keyEvent->isShift = mods & GLFW_MOD_SHIFT;
         keyEvent->isAlt = mods & GLFW_MOD_ALT;
         keyEvent->isCtrl = mods & GLFW_MOD_CONTROL;
         if (action == GLFW_PRESS) {
@@ -400,14 +407,6 @@ private:
 
 void mouseButton(GLFWwindow *window, int button, int action, int mods) {
     NVG_NOTUSED(window);
-    switch (button) {
-        case 1:
-            button = 2;
-            break;
-        case 2:
-            button = 1;
-            break;
-    }
     VsContext::_().setMouseButton(button, mods, action);
 }
 

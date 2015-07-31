@@ -16,7 +16,7 @@
 #include <view/playback/FramesPlayback.hpp>
 #include "viewport/Viewport.hpp"
 #include "KeyInput.hpp"
-
+#include "menu/PopupMenu.hpp"
 class Stage : public VsObjContainer {
 public:
     Stage() {
@@ -50,6 +50,13 @@ public:
 
         compTabs = new CompTabs(_proj);
         addChild(compTabs);
+
+        //////popup layer
+        popupLayer = new VsObjContainer();
+        addChild(popupLayer);
+        _popupMenu.init(popupLayer);
+        _popupMenu.move(300, 300);
+
         cout << typeid(this).name() << "init stage" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });
         VS_CONTEXT.add(VsEvent::RESIZE, [this](void *e) { onResize(); });
@@ -63,7 +70,9 @@ public:
         render();
     }
 
-    virtual void render() override;
+    virtual void render() override {
+        VS_RENDER_CHILDREN();
+    }
 
     void setSize(int w, int h) override {
         titleBar->resize(w, h);
@@ -74,6 +83,8 @@ public:
 
         compTabs->setSize(w, -1);
         compTabs->setY(h - compTabs->height);
+
+        popupLayer->setSize(w, h);
     }
 
 private:
@@ -86,9 +97,7 @@ private:
     Viewport *viewport;
 
     CompTabs *compTabs;
+    //popup layer
+    VsObjContainer* popupLayer;
 };
 
-void Stage::render() {
-//    drawThumbnails(VG_CONTEXT, 365, 30, 160, 300, images, 12, glfwGetTime());
-    VsObjContainer::render();
-}
