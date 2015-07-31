@@ -160,7 +160,7 @@ public:
         //border
         int borderTop = gY() + height - 20;
         fillRect(nvgRGB(THEME_COLOR_PANEL_BORDER_DARK), gX(), borderTop, width, 1)
-        fillRect(nvgRGB(COLOR_PANEL_BORDER_LIGHT), gX(), borderTop + 1, width, 1)
+        fillRect(nvgRGB(THEME_COL_PANEL_BORDER_LIGHT), gX(), borderTop + 1, width, 1)
 
         if (_timestampType == TimestampType::Frame) {//timestamp
             int fY = gY() + height - 10;

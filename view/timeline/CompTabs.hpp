@@ -17,7 +17,7 @@ protected:
     virtual void onDraw() override {
         fillRect(_3RGB(47),gX(),gY(),width,height)
         fillRect(nvgRGB(THEME_COLOR_PANEL_BORDER_DARK), gX(), gY(), width, 1)
-        fillRect(nvgRGB(COLOR_PANEL_BORDER_LIGHT), gX(), gY() + 1, width, 1)
+        fillRect(nvgRGB(THEME_COL_PANEL_BORDER_LIGHT), gX(), gY() + 1, width, 1)
         int px = TIMELINE_TRACK_PANEL_DEF_WIDTH;
 
         for (CompositionInfo *compInfo:*_projInfo->comps) {

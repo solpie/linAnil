@@ -25,7 +25,7 @@ public:
     }
 
     void show(std::string title, vector<MenuItem *> *menuItems, int width = 0) {
-        move(VS_CONTEXT.cursor.x, VS_CONTEXT.cursor.y);
+        move(VS_CONTEXT.cursor.x - 20, VS_CONTEXT.cursor.y - _titleHeigh - 5);
         _menuItems = menuItems;
         _title = title.c_str();
         if (width)
@@ -42,9 +42,15 @@ public:
 
 protected:
     virtual void onDraw() override {
+        //auto hide
+        if (mouseX() < -50 || mouseY() < -50 || mouseY() > height + 100 || mouseX() > width + 100) {
+            hide();
+        }
+        //
         int textY = 5;
-        fillRoundRect(nvgRGBA(THEME_COLOR_PANEL, 200), gX(), gY(), width, height, VS_MENU_RADIUS)
-        fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), gX() + VS_MENU_RADIUS, gY(), width - VS_MENU_RADIUS * 2, 1)
+        fillRoundRect(nvgRGBA(THEME_COLOR_PANEL, 200), gX(), gY(), width, height, THEME_MENU_RADIUS)
+        fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), gX() + THEME_MENU_RADIUS, gY(),
+                 width - THEME_MENU_RADIUS * 2, 1)
         //title
         nvgBeginPath(vg);
         nvgFontFace(vg, "sans");
@@ -58,18 +64,30 @@ protected:
         //items
         textY = gY() + _titleHeigh + 2;
         if (_menuItems) {
+            int gmy = VS_CONTEXT.cursor.y;
+            bool isSelect = false;
             for (MenuItem *menuItem:*_menuItems) {
+                isSelect = (gmy > textY && gmy < textY + _itemHeight) && isHover;
+                if (isSelect) {
+                    fillRect(nvgRGB(THEME_MENU_COL_SELECT), gX(), textY, width, _itemHeight)
+                }
+
                 nvgBeginPath(vg);
                 nvgFontFace(vg, "sans");
                 nvgFontSize(vg, THEME_FONT_SIZE_MENU_ITEM);
                 nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-                nvgFillColor(vg, nvgRGB(240, 240, 240));
+                if (isSelect)
+                    nvgFillColor(vg, nvgRGB(THEME_MENU_COL_SELECT_TEXT));
+                else
+                    nvgFillColor(vg, nvgRGB(240, 240, 240));
                 nvgText(vg, gX() + 5, textY, menuItem->text.c_str(), nullptr);
+
                 textY += _itemHeight;
             }
         }
 
-        vsDropShadow(vg, gX(), gY(), width, height, VS_MENU_RADIUS, VS_MENU_SHADOW_FEATHER, VS_MENU_SHADOW_ALPHA);
+        vsDropShadow(vg, gX(), gY(), width, height, THEME_MENU_RADIUS, THEME_MENU_SHADOW_FEATHER,
+                     THEME_MENU_SHADOW_ALPHA);
         VS_RENDER_CHILDREN();
     }
 
