@@ -33,6 +33,8 @@ public:
 //                    event == MouseEvent::MOVE
                     event == MouseEvent::DOWN
                     || event == MouseEvent::ROLL_OVER
+                    || event == MouseEvent::RIGHT_UP
+                    || event == MouseEvent::RIGHT_DOWN
                     || event == MouseEvent::ROLL_OUT
                     || event == MouseEvent::UP);
 
@@ -87,6 +89,13 @@ protected:
                         else if (VS_CONTEXT.action == GLFW_RELEASE)
                             VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::UP));
                     }
+                   else if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_2) {
+                        if (VS_CONTEXT.action == GLFW_PRESS)
+                            VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::RIGHT_DOWN));
+                        else if (VS_CONTEXT.action == GLFW_RELEASE)
+                            VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::RIGHT_UP));
+                    }
+
                 }
             }
 

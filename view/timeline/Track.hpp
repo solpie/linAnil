@@ -224,11 +224,11 @@ private:
         //left block
         int blockWidth = 5;
         int blockY = gY() + _trackDragBarHeight + 2;
-        NVGcolor colorL = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
-        NVGcolor colorR = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
+        NVGcolor colorL = nvgRGB(THEME_COLOR_TRACK_THUMB_BLOCK);
+        NVGcolor colorR = nvgRGBA(THEME_COLOR_TRACK_THUMB_BLOCK, 128);
         if (isHoverLeft) {
-            colorL = nvgRGBA(COLOR_TRACK_THUMB_BLOCK, 128);
-            colorR = nvgRGB(COLOR_TRACK_THUMB_BLOCK);
+            colorL = nvgRGBA(THEME_COLOR_TRACK_THUMB_BLOCK, 128);
+            colorR = nvgRGB(THEME_COLOR_TRACK_THUMB_BLOCK);
         }
         fillRect(colorL, hoverTx - 5, blockY, blockWidth, frameHeight - 2);
         fillRect(colorR, hoverTx + hoverTWidth, blockY, blockWidth, frameHeight - 2);

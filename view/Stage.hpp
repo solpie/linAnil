@@ -56,6 +56,7 @@ public:
         addChild(popupLayer);
         _popupMenu.init(popupLayer);
         _popupMenu.move(300, 300);
+        _popupMenu.hide();
 
         cout << typeid(this).name() << "init stage" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });

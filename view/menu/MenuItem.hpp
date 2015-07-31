@@ -9,22 +9,23 @@
 
 class MenuItem {
 public:
-    MenuItem(std::string text, std::function<void(void *)> *callback, void *data = nullptr) {
+    template<typename Observer>
+
+    MenuItem(std::string text, Observer &&callback, void *data = nullptr) {
         this->text = text;
         this->data = data;
-        _callback = callback;
-        _c_str = text.c_str();
+        _callback = forward<function<void(void *)>>(callback);
+
     }
 
     std::string text;
 
-    const char *c_str() {
-        _c_str;
+    void select() {
+        _callback(nullptr);
     }
-
     void *data;
 private:
-    const char *_c_str;
-     std::function<void(void *)> *_callback;
+    std::string _text;
+     std::function<void(void *)> _callback;
 
 };

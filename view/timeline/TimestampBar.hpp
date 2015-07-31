@@ -2,11 +2,27 @@
 // Created by toramisu on 2015/7/17.
 //
 #include "Sprite.hpp"
+#include "menu/PopupMenu.hpp"
+#include "menu/PopupMenuInfo.hpp"
+
+enum TimestampType {
+    Frame,
+    Sec
+};
 
 class TimestampBar : public Sprite {
 public:
     TimestampBar() {
         height = 35;
+        //menu
+        _settingMenu = new PopupMenuInfo("Timestamp setting");
+        _settingMenu->width = 220;
+        _settingMenu->addMenuItem("show in frame", [this](void *e) {
+            _timestampType = TimestampType::Frame;
+        });
+        _settingMenu->addMenuItem("show in sec", [this](void *e) {
+            _timestampType = TimestampType::Sec;
+        });
         add_event(MouseEvent::DOWN, onDown);
         add_event(MouseEvent::UP, onUp);
         add_event(MouseEvent::RIGHT_UP, onRightUp);
@@ -17,7 +33,7 @@ public:
     }
 
     void onRightUp(void *e) {
-
+        _popupMenu.show(_settingMenu->title(), _settingMenu->getMenuItems(),_settingMenu->width);
     }
 
     void onUp(void *e) {
@@ -143,10 +159,10 @@ public:
         }
         //border
         int borderTop = gY() + height - 20;
-        fillRect(nvgRGB(COLOR_PANEL_BORDER_DARK), gX(), borderTop, width, 1)
+        fillRect(nvgRGB(THEME_COLOR_PANEL_BORDER_DARK), gX(), borderTop, width, 1)
         fillRect(nvgRGB(COLOR_PANEL_BORDER_LIGHT), gX(), borderTop + 1, width, 1)
 
-        {//timestamp
+        if (_timestampType == TimestampType::Frame) {//timestamp
             int fY = gY() + height - 10;
             int fCount = scrollValue / frameWidth;
             int sY = gY() + 20;
@@ -197,6 +213,8 @@ private:
         return _proj->curCompInfo->durationFrame * _proj->curCompInfo->frameWidth;
     }
 
+    int _timestampType = TimestampType::Frame;
+    PopupMenuInfo *_settingMenu;
     NVGcolor colLeft;
     NVGcolor colRight;
     int _value = 0;
