@@ -40,6 +40,7 @@
 
 #define VS_WIDTH 1440
 #define VS_HEIGHT 920
+#define VS_DOUBLE_CLICK_DELAY  0.2 //double click 200 ms
 
 #include "windows.h"
 
@@ -336,16 +337,19 @@ public:
         glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
+
     void setMouseButton(int button, int mod, int act) {
         buttons = button;
         mods = mod;
         action = act;
         enabeld = 1;
         if (button == GLFW_MOUSE_BUTTON_1) {
-            if (act == GLFW_PRESS)
+            if (act == GLFW_PRESS) {
                 disEvent(MouseEvent::DOWN);
-            else if (act == GLFW_RELEASE)
+            }
+            else if (act == GLFW_RELEASE) {
                 disEvent(MouseEvent::UP);
+            }
         }
         else if (button == GLFW_MOUSE_BUTTON_2) {
             if (act == GLFW_PRESS)

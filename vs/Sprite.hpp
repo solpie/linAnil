@@ -70,6 +70,9 @@ public:
     }
 
 protected:
+
+    double _doubleClickDelay = 0;
+
     virtual void onDrawBegin() {
         if (mouseEnabled && isInteractive && visible) {
             int mx = VS_CONTEXT.cursor.x;
@@ -84,12 +87,24 @@ protected:
 //                }
                 if (VS_CONTEXT.enabeld) {
                     if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_1) {
-                        if (VS_CONTEXT.action == GLFW_PRESS)
-                            VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::DOWN));
-                        else if (VS_CONTEXT.action == GLFW_RELEASE)
+                        if (VS_CONTEXT.action == GLFW_PRESS) {
+                            _doubleClickDelay = glfwGetTime() - _doubleClickDelay;
+                            if (_doubleClickDelay < VS_DOUBLE_CLICK_DELAY) {
+                                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::DOUBLE_DOWN));
+                            }
+                            else {
+                                VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::DOWN));
+                            }
+
+                        }
+                        else if (VS_CONTEXT.action == GLFW_RELEASE) {
                             VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::UP));
+                            _doubleClickDelay = glfwGetTime();
+
+                        }
+
                     }
-                   else if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_2) {
+                    else if (VS_CONTEXT.buttons == GLFW_MOUSE_BUTTON_2) {
                         if (VS_CONTEXT.action == GLFW_PRESS)
                             VS_CONTEXT.pushUIEvent(MouseEvent::create(this, MouseEvent::RIGHT_DOWN));
                         else if (VS_CONTEXT.action == GLFW_RELEASE)

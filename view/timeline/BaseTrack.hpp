@@ -29,7 +29,11 @@ public:
         addChild(vSlider);
 
         add_event(MouseEvent::DOWN, onDown);
+        add_event(MouseEvent::DOUBLE_DOWN, onDoubleClick)
+    }
 
+    void onDoubleClick(void *e) {
+        _baseTrackInfo->name = "";
     }
 
     void setColor(int r, int g, int b) {
@@ -76,12 +80,15 @@ public:
         cout << this << " setSelected() " << _baseTrackInfo->name << endl;
         _baseTrackInfo->isSelected = v;
     }
+
     void scrollX(int x) {
         _scrollPosX = -x + _trackPanelWidth;
     }
+
     VsColor selColor;
 protected:
-    virtual void onOpacity(void *e) {}
+    virtual void onOpacity(void *e) { }
+
     virtual void onVisible(void *e) {
         _baseTrackInfo->visible = trackVisibleBox->isChecked;
     }
@@ -92,6 +99,7 @@ protected:
         disEvent(vse);
         setSelected(true);
     }
+
     int _trackPanelWidth = TIMELINE_TRACK_PANEL_DEF_WIDTH;
     int _scrollPosX = _trackPanelWidth;
 
