@@ -75,10 +75,7 @@ void scrollevent(GLFWwindow *window, double x, double y) {
 //    uiSetScroll((int) x, (int) y);
 }
 
-void charevent(GLFWwindow *window, unsigned int value) {
-    NVG_NOTUSED(window);
-//    uiSetChar(value);
-}
+void charEvent(GLFWwindow *window, unsigned int codepoint) ;
 
 
 class VsContext : public EventDispatcher, public S<VsContext> {
@@ -161,7 +158,7 @@ public:
 //            return -1;
         }
         glfwSetKeyCallback(_window, key);
-        glfwSetCharCallback(_window, charevent);
+        glfwSetCharCallback(_window, charEvent);
         glfwSetCursorPosCallback(_window, cursorPos);
         glfwSetMouseButtonCallback(_window, mouseButton);
         glfwSetScrollCallback(_window, scrollevent);
@@ -384,6 +381,12 @@ public:
 //        cout << typeid(this).name() << " key " << key << " mods " << mods << keyEvent << endl;
     }
 
+    void setChar(char c) {
+//        KeyEvent *keyEvent = new KeyEvent;
+
+//        keyEvent->key
+    }
+
     void popUIEvent() {
         for (const auto &obs : _uiEvents) {
             BaseEvent *event = &obs.second;
@@ -424,4 +427,11 @@ void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
     VsContext::_().setKey(key, action, mods);
 //    uiSetKey(key, mods, action);
+}
+
+void charEvent(GLFWwindow *window, unsigned int codepoint) {
+    NVG_NOTUSED(window);
+    char c = codepoint;
+    VsContext::_().setChar(codepoint);
+    cout << "charEvent" << c  << endl;
 }

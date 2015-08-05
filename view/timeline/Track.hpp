@@ -10,6 +10,7 @@
 #include <vs/Slider.hpp>
 #include <vs/CheckBox.hpp>
 #include "BaseTrack.hpp"
+#include "TextField.hpp"
 
 enum PressFlag {
     Left = 1, Right
@@ -32,6 +33,15 @@ public:
         add_event_on_context(MouseEvent::UP, onUp)
         setColor(52, 52, 52);
 
+        TextField *input = new TextField;
+        input->setText("lwlbgllpl");
+        input->move(5, 28);
+        addChild(input);
+
+        TextField *input2 = new TextField;
+        input2->setText("wwwww");
+        input2->move(5, 40);
+        addChild(input2);
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {

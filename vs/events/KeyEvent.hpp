@@ -10,6 +10,7 @@ public:
 
     static constexpr const char *DOWN = "keyDown";
     static constexpr const char *UP = "keyUP";
+    static constexpr const char *CHAR = "charinput";
     int key;
     bool isCtrl;
     bool isAlt;
