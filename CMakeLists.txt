@@ -38,6 +38,11 @@ model/TrackInfo.hpp
 model/TrackFrameInfo.hpp
 model/FileWatcher.hpp
 model/App.hpp
+model/ImageLoader.hpp
+model/BaseTrackInfo.hpp
+model/AudioTrackInfo.hpp
+model/ProjectInfo.hpp
+model/Settings.hpp
 utils/Linker.hpp
 events/ActionEvent.hpp
 events/TrackModelEvent.hpp
@@ -54,34 +59,46 @@ vs/CheckBox.hpp
 vs/events/VsEvent.hpp
 vs/VsColor.hpp
 vs/ScrollBar.hpp
+vs/Splitter.hpp
+vs/Rect.hpp
+vs/events/SpriteEvent.hpp
+vs/events/KeyEvent.hpp
+vs/events/ErrorEvent.hpp
+vs/VsGFX.hpp
+vs/CommonMethod.hpp
+vs/utils/VsTimer.hpp
+vs/events/TimerEvent.hpp
+vs/utils/Tween.hpp
+vs/TextField.hpp
 view/UI.hpp
 view/win/FileDialog.hpp
 view/KeyInput.hpp
 view/Stage.hpp
-model/ImageLoader.hpp
 view/timeline/Timeline.hpp
 view/TitleBar.hpp
 view/timeline/Track.hpp
 view/timeline/TrackToolBar.hpp
 view/Theme.hpp
-vs/events/SpriteEvent.hpp
 view/timeline/TimestampBar.hpp
-model/ProjectInfo.hpp
 view/menu/PopupMenu.hpp
-vs/Splitter.hpp
-vs/Rect.hpp
-vs/events/ErrorEvent.hpp
 view/viewport/Viewport.hpp
-vs/events/KeyEvent.hpp
 view/tools/ColorWheel.hpp
-model/AudioTrackInfo.hpp
 #view/playback/portaudioTest.hpp
-vs/VsGFX.hpp
-vs/CommonMethod.hpp view/playback/FramesPlayback.hpp vs/utils/VsTimer.hpp vs/events/TimerEvent.hpp view/playback/PlaybackState.hpp
-view/timeline/AudioTrack.hpp view/timeline/BaseTrack.hpp view/playback/AudioPlayback.hpp view/timeline/CompTabs.hpp vs/TextField.hpp
+view/timeline/AudioTrack.hpp
+view/timeline/BaseTrack.hpp
+view/timeline/CompTabs.hpp
 #view/playback/SDLtes1t.hpp
+test/Test.hpp
+test/Sndfile.hpp
+view/playback/FramesPlayback.hpp
+view/playback/PlaybackState.hpp
+view/playback/AudioPlayback.hpp
 view/playback/WavPlayer.hpp
- view/playback/FFmpegTest.hpp test/Test.hpp view/playback/AudioPlayer.hpp test/Sndfile.hpp view/playback/BasePlayback.hpp model/Settings.hpp view/menu/MenuItem.hpp view/menu/PopupMenuInfo.hpp vs/utils/Tween.hpp)
+view/playback/FFmpegTest.hpp
+view/playback/AudioPlayer.hpp
+view/playback/BasePlayback.hpp
+view/menu/MenuItem.hpp
+view/menu/PopupMenuInfo.hpp )
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)

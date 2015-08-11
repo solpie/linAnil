@@ -16,7 +16,7 @@ public:
     static void editExternal(string path) {
         string csp = "\"C:\\Program Files\\CELSYS\\CLIP STUDIO\\CLIP STUDIO PAINT\\CLIPStudioPaint.exe\"";
         string cmd = csp + " " + path;
-        WinExec(cmd.c_str(),WM_SHOWWINDOW);
+        WinExec(cmd.c_str(), WM_SHOWWINDOW);
     }
 
     static void setCursorVisible(bool b) {
