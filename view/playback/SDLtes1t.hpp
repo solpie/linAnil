@@ -78,7 +78,7 @@ void my_audio_callback(void *userdata, Uint8 *stream, int len) {
 
 
 #include "stdlib.h"
-#include "SDL/SDL.h"
+#include "SDL2/SDL.h"
 // *** IF USING XCODE ON MACOS X, CHANGE THE FOLLOWING LINE TO:  #include "SDL_mixer/SDL_mixer.h"
 #include "SDL2/SDL_mixer.h"
 

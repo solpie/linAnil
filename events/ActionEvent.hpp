@@ -12,10 +12,5 @@
 
 class ActionEvent {
 public:
-    static constexpr const char *TOGGLE_PLAY = "TOGGLE_PLAY";
-    static constexpr const char *UPDATE_CURSOR = "UPDATE_CURSOR";
-
-    static constexpr const char *POPUP_MENU = "POPUP_MENU";
-    static constexpr const char *SCROLL_TIMELINE_HBAR = "SCROLL_TIMELINE_HBAR";
-    int param1;
+    static constexpr const char *PROJECT_SAVE = "PROJECT_SAVE";
 };

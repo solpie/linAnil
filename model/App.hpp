@@ -7,6 +7,7 @@
 
 #endif //SEQTRUAN_APP_H
 
+#include <events/ActionEvent.hpp>
 #include "utils/Singleton.hpp"
 #include "CompositionInfo.hpp"
 #include "ProjectInfo.hpp"
@@ -21,7 +22,12 @@ public:
 
     void init() {
         projInfo = new ProjectInfo;
+        Evt_add(ActionEvent::PROJECT_SAVE, onSaveProject);
         //default Comp
+    }
+
+    void onSaveProject(void *e) {
+        projInfo->saveToXml();
     }
 
 

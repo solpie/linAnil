@@ -7,7 +7,7 @@ using namespace std;
 
 #include "utils/Singleton.hpp"
 #include "nanovg/nanovg.h"
-#include "libpng16/png.h"
+//#include "libpng16/png.h"
 class ImageInfo {
 public:
     int id = -1;

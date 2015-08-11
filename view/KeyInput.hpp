@@ -10,6 +10,7 @@
 
 #include "vs/events/KeyEvent.hpp"
 #include "events/PlaybackEvent.hpp"
+#include "events/ActionEvent.hpp"
 
 void onKeyDown(void *e) {
     KeyEvent *keyEvent = (KeyEvent *) e;
@@ -26,6 +27,9 @@ void onKeyDown(void *e) {
     }
     else if (keyEvent->key == GLFW_KEY_D) {
         Evt_ins.disEvent(PlaybackEvent::BACKWARD);
+    }
+    else if (keyEvent->key == GLFW_KEY_S && keyEvent->isCtrl) {
+        Evt_ins.disEvent(ActionEvent::PROJECT_SAVE);
     }
 }
 
