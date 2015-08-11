@@ -11,6 +11,7 @@
 #include <vs/CheckBox.hpp>
 #include "BaseTrack.hpp"
 #include "TextField.hpp"
+#include "model/AppExternal.hpp"
 
 enum PressFlag {
     Left = 1, Right
@@ -34,7 +35,7 @@ public:
         setColor(52, 52, 52);
 
         TextField *input = new TextField;
-        input->setText("lwlbgllpl");
+        input->setText("lllll");
         input->move(5, 28);
         addChild(input);
 
@@ -42,6 +43,9 @@ public:
         input2->setText("wwwww");
         input2->move(5, 40);
         addChild(input2);
+
+
+
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -95,10 +99,6 @@ private:
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
     int frameHeight = 40;
 
-//    void drawFrameIdx()
-//    {
-//
-//    }
     void drawTrackFrame() {
         int frameWidth = _proj->curCompInfo->frameWidth;
 

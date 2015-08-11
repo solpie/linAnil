@@ -10,27 +10,37 @@ public:
     TextField() {
         add_event_on_context(KeyEvent::UP, onKeyUp)
         add_event(MouseEvent::DOWN, onDown)
+        add_event(MouseEvent::DOUBLE_DOWN, onDoubleClk)
         textPosWidth = new vector<int>;
         isInteractive = true;
         height = 14;
     }
 
-    void onKeyUp(void *e) {
+    void onDoubleClk(void *e) {
 
     }
 
-    void onDown(void *e) {
-        if(textPosWidth->size())
+    void onKeyUp(void *e) {
+        KeyEvent *keyEvent = (KeyEvent *) e;
+        if(keyEvent->key==GLFW_KEY_BACKSPACE)
         {
-            for(int len:*textPosWidth)
-            {
-                if(mouseX()>len)
-                {
+
+        }
+    }
+
+    void onDown(void *e) {
+        if (textPosWidth->size()) {
+            _cursorIdx = -1;
+            for (int len:*textPosWidth) {
+                ++_cursorIdx;
+                if (mouseX() > len) {
                     _cursorPos = len;
                     break;
                 }
             }
         }
+
+
 //        mouseX()
     }
 
@@ -46,7 +56,7 @@ public:
             nvgFontSize(vg, _fontSize);
             nvgTextAlign(vg, _align);
             nvgFillColor(vg, _col);
-            tWidth = nvgText(vg, gX(), gY(), _text.substr(0, i+1).c_str(), nullptr);
+            tWidth = nvgText(vg, gX(), -100, _text.substr(0, i + 1).c_str(), nullptr);
 //            textPosWidth->push_back(tWidth);
             textPosWidth->insert(textPosWidth->begin(), tWidth);
         }
@@ -68,9 +78,8 @@ public:
 protected:
     virtual void onDraw() override {
         //
-        if(_cursorPos)
-        {
-            fillRect(_3RGB(200),gX()+_cursorPos,gY(),2,height)
+        if (_cursorPos) {
+            fillRect(_3RGB(200), gX() + _cursorPos, gY(), 2, height)
 
         }
         nvgFontFace(vg, "sans");
@@ -91,6 +100,7 @@ protected:
 private:
     int _align = NVG_ALIGN_LEFT | NVG_ALIGN_TOP;
     int _cursorPos = 0;
+    int _cursorIdx = 0;
     int _textLength = 0;
     bool isChangeText = false;
     float _textWidth = 0;
