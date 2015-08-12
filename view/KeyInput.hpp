@@ -37,7 +37,7 @@ void onKeyDown(void *e) {
     else if (keyEvent->key == GLFW_KEY_O && keyEvent->isCtrl) {
         auto *e = new ActionEvent();
         e->type = ActionEvent::PROJECT_OPEN;
-        string path = "c:\\test.xml";
+        string path = "test.xml";
         e->payload = &path;
         Evt_ins.disEvent(e);
     }

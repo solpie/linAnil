@@ -2,10 +2,8 @@
 
 #include "string"
 #include "CompositionInfo.hpp"
-#include "utils/pugixml/pugixml.hpp"
+#include "utils/pugixml/KissPugixml.hpp"
 
-#define addAttri(name, value) append_attribute(name).set_value(value)
-using namespace pugi;
 
 class ProjectInfo {
 public:
@@ -32,6 +30,7 @@ public:
         comps->push_back(comp);
         return comp;
     }
+
     //////////////////////////////////////// open //////////////////////////////////////
     void open(string path) {
         auto *doc = new xml_document();//::load_file(path);
@@ -55,10 +54,8 @@ public:
         }
 
         xml_node compNode = linanilNode.child("composition");
-        for (xml_node node = compNode.child("compositionInfo"); node; node = node.next_sibling("compositionInfo")) {
+        forChild(compNode, "compositionInfo", [&](xml_node node) {
             cout << node.first_attribute().name() << node.first_attribute().value() << endl;
-//            CompositionInfo *comp = projInfo->newComposition("comp1", 1280, 720, 24, 300);
-
             CompositionInfo *compositionInfo = newComposition(node.attribute("name").value(),
                                                               node.attribute("width").as_int(),
                                                               node.attribute("height").as_int(),
@@ -66,8 +63,8 @@ public:
                                                               node.attribute("duration").as_int());
             compositionInfo->frameWidth = node.attribute("framewidth").as_int();
 
-            for (xml_node trackInfoNode = node.child("TrackInfo");
-                 trackInfoNode; trackInfoNode = trackInfoNode.next_sibling("TrackInfo")) {
+
+            forChild(node, "TrackInfo", [&](xml_node trackInfoNode) {
                 int trackInfoType = trackInfoNode.attribute("type").as_int();
                 string trackName = trackInfoNode.attribute("name").value();
 
@@ -88,14 +85,13 @@ public:
                     compositionInfo->getTrackInfos()->push_back(audioTrackInfo);
                 }
                 compositionInfo->updateContentEndFrame();
-            }
-        }
+            });
+        });
     }
 
     void readTrackInfo(xml_node trackInfoNode, TrackInfo *trackInfo) {
         TrackFrameInfo *pre = nullptr;
-        for (xml_node node = trackInfoNode.child("frame"); node;
-             node = trackInfoNode.next_sibling("frame")) {
+        forChild(trackInfoNode, "frame", [&](xml_node node) {
             TrackFrameInfo *trackFrameInfo = new TrackFrameInfo;
             ImageInfo *imageInfo = ImageLoader()._().load(trackInfo->path + node.attribute("filename").value());
             imageInfo->filename = node.attribute("filename").value();
@@ -106,7 +102,7 @@ public:
             trackFrameInfo->setStartFrame(node.attribute("start").as_int());
             trackFrameInfo->setHoldFrame(node.attribute("hold").as_int());
             trackInfo->trackFrameInfos->push_back(trackFrameInfo);
-        }
+        });
     }
     ///////////////////////////////// save /////////////////////////////////////////////
 
@@ -142,7 +138,8 @@ public:
                 buildTrackInfo(compositionInfo->getTrackInfos()->at(j), item);
             }
         }
-        doc->save_file("c:\\test.xml");
+        doc->save_file("test.xml");
+//        doc->save_file("c:\\test.xml");
     }
 
     void buildTrackInfo(BaseTrackInfo *trackInfo, xml_node item) {
