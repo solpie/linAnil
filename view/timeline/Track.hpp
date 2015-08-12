@@ -43,9 +43,6 @@ public:
         input2->setText("wwwww");
         input2->move(5, 40);
         addChild(input2);
-
-
-
     }
 
     void setTrackInfo(TrackInfo *trackInfo) {
@@ -54,11 +51,6 @@ public:
 
     void onUp(void *e) {
         if (_isPress && isDragHide) {
-//            VS_CONTEXT.showCursor();
-//            if (_pressFlag == PressFlag::Left)
-//            VS_CONTEXT.setCursorPos(_hideX, _hideY);
-//            else if(_pressFlag == PressFlag::Right))
-//                V
             _proj->curCompInfo->clearRemoveFrame();
         }
         _pressFlag = 0;
@@ -91,12 +83,16 @@ public:
         VS_RENDER_CHILDREN();
     }
 
+    void setSelectTrackFrameInfo(TrackFrameInfo *sel) {
+        _selectedTrackFrameInfo = sel;
+    }
 
 private:
     int _trackDragBarHeight = 13;
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
+    TrackFrameInfo *_selectedTrackFrameInfo = nullptr;
     int frameHeight = 40;
 
     void drawTrackFrame() {
@@ -229,12 +225,24 @@ private:
                         _pressFlag = PressFlag::Right;
 
                 }
-                else if (!_handleTrackFrameInfo)
+                else if (!_handleTrackFrameInfo) {
                     _handleTrackFrameInfo = tfi;
+                    this->foreach([](Track *selTrk) {
+                        selTrk->setSelectTrackFrameInfo(nullptr);
+                    });
+                    _selectedTrackFrameInfo = tfi;
+                    _proj->curCompInfo->selectedTrackFrameInfo = tfi;
+                    tfi->x = tx;
+                }
             }
 
         }//end loop
+        //select handle track frame
+        if (_selectedTrackFrameInfo) {
+            fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), _selectedTrackFrameInfo->x, gY() + height - 2,
+                     frameWidth, 2)
 
+        }
 
         if (hoverTx != 0) {//hover mask
             if (!_isPress)

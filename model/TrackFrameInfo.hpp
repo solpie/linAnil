@@ -3,7 +3,6 @@
 // Created by manoyuria on 2015/6/21.
 //
 
-//#include <QtGui/qimage.h>
 
 #ifndef SEQTRUAN_TRACKFRAMEINFO_HPP
 #define SEQTRUAN_TRACKFRAMEINFO_HPP
@@ -48,35 +47,15 @@ public:
     }
 
 
-    int getTrackInfoIdx() const {
-        return _trackInfoIdx;
-    }
 
     void setTrackInfoIdx(int v) {
         _trackInfoIdx = v;
     }
 
-
-    void *getPayLoad() {
-//        if (imageLoader->payLoad)
-//            return imageLoader->payLoad;
-//        return nullptr;
-    }
-
-
-    void load(std::string path) {
-//        if (!imageLoader) {
-//            imageLoader = new ImageLoader();
-//        }
-//        imageLoader->setTrackInfo(path);
-//        imageLoader->loadFunc = [] {
-//            qDebug() << this << "loadFunc";;
-//        };
-    }
-
     double opacity;//
 
     ImageInfo *imageInfo = nullptr;
+    int x;
 protected:
     int _trackInfoIdx;
 

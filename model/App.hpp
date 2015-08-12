@@ -12,6 +12,7 @@
 #include "CompositionInfo.hpp"
 #include "ProjectInfo.hpp"
 #include "vs/events/VsEvent.hpp"
+#include "AppExternal.hpp"
 
 class App : public Singleton<App> {
 public:
@@ -23,7 +24,12 @@ public:
     void init() {
         projInfo = new ProjectInfo;
         Evt_add(ActionEvent::PROJECT_SAVE, onSaveProject);
+        Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
         //default Comp
+    }
+
+    void onExtEdit(void *e) {
+        AppExternal::editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo->path);
     }
 
     void onSaveProject(void *e) {

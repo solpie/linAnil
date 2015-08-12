@@ -84,11 +84,13 @@ public:
             trackInfoNode.addAttri("opacity", imageTrackInfo->getOpacity());
             trackInfoNode.addAttri("start", imageTrackInfo->getStartFrame());
             trackInfoNode.addAttri("end", imageTrackInfo->getEndFrame());
+            trackInfoNode.addAttri("path", imageTrackInfo->path.c_str());
             for (int i = 0; i < imageTrackInfo->trackFrameInfos->size(); ++i) {
                 TrackFrameInfo *trackFrameInfo = imageTrackInfo->trackFrameInfos->at(i);
                 xml_node frameNode = trackInfoNode.append_child("frame");
                 frameNode.addAttri("start", trackFrameInfo->getStartFrame());
                 frameNode.addAttri("hold", trackFrameInfo->getHoldFrame());
+                frameNode.addAttri("filename", trackFrameInfo->imageInfo->filename.c_str());
             }
         }
         else if (trackInfo->type == TrackType::Audio) {

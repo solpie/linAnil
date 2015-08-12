@@ -36,7 +36,7 @@ public:
     string name;
     int durationFrame;
     int frameWidth = TIMELINE_TRACK_FRAME_MAX_WIDTH;
-
+    TrackFrameInfo *selectedTrackFrameInfo;
     void walk() {
         boost::filesystem::path path = boost::filesystem::current_path();
         boost::filesystem::recursive_directory_iterator itr(path);
@@ -57,10 +57,13 @@ public:
                 _trackInfoHead = trackInfo;
             TrackFrameInfo *pre = nullptr;
             if (dirname != "") {
+                trackInfo->path = dirname;
                 boost::filesystem::recursive_directory_iterator itr(dirname);
                 while (itr != boost::filesystem::recursive_directory_iterator()) {
                     if (itr->path().extension() == ".png") {
                         ImageInfo *imgInfo = ImageLoader()._().load(itr->path().string());
+                        imgInfo->filename = itr->path().filename().string();
+
                         cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " <<
                         imgInfo->width <<
                         " " <<
@@ -149,7 +152,8 @@ public:
             //insert
             delTfi->setPre(handleTrackFrame->pre);
             handleTrackFrame->setPre(delTfi);
-            _trackInfoHead->trackFrameInfos->insert(_trackInfoHead->trackFrameInfos->begin() + delTfi->getIdx(), delTfi);
+            _trackInfoHead->trackFrameInfos->insert(_trackInfoHead->trackFrameInfos->begin() + delTfi->getIdx(),
+                                                    delTfi);
             handleTrackFrame->foreach([](TrackFrameInfo *tfiBackward) {
                 tfiBackward->setIdx(tfiBackward->getIdx() + 1);
             }, handleTrackFrame);

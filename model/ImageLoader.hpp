@@ -12,6 +12,7 @@ class ImageInfo {
 public:
     int id = -1;
     string path;
+    string filename;
     int width;
     int height;
 };

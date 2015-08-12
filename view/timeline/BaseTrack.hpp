@@ -34,7 +34,7 @@ public:
     }
 
     void onDoubleClick(void *e) {
-        AppExternal::editExternal("c:\\1.jpg");
+//        AppExternal::editExternal("c:\\1.jpg");
     }
 
     void setColor(int r, int g, int b) {

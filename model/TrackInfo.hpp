@@ -23,6 +23,8 @@ public:
         trackFrameInfos = new vector<TrackFrameInfo *>();
     };
     string name;
+    //image folder path
+    string path;
     vector<TrackFrameInfo *> *trackFrameInfos;
     int idx;
     VsColor color;
