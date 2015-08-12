@@ -69,7 +69,7 @@ public:
                 buildTrackInfo(compositionInfo->getTrackInfos()->at(j), item);
             }
         }
-        doc->save_file("test.xml");
+        doc->save_file("c:\\test.xml");
     }
 
     void buildTrackInfo(BaseTrackInfo *trackInfo, xml_node item) {

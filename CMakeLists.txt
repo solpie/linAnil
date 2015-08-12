@@ -100,6 +100,7 @@ view/playback/AudioPlayer.hpp
 view/playback/BasePlayback.hpp
 view/menu/MenuItem.hpp
 view/menu/PopupMenuInfo.hpp )
+#SET_TARGET_PROPERTIES(linAnil PROPERTIES LINK_FLAGS    "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\" /SUBSYSTEM:WINDOWS")
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
 #ADD_LIBRARY(portaudio_lib STATIC IMPORTED)
@@ -154,6 +155,17 @@ target_link_libraries(linAnil portaudio)
 #target_link_libraries(linAnil :libglfw3.dll.a)
 #target_link_libraries(linAnil :libnanovg.a)
 #target_link_libraries (linAnil ${CMAKE_THREAD_LIBS_INIT})
+
+
+#uac requireAdministrator
+  ADD_CUSTOM_COMMAND(TARGET linAnil
+    POST_BUILD
+    COMMAND "mt.exe" -manifest "${CMAKE_CURRENT_SOURCE_DIR}/build/win/manifest.xml" -outputresource:"linAnil.exe"\;\#1
+  )
+
+
+
+
 #COPY dll
 set(BIN_DIR ${CMAKE_CXX_COMPILER}/../../bin)
 file(COPY ${BIN_DIR}/libwinpthread-1.dll DESTINATION .)
@@ -179,3 +191,4 @@ file(COPY ${FONTS} DESTINATION fonts)
 file(GLOB THUMBS "test/thumb/*.jpg")
 file(COPY ${THUMBS} DESTINATION test/thumb)
 file(COPY oui/DejaVuSans.ttf oui/blender_icons16.png oui/blender_icons.svg DESTINATION oui)
+#
