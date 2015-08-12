@@ -18,8 +18,7 @@ using namespace std;
 
 class TrackInfo : public BaseTrackInfo {
 public:
-    TrackInfo(string n, int t) : BaseTrackInfo(n, t) {
-        name = n;
+    TrackInfo(string n) : BaseTrackInfo(n, TrackType::Image) {
         trackFrameInfos = new vector<TrackFrameInfo *>();
     };
     string name;

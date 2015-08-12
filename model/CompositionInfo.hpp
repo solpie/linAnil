@@ -50,7 +50,7 @@ public:
     void newTrack(string name, string dirname = "", int type = TrackType::Image) {
 //    Evt_add("type", func1);
         if (type == TrackType::Image) {
-            TrackInfo *trackInfo = new TrackInfo(name, TrackType::Image);
+            TrackInfo *trackInfo = new TrackInfo(name);
             trackInfo->idx = _trackInfos->size();
             _trackInfos->push_back(trackInfo);
             if (_trackInfoHead == nullptr)

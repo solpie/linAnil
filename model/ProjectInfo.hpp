@@ -38,7 +38,53 @@ public:
     }
 
     void open(string path) {
+        auto *doc = new xml_document();//::load_file(path);
+        xml_parse_result result = doc->load_file(path.c_str());
+        if (result) {
+            cout << "XML [" << path << "] parsed without errors, version value: [" <<
+            doc->child("linanil").attribute("version").value() << "]\n\n";
+        }
+        else {
+            std::cout << "XML [" << path << "] parsed with errors, version value: [" <<
+            doc->child("linanil").attribute("version").value() << "]\n";
+            std::cout << "Error description: " << result.description() << "\n";
+            std::cout << "Error offset: " << result.offset << " (error at [..." << (result.offset) << "]\n\n";
+        }
+        xml_node linanilNode = doc->child("linanil");
 
+
+        xml_node settingNode = linanilNode.child("setting");
+        for (xml_node node = settingNode.child("PaintApp"); node; node = node.next_sibling("PaintApp")) {
+            cout << node.first_attribute().name() << node.first_attribute().value() << endl;
+        }
+
+        xml_node compNode = linanilNode.child("composition");
+        for (xml_node node = compNode.child("compositionInfo"); node; node = node.next_sibling("compositionInfo")) {
+            cout << node.first_attribute().name() << node.first_attribute().value() << endl;
+            CompositionInfo *compositionInfo = new CompositionInfo();
+
+            for (xml_node trackInfoNode = node.child("TrackInfo");
+                 trackInfoNode; trackInfoNode = trackInfoNode.next_sibling("TrackInfo")) {
+                int trackInfoType = int(trackInfoNode.attribute("type").value());
+                string trackName = trackInfoNode.attribute("name").value();
+
+                if (trackInfoType == TrackType::Image) {
+                    TrackInfo *trackInfo = new TrackInfo(trackName);
+                    trackInfo->name = trackInfoNode.attribute("name").value();
+                    trackInfo->enable = trackInfoNode.attribute("enable").as_bool();
+                    trackInfo->setOpacity(trackInfoNode.attribute("opacity").as_double());
+
+
+                    compositionInfo->getTrackInfos()->push_back(trackInfo);
+                }
+                else if (trackInfoType == TrackType::Audio) {
+                    AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(trackName);
+                    compositionInfo->getTrackInfos()->push_back(audioTrackInfo);
+                }
+
+            }
+            comps->push_back(compositionInfo);
+        }
     }
 
     void saveToXml() {
