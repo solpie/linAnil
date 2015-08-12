@@ -37,6 +37,10 @@ public:
         return comp;
     }
 
+    void open(string path) {
+
+    }
+
     void saveToXml() {
         auto *doc = new xml_document();
         xml_node rootNode = doc->append_child("linanil");

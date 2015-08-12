@@ -9,12 +9,16 @@
 
 #endif //SEQTRUAN_ACTIONEVENT_H
 
+#include "events/BaseEvent.hpp"
 
-class ActionEvent {
+class ActionEvent :public BaseEvent{
 public:
+    static constexpr const char *PROJECT_OPEN = "PROJECT_OPEN";
     static constexpr const char *PROJECT_SAVE = "PROJECT_SAVE";
     //project not save yet
     static constexpr const char *PROJECT_CHANGED = "PROJECT_CHANGED";
     //edit image in external app
     static constexpr const char *Ext_EDIT = "Ext_EDIT";
+
+//    void* payload;
 };

@@ -34,6 +34,13 @@ void onKeyDown(void *e) {
     else if (keyEvent->key == GLFW_KEY_S && keyEvent->isCtrl) {
         Evt_ins.disEvent(ActionEvent::PROJECT_SAVE);
     }
+    else if (keyEvent->key == GLFW_KEY_O && keyEvent->isCtrl) {
+        auto *e = new ActionEvent();
+        e->type = ActionEvent::PROJECT_OPEN;
+        string path = "c:\\test.xml";
+        e->payload = &path;
+        Evt_ins.disEvent(e);
+    }
 }
 
 void onKeyUp(void *e) {

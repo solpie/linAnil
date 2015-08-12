@@ -23,6 +23,7 @@ public:
 
     void init() {
         projInfo = new ProjectInfo;
+        Evt_add(ActionEvent::PROJECT_OPEN, onOpenProject);
         Evt_add(ActionEvent::PROJECT_SAVE, onSaveProject);
         Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
         //default Comp
@@ -30,6 +31,15 @@ public:
 
     void onExtEdit(void *e) {
         AppExternal::editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo->path);
+    }
+
+    void onOpenProject(void *e) {
+        string *path = get_paylaod(string);
+        auto *openProj = new ProjectInfo();
+        openProj->open(*path);
+
+
+//        projInfo = openProj;
     }
 
     void onSaveProject(void *e) {

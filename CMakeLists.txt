@@ -158,10 +158,10 @@ target_link_libraries(linAnil portaudio)
 
 
 #uac requireAdministrator
-  ADD_CUSTOM_COMMAND(TARGET linAnil
-    POST_BUILD
-    COMMAND "mt.exe" -manifest "${CMAKE_CURRENT_SOURCE_DIR}/build/win/manifest.xml" -outputresource:"linAnil.exe"\;\#1
-  )
+#  ADD_CUSTOM_COMMAND(TARGET linAnil
+#    POST_BUILD
+#    COMMAND "mt.exe" -manifest "${CMAKE_CURRENT_SOURCE_DIR}/build/win/manifest.xml" -outputresource:"linAnil.exe"\;\#1
+#  )
 
 
 
