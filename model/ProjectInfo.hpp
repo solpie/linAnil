@@ -18,10 +18,6 @@ public:
     string name;
     vector<CompositionInfo *> *comps;
 
-    void save(string path) {
-
-    }
-
     CompositionInfo *curCompInfo = nullptr;
 
     CompositionInfo *newComposition(string name, int width, int height, int frameRate, int duration) {
@@ -36,7 +32,7 @@ public:
         comps->push_back(comp);
         return comp;
     }
-
+    //////////////////////////////////////// open //////////////////////////////////////
     void open(string path) {
         auto *doc = new xml_document();//::load_file(path);
         xml_parse_result result = doc->load_file(path.c_str());
@@ -67,8 +63,8 @@ public:
                                                               node.attribute("width").as_int(),
                                                               node.attribute("height").as_int(),
                                                               node.attribute("framerate").as_int(),
-                                                              node.attribute("duration").as_int()
-            );
+                                                              node.attribute("duration").as_int());
+            compositionInfo->frameWidth = node.attribute("framewidth").as_int();
 
             for (xml_node trackInfoNode = node.child("TrackInfo");
                  trackInfoNode; trackInfoNode = trackInfoNode.next_sibling("TrackInfo")) {
@@ -91,7 +87,7 @@ public:
                     AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(trackName);
                     compositionInfo->getTrackInfos()->push_back(audioTrackInfo);
                 }
-
+                compositionInfo->updateContentEndFrame();
             }
         }
     }
@@ -112,7 +108,7 @@ public:
             trackInfo->trackFrameInfos->push_back(trackFrameInfo);
         }
     }
-
+    ///////////////////////////////// save /////////////////////////////////////////////
 
     void saveToXml() {
         auto *doc = new xml_document();
