@@ -106,7 +106,7 @@ public:
     }
     ///////////////////////////////// save /////////////////////////////////////////////
 
-    void saveToXml() {
+    void save(string path) {
         auto *doc = new xml_document();
         xml_node rootNode = doc->append_child("linanil");
         rootNode.append_attribute("version");
@@ -126,41 +126,40 @@ public:
         for (int i = 0; i < comps->size(); ++i) {
             CompositionInfo *compositionInfo = comps->at(i);
             xml_node item = compNode.append_child("compositionInfo");
-            item.addAttri("name", compositionInfo->name.c_str());
-            item.addAttri("framewidth", compositionInfo->frameWidth);
-            item.addAttri("duration", compositionInfo->durationFrame);
-            item.addAttri("framerate", compositionInfo->frameRate);
-            item.addAttri("height", compositionInfo->height);
-            item.addAttri("width", compositionInfo->width);
+            addAttr(item, "name", compositionInfo->name.c_str());
+            addAttr(item, "framewidth", compositionInfo->frameWidth);
+            addAttr(item, "duration", compositionInfo->durationFrame);
+            addAttr(item, "framerate", compositionInfo->frameRate);
+            addAttr(item, "height", compositionInfo->height);
+            addAttr(item, "width", compositionInfo->width);
 
             /////trackInfo
             for (int j = 0; j < compositionInfo->getTrackInfos()->size(); ++j) {
                 buildTrackInfo(compositionInfo->getTrackInfos()->at(j), item);
             }
         }
-        doc->save_file("test.xml");
-//        doc->save_file("c:\\test.xml");
+        doc->save_file(path.c_str());
     }
 
     void buildTrackInfo(BaseTrackInfo *trackInfo, xml_node item) {
         TrackInfo *imageTrackInfo;
         AudioTrackInfo *audioTrackInfo;
         xml_node trackInfoNode = item.append_child("TrackInfo");
-        trackInfoNode.addAttri("name", trackInfo->name.c_str());
-        trackInfoNode.addAttri("type", trackInfo->type);
-        trackInfoNode.addAttri("enable", trackInfo->enable);
+        addAttr(trackInfoNode, "name", trackInfo->name.c_str());
+        addAttr(trackInfoNode, "type", trackInfo->type);
+        addAttr(trackInfoNode, "enable", trackInfo->enable);
         if (trackInfo->type == TrackType::Image) {
             imageTrackInfo = (TrackInfo *) trackInfo;
-            trackInfoNode.addAttri("opacity", imageTrackInfo->getOpacity());
-            trackInfoNode.addAttri("start", imageTrackInfo->getStartFrame());
-            trackInfoNode.addAttri("end", imageTrackInfo->getEndFrame());
-            trackInfoNode.addAttri("path", imageTrackInfo->path.c_str());
+            addAttr(trackInfoNode, "opacity", imageTrackInfo->getOpacity());
+            addAttr(trackInfoNode, "start", imageTrackInfo->getStartFrame());
+            addAttr(trackInfoNode, "end", imageTrackInfo->getEndFrame());
+            addAttr(trackInfoNode, "path", imageTrackInfo->path.c_str());
             for (int i = 0; i < imageTrackInfo->trackFrameInfos->size(); ++i) {
                 TrackFrameInfo *trackFrameInfo = imageTrackInfo->trackFrameInfos->at(i);
                 xml_node frameNode = trackInfoNode.append_child("frame");
-                frameNode.addAttri("start", trackFrameInfo->getStartFrame());
-                frameNode.addAttri("hold", trackFrameInfo->getHoldFrame());
-                frameNode.addAttri("filename", trackFrameInfo->imageInfo->filename.c_str());
+                addAttr(frameNode, "start", trackFrameInfo->getStartFrame());
+                addAttr(frameNode, "hold", trackFrameInfo->getHoldFrame());
+                addAttr(frameNode, "filename", trackFrameInfo->imageInfo->filename.c_str());
             }
         }
         else if (trackInfo->type == TrackType::Audio) {

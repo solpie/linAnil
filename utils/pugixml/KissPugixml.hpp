@@ -4,7 +4,6 @@
 //
 #include "pugixml.hpp"
 
-#define addAttri(name, value) append_attribute(name).set_value(value)
 using namespace pugi;
 
 template<typename func>
@@ -12,4 +11,10 @@ template<typename func>
 void forChild(xml_node node, const char *childName, func &&f) {
     for (xml_node childNode = node.child(childName); childNode; childNode = childNode.next_sibling(childName))
         f(childNode);
+}
+
+template<typename value>
+
+void addAttr(xml_node node, const char *key, value &&v) {
+    node.append_attribute(key).set_value(v);
 }

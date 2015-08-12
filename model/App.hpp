@@ -43,7 +43,7 @@ public:
     }
 
     void onSaveProject(void *e) {
-        projInfo->saveToXml();
+        projInfo->save("test.xml");
     }
 
 
@@ -51,7 +51,7 @@ public:
         CompositionInfo *comp = projInfo->newComposition("comp1", 1280, 720, 24, 300);
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
-//        comp->newTrack("number", "D:/projects/linAnil/test/test30/");
+//        comp->newTrack("number2", "D:/projects/linAnil/test/test30/");
 //        comp->newTrack("curry", "D:/projects/linAnil/test/test10/");
 //        comp->newTrack("audio track", "test/test.wav", TrackType::Audio);
         //todo comp2
