@@ -39,7 +39,7 @@ public:
         openProj->open(*path);
 
 
-//        projInfo = openProj;
+        projInfo = openProj;
     }
 
     void onSaveProject(void *e) {

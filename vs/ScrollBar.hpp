@@ -102,7 +102,9 @@ public:
 
         }
         else {
-            _barLength = height * height / _contentLength;
+            if (_contentLength)
+                _barLength = height * height / _contentLength;
+
             _maxValue = height - _barLength;
 
         }

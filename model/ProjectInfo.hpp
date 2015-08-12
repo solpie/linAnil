@@ -73,9 +73,8 @@ public:
                     trackInfo->name = trackInfoNode.attribute("name").value();
                     trackInfo->enable = trackInfoNode.attribute("enable").as_bool();
                     trackInfo->setOpacity(trackInfoNode.attribute("opacity").as_double());
-
-
                     compositionInfo->getTrackInfos()->push_back(trackInfo);
+
                 }
                 else if (trackInfoType == TrackType::Audio) {
                     AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(trackName);
@@ -83,6 +82,8 @@ public:
                 }
 
             }
+            if(!curCompInfo)
+                curCompInfo = compositionInfo;
             comps->push_back(compositionInfo);
         }
     }

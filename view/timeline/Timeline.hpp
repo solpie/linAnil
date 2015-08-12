@@ -41,7 +41,7 @@ public:
         addChild(vScrollBar);
 
 
-        _tracks = new vector<Track*>;
+        _tracks = new vector<Track *>;
         Evt_add(TrackModelEvent::NEW_TRACK, onNewTrack)
     }
 
@@ -87,7 +87,6 @@ public:
             AudioTrack *audioTrack = new AudioTrack(audioTrackInfo);
             newBaseTrack = audioTrack;
         }
-
 
 
         add_event_on(newBaseTrack, VsEvent::SELECTED, onSelTrack)
@@ -144,16 +143,17 @@ public:
 
     void setSize(int w, int h) override {
         VsObj::setSize(w, h);
-        headTrack->foreach([this](Track *track) {
-            track->width = width;
-        });
+        if (headTrack)
+            headTrack->foreach([this](Track *track) {
+                track->width = width;
+            });
         timestampBar->setSize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
         vScrollBar->setSize(-1, h - trackToolBar->height);
     }
 
 
 private:
-    vector<Track*> *_tracks;
+    vector<Track *> *_tracks;
     TrackToolBar *trackToolBar;
     BaseTrack *headTrack = nullptr;
     ScrollBar *vScrollBar;
