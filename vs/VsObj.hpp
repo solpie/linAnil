@@ -10,7 +10,7 @@
 #include "CommonMethod.hpp"
 
 /*
- * VsObj visible object
+ * VsObj enable object
  * */
 class VsObj : public EventDispatcher {
 public:

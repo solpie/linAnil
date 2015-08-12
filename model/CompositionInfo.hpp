@@ -99,6 +99,7 @@ public:
         }
         else if (type == TrackType::Audio) {
             AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(name);
+            _trackInfos->push_back(audioTrackInfo);
             audioTrackInfo->load(dirname);
             BaseEvent *e = new BaseEvent;
             e->payload = audioTrackInfo;

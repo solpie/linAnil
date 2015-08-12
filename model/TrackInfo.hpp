@@ -58,7 +58,7 @@ public:
 
     void setOpacity(double v) { _opacity = v; }
 
-//    bool visible = true;
+//    bool enable = true;
 
     void append(TrackFrameInfo *a) {
         trackFrameInfos->push_back(a);

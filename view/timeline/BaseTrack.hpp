@@ -91,7 +91,7 @@ protected:
     virtual void onOpacity(void *e) { }
 
     virtual void onVisible(void *e) {
-        _baseTrackInfo->visible = trackVisibleBox->isChecked;
+        _baseTrackInfo->enable = trackVisibleBox->isChecked;
     }
 
     virtual void onDown(void *e) {

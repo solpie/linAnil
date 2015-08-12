@@ -30,7 +30,7 @@ public:
             trkInfob = trkInfos->at(i);
             if (trkInfob->type == TrackType::Image) {
                 trkInfo = (TrackInfo *) trkInfob;
-                if (trkInfo->visible) {
+                if (trkInfo->enable) {
                     imageInfo = trkInfo->getCurrentImageInfo();
                     if (imageInfo) {
                         nvgBeginPath(vg);

@@ -24,7 +24,7 @@ public:
         type = t;
     }
     bool isSelected = false;
-    bool visible = true;
+    bool enable = true;
     std::string name;
     int type;
     int idx;
