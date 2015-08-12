@@ -61,11 +61,18 @@ public:
         xml_node compNode = linanilNode.child("composition");
         for (xml_node node = compNode.child("compositionInfo"); node; node = node.next_sibling("compositionInfo")) {
             cout << node.first_attribute().name() << node.first_attribute().value() << endl;
-            CompositionInfo *compositionInfo = new CompositionInfo();
+//            CompositionInfo *comp = projInfo->newComposition("comp1", 1280, 720, 24, 300);
+
+            CompositionInfo *compositionInfo = newComposition(node.attribute("name").value(),
+                                                              node.attribute("width").as_int(),
+                                                              node.attribute("height").as_int(),
+                                                              node.attribute("framerate").as_int(),
+                                                              node.attribute("duration").as_int()
+            );
 
             for (xml_node trackInfoNode = node.child("TrackInfo");
                  trackInfoNode; trackInfoNode = trackInfoNode.next_sibling("TrackInfo")) {
-                int trackInfoType = int(trackInfoNode.attribute("type").value());
+                int trackInfoType = trackInfoNode.attribute("type").as_int();
                 string trackName = trackInfoNode.attribute("name").value();
 
                 if (trackInfoType == TrackType::Image) {
@@ -73,8 +80,12 @@ public:
                     trackInfo->name = trackInfoNode.attribute("name").value();
                     trackInfo->enable = trackInfoNode.attribute("enable").as_bool();
                     trackInfo->setOpacity(trackInfoNode.attribute("opacity").as_double());
+                    trackInfo->path = trackInfoNode.attribute("path").value();
                     compositionInfo->getTrackInfos()->push_back(trackInfo);
-
+                    readTrackInfo(trackInfoNode, trackInfo);
+                    BaseEvent *e = new BaseEvent;
+                    e->payload = trackInfo;
+                    Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
                 }
                 else if (trackInfoType == TrackType::Audio) {
                     AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(trackName);
@@ -82,11 +93,26 @@ public:
                 }
 
             }
-            if(!curCompInfo)
-                curCompInfo = compositionInfo;
-            comps->push_back(compositionInfo);
         }
     }
+
+    void readTrackInfo(xml_node trackInfoNode, TrackInfo *trackInfo) {
+        TrackFrameInfo *pre = nullptr;
+        for (xml_node node = trackInfoNode.child("frame"); node;
+             node = trackInfoNode.next_sibling("frame")) {
+            TrackFrameInfo *trackFrameInfo = new TrackFrameInfo;
+            ImageInfo *imageInfo = ImageLoader()._().load(trackInfo->path + node.attribute("filename").value());
+            imageInfo->filename = node.attribute("filename").value();
+            trackFrameInfo->imageInfo = imageInfo;
+            pre = trackFrameInfo->setPre(pre);
+            if (!trackInfo->getHeadTrackFrameInfo())
+                trackInfo->setHead(trackFrameInfo);
+            trackFrameInfo->setStartFrame(node.attribute("start").as_int());
+            trackFrameInfo->setHoldFrame(node.attribute("hold").as_int());
+            trackInfo->trackFrameInfos->push_back(trackFrameInfo);
+        }
+    }
+
 
     void saveToXml() {
         auto *doc = new xml_document();
