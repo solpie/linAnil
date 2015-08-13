@@ -9,7 +9,7 @@ Stage *stage = nullptr;
 void onInitContext(void *e) {
     App()._().init();
     stage = new Stage();
-
+    App()._().initAterStage();
     ImageLoader()._().setContext(VG_CONTEXT);
 //    _app.onTestProject(nullptr);
     testMain();

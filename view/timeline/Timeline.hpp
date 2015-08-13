@@ -23,10 +23,6 @@ public:
         trackToolBar = new TrackToolBar();
         addChild(trackToolBar);
 
-        curComposition = new Composition(_proj->curCompInfo);
-        curComposition->setY(trackToolBar->height);
-        add_event_on(curComposition, VsEvent::CHANGED, onChangeHeight);
-        addChildAt(curComposition, 0);
 
         timestampBar = new TimestampBar();
         timestampBar->setX(TIMELINE_TRACK_PANEL_DEF_WIDTH);
@@ -40,8 +36,45 @@ public:
         add_event_on(vScrollBar, VsEvent::CHANGED, onScrollV)
 
         addChild(vScrollBar);
+
+
+        add_event_on(_proj, ActionEvent::PROJECT_NEW_COMP, onNewComp)
+        add_event_on(_proj, ActionEvent::PROJECT_SHOW_COMP, onShowComposition);
     }
 
+    void onNewComp(void *e) {
+        if (curComposition) {
+            curComposition->visible = false;
+            removeChild(curComposition);
+        }
+        CompositionInfo *compositionInfo = get_paylaod(CompositionInfo);
+        newComposition(compositionInfo);
+    }
+
+    void onShowComposition(void *e) {
+        CompositionInfo *compositionInfo = get_paylaod(CompositionInfo);
+
+        if (curComposition->getCompInfoIdx() == compositionInfo->idx) {
+
+        }
+        else {
+            curComposition->visible = false;
+            removeChild(curComposition);
+            curComposition = _comps.at(compositionInfo->idx);
+            curComposition->visible = true;
+            curComposition->width = width;
+            addChildAt(curComposition,0);
+        }
+    }
+
+    void newComposition(CompositionInfo *compositionInfo) {
+        curComposition = new Composition(compositionInfo);
+        curComposition->setY(trackToolBar->height);
+        curComposition->width = width;
+        add_event_on(curComposition, VsEvent::CHANGED, onChangeHeight);
+        addChildAt(curComposition, 0);
+        _comps.push_back(curComposition);
+    }
 
     void onChangeHeight(void *e) {
         vScrollBar->setContent(curComposition->height);
@@ -74,14 +107,17 @@ public:
 
     void setSize(int w, int h) override {
         VsObj::setSize(w, h);
-        curComposition->setSize(w, h);
+        if (curComposition)
+            curComposition->setSize(w, h);
         timestampBar->setSize(w - TIMELINE_TRACK_PANEL_DEF_WIDTH, h);
         vScrollBar->setSize(-1, h - trackToolBar->height);
     }
 
 
 private:
-    Composition *curComposition;
+    vector<Composition *> _comps;
+
+    Composition *curComposition = nullptr;
     TrackToolBar *trackToolBar;
     ScrollBar *vScrollBar;
     TimestampBar *timestampBar;

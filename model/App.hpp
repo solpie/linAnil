@@ -29,7 +29,10 @@ public:
         Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
         //default Comp
     }
-
+    void initAterStage(){
+        //default comp
+        projInfo->newComposition("comp1", 1280, 720, 24, 300);
+    }
     void onExtEdit(void *e) {
         AppExternal::editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo->path);
     }
@@ -51,12 +54,14 @@ public:
     void onTestProject(void*e) {
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
-        projInfo->curCompInfo->newTrack("number2", "D:/projects/linAnil/test/test30/");
+        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
-        //todo comp2
-//        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
-//        comp2->newTrack("number2", "D:/projects/linAnil/test/test30/");
+
+        //comp2
+        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
+        projInfo->curCompInfo = comp2;
+        comp2->newTrack("comp2number2", "D:/projects/linAnil/test/test30/");
     }
 
 };

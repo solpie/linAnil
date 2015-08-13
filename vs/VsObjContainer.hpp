@@ -10,7 +10,9 @@
 
 #include "VsObj.hpp"
 #include "vector"
+
 #define VS_RENDER_CHILDREN() VsObjContainer::render()
+
 class VsObjContainer : public VsObj {
 public:
     VsObjContainer() : VsObj() {
@@ -23,7 +25,7 @@ public:
     }
 
     void addChildAt(VsObj *vsObj, int idx) {
-        vsObj->parent =this;
+        vsObj->parent = this;
         vsobjs->insert(vsobjs->begin() + idx, vsObj);
     }
 
@@ -43,19 +45,21 @@ public:
     virtual void render() override {
         VsObj::updateZDepth();
         vector<VsObj *>::iterator child;
-
-        for (child = vsobjs->begin(); child != vsobjs->end(); child++) {
-            VsObj *c = *child;
-            if (c->visible) {
-                nvgSave(vg);
-                c->render();
-                nvgRestore(vg);
+        if (visible)
+            for (child = vsobjs->begin(); child != vsobjs->end(); child++) {
+                VsObj *c = *child;
+                if (c->visible) {
+                    nvgSave(vg);
+                    c->render();
+                    nvgRestore(vg);
+                }
             }
-        }
     }
+
     int numChildren() {
         return vsobjs->size();
     }
+
 protected:
     vector<VsObj *> *vsobjs;
 };

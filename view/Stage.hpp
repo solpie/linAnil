@@ -48,7 +48,7 @@ public:
         timeline = new Timeline();
         vSplitter->addChild(timeline);
 
-        compTabs = new CompTabs(_proj);
+        compTabs = new CompTabs();
         addChild(compTabs);
 
         //////popup layer
@@ -84,7 +84,6 @@ public:
 
         compTabs->setSize(w, -1);
         compTabs->setY(h - compTabs->height);
-
         popupLayer->setSize(w, h);
     }
 

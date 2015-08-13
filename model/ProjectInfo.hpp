@@ -3,16 +3,15 @@
 #include "string"
 #include "CompositionInfo.hpp"
 #include "utils/pugixml/KissPugixml.hpp"
+#include "events/EventDispatcher.hpp"
 
-
-class ProjectInfo {
+class ProjectInfo : public EventDispatcher {
 public:
     ProjectInfo() {
         comps = new vector<CompositionInfo *>;
         version = "1.0";
-        //default comp
-        CompositionInfo *comp = newComposition("comp1", 1280, 720, 24, 300);
     }
+
 
     string version;
     string name;
@@ -29,8 +28,24 @@ public:
         comp->durationFrame = duration;
         if (!curCompInfo)
             curCompInfo = comp;
+        comp->idx = comps->size();
         comps->push_back(comp);
+
+        ActionEvent *e = new ActionEvent();
+        e->type = ActionEvent::PROJECT_NEW_COMP;
+        e->payload = comp;
+        disEvent(e);
+
         return comp;
+    }
+
+    void showCompositionInfo(int idx) {
+        if (idx < comps->size()) {
+            ActionEvent *e = new ActionEvent();
+            e->type = ActionEvent::PROJECT_SHOW_COMP;
+            e->payload = comps->at(idx);
+            disEvent(e);
+        }
     }
 
     //////////////////////////////////////// open //////////////////////////////////////
@@ -84,7 +99,9 @@ public:
 
                     BaseEvent *e = new BaseEvent;
                     e->payload = trackInfo;
-                    Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
+                    e->type = TrackModelEvent::NEW_TRACK;
+                    disEvent(e);
+                    compositionInfo->disEvent(e);
                 }
                 else if (trackInfoType == TrackType::Audio) {
                     AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(trackName);

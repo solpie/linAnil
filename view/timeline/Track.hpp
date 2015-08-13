@@ -386,7 +386,6 @@ private:
                 if (dx > _dragSense) {
                     //fixme when _dragSense < frameWidth
                     isDragHide = true;
-                    //fixme call L2R L2L when mouse up
                     _proj->curCompInfo->L2R(_handleTrackFrameInfo, _trackInfo);
                     _hideX += frameWidth;
                     _lastX = mx;

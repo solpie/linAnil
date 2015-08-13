@@ -27,7 +27,7 @@ public:
         //default track
 //        _trackInfos->push_back(newTrackInfo("track"));
     }
-
+    int idx;
     int width;
     int height;
     int frameRate;
@@ -75,6 +75,7 @@ public:
             else {//empty frame
 
             }
+
             cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
             updateContentEndFrame();
 
@@ -83,7 +84,6 @@ public:
             e->type = TrackModelEvent::NEW_TRACK;
             disEvent(e);
 
-            Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
         else if (type == TrackType::Audio) {
             AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(name);
@@ -94,8 +94,6 @@ public:
             e->payload = audioTrackInfo;
             e->type = TrackModelEvent::NEW_TRACK;
             disEvent(e);
-
-            Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
     }
 
@@ -218,7 +216,6 @@ public:
 private:
     //
     int _currentFrame = 1;
-
     int _contentEndFrame = 0;
 
     void removeTrackFrameInfo(TrackFrameInfo *tfi, TrackInfo *trackInfo) {

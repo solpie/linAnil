@@ -26,22 +26,30 @@ public:
             });
     }
 
-    void scrollV(int v){
+    void scrollV(int v) {
         int vy = v;
-        headTrack->setY(- vy);
-        vy = 0;
-        headTrack->foreach([&](BaseTrack *track) {
-            if (vy) {
-                track->setY(vy);
-            }
-            vy = track->y() + track->height;
-        });
+        if (headTrack) {
+            headTrack->setY(-vy);
+            vy = 0;
+            headTrack->foreach([&](BaseTrack *track) {
+                if (vy) {
+                    track->setY(vy);
+                }
+                vy = track->y() + track->height;
+            });
+        }
 
     }
-    void scrollH(int v){
-        headTrack->foreach([&](BaseTrack *track) {
-            track->scrollX(v);
-        });
+
+    void scrollH(int v) {
+        if (headTrack)
+            headTrack->foreach([&](BaseTrack *track) {
+                track->scrollX(v);
+            });
+    }
+
+    int getCompInfoIdx() {
+        return _compInfo->idx;
     }
 
 protected:
@@ -92,11 +100,5 @@ private:
         disEvent(VsEvent::CHANGED);
     }
 
-
-    virtual void render() override {
-
-
-        VS_RENDER_CHILDREN();
-    }
 };
 
