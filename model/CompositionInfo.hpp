@@ -3,10 +3,6 @@
 //
 #pragma once
 
-#ifndef LINANIL_TRACKMODEL2_HPP
-#define LINANIL_TRACKMODEL2_HPP
-
-#endif //LINANIL_TRACKMODEL2_HPP
 
 #include "TrackInfo.hpp"
 #include "vector"
@@ -22,8 +18,8 @@ using namespace boost;
 #include "events/TrackModelEvent.hpp"
 #include "ImageLoader.hpp"
 #include "AudioTrackInfo.hpp"
-
-class CompositionInfo {
+#include "events/EventDispatcher.hpp"
+class CompositionInfo :public EventDispatcher{
 public:
     CompositionInfo() {
         _trackInfos = new vector<BaseTrackInfo *>();
@@ -81,16 +77,24 @@ public:
             }
             cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
             updateContentEndFrame();
+
             BaseEvent *e = new BaseEvent;
             e->payload = trackInfo;
+            e->type = TrackModelEvent::NEW_TRACK;
+            disEvent(e);
+
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
         else if (type == TrackType::Audio) {
             AudioTrackInfo *audioTrackInfo = new AudioTrackInfo(name);
             _trackInfos->push_back(audioTrackInfo);
             audioTrackInfo->load(dirname);
+
             BaseEvent *e = new BaseEvent;
             e->payload = audioTrackInfo;
+            e->type = TrackModelEvent::NEW_TRACK;
+            disEvent(e);
+
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
     }

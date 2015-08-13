@@ -99,7 +99,7 @@ view/playback/FFmpegTest.hpp
 view/playback/AudioPlayer.hpp
 view/playback/BasePlayback.hpp
 view/menu/MenuItem.hpp
-view/menu/PopupMenuInfo.hpp utils/pugixml/KissPugixml.hpp)
+view/menu/PopupMenuInfo.hpp utils/pugixml/KissPugixml.hpp view/timeline/Composition.hpp)
 #SET_TARGET_PROPERTIES(linAnil PROPERTIES LINK_FLAGS    "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\" /SUBSYSTEM:WINDOWS")
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
