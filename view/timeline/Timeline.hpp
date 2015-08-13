@@ -100,6 +100,9 @@ public:
             newBaseTrack->setY(tail->y() + tail->height);
             newBaseTrack->setPre(tail);
         }
+
+        newBaseTrack->width = width;
+
         int totalHeight = 0;
         headTrack->foreach([&](BaseTrack *track) {
             totalHeight += track->height;

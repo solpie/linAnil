@@ -28,6 +28,8 @@ public:
     CompositionInfo() {
         _trackInfos = new vector<BaseTrackInfo *>();
         _trackFrameInfotoRemoves = new vector<TrackFrameInfo *>();
+        //default track
+//        _trackInfos->push_back(newTrackInfo("track"));
     }
 
     int width;
@@ -61,7 +63,6 @@ public:
     }
 
     void newTrack(string name, string dirname = "", int type = TrackType::Image) {
-//    Evt_add("type", func1);
         if (type == TrackType::Image) {
             TrackInfo *trackInfo = newTrackInfo(name, dirname);
 
@@ -79,13 +80,7 @@ public:
 
             }
             cout << this << "trackInfo frame count:" << trackInfo->getFrameCount() << endl;
-//        if (sizeof(trackInfo->trackFrameInfos) > sequencePlayback->endFrameIdx) {
-//            sequencePlayback->endFrameIdx = sizeof(trackInfo->trackFrameInfos);
-//        }
-//        Evt_dis(TrackModelEvent::NEW_TRACK);
             updateContentEndFrame();
-
-
             BaseEvent *e = new BaseEvent;
             e->payload = trackInfo;
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
@@ -98,7 +93,6 @@ public:
             e->payload = audioTrackInfo;
             Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
         }
-
     }
 
     void R2R(TrackFrameInfo *handleTrackFrame) {
