@@ -31,6 +31,9 @@ void onKeyDown(void *e) {
     else if (keyEvent->key == GLFW_KEY_ENTER) {
         Evt_ins.disEvent(ActionEvent::Ext_EDIT);
     }
+    else if (keyEvent->key == GLFW_KEY_T && keyEvent->isCtrl) {
+        Evt_ins.disEvent(ActionEvent::PROJECT_TEST);
+    }
     else if (keyEvent->key == GLFW_KEY_S && keyEvent->isCtrl) {
         Evt_ins.disEvent(ActionEvent::PROJECT_SAVE);
     }

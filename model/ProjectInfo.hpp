@@ -10,6 +10,8 @@ public:
     ProjectInfo() {
         comps = new vector<CompositionInfo *>;
         version = "1.0";
+        //default comp
+        CompositionInfo *comp = newComposition("comp1", 1280, 720, 24, 300);
     }
 
     string version;
@@ -69,13 +71,17 @@ public:
                 string trackName = trackInfoNode.attribute("name").value();
 
                 if (trackInfoType == TrackType::Image) {
-                    TrackInfo *trackInfo = new TrackInfo(trackName);
-                    trackInfo->name = trackInfoNode.attribute("name").value();
+                    TrackInfo *trackInfo = compositionInfo->newTrackInfo(trackName,
+                                                                         trackInfoNode.attribute("path").value());
                     trackInfo->enable = trackInfoNode.attribute("enable").as_bool();
                     trackInfo->setOpacity(trackInfoNode.attribute("opacity").as_double());
-                    trackInfo->path = trackInfoNode.attribute("path").value();
-                    compositionInfo->getTrackInfos()->push_back(trackInfo);
-                    readTrackInfo(trackInfoNode, trackInfo);
+
+                    TrackFrameInfo *pre = nullptr;
+                    forChild(trackInfoNode, "frame", [&](xml_node node) {
+                        trackInfo->newTrackFrameInfo(node.attribute("filename").value(),
+                                                     trackInfo->path + node.attribute("filename").value(), pre);
+                    });
+
                     BaseEvent *e = new BaseEvent;
                     e->payload = trackInfo;
                     Evt_ins.disEvent(TrackModelEvent::NEW_TRACK, e);
@@ -89,21 +95,6 @@ public:
         });
     }
 
-    void readTrackInfo(xml_node trackInfoNode, TrackInfo *trackInfo) {
-        TrackFrameInfo *pre = nullptr;
-        forChild(trackInfoNode, "frame", [&](xml_node node) {
-            TrackFrameInfo *trackFrameInfo = new TrackFrameInfo;
-            ImageInfo *imageInfo = ImageLoader()._().load(trackInfo->path + node.attribute("filename").value());
-            imageInfo->filename = node.attribute("filename").value();
-            trackFrameInfo->imageInfo = imageInfo;
-            pre = trackFrameInfo->setPre(pre);
-            if (!trackInfo->getHeadTrackFrameInfo())
-                trackInfo->setHead(trackFrameInfo);
-            trackFrameInfo->setStartFrame(node.attribute("start").as_int());
-            trackFrameInfo->setHoldFrame(node.attribute("hold").as_int());
-            trackInfo->trackFrameInfos->push_back(trackFrameInfo);
-        });
-    }
     ///////////////////////////////// save /////////////////////////////////////////////
 
     void save(string path) {

@@ -23,6 +23,7 @@ public:
 
     void init() {
         projInfo = new ProjectInfo;
+        Evt_add(ActionEvent::PROJECT_TEST, onTestProject);
         Evt_add(ActionEvent::PROJECT_OPEN, onOpenProject);
         Evt_add(ActionEvent::PROJECT_SAVE, onSaveProject);
         Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
@@ -47,13 +48,12 @@ public:
     }
 
 
-    void test() {
-        CompositionInfo *comp = projInfo->newComposition("comp1", 1280, 720, 24, 300);
+    void onTestProject(void*e) {
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
-//        comp->newTrack("number2", "D:/projects/linAnil/test/test30/");
-//        comp->newTrack("curry", "D:/projects/linAnil/test/test10/");
-//        comp->newTrack("audio track", "test/test.wav", TrackType::Audio);
+        projInfo->curCompInfo->newTrack("number2", "D:/projects/linAnil/test/test30/");
+        projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
         //todo comp2
 //        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
 //        comp2->newTrack("number2", "D:/projects/linAnil/test/test30/");

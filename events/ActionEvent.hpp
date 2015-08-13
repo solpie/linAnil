@@ -13,6 +13,7 @@
 
 class ActionEvent :public BaseEvent{
 public:
+    static constexpr const char *PROJECT_TEST = "PROJECT_TEST";
     static constexpr const char *PROJECT_OPEN = "PROJECT_OPEN";
     static constexpr const char *PROJECT_SAVE = "PROJECT_SAVE";
     //project not save yet
