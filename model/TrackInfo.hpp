@@ -92,7 +92,7 @@ public:
         return nullptr;
     }
 
-    TrackFrameInfo *newTrackFrameInfo(string filename, string path, TrackFrameInfo *pre) {
+    TrackFrameInfo *newTrackFrameInfo(string filename, string path) {
         ImageInfo *imgInfo = ImageLoader()._().load(path);
         imgInfo->filename = filename;;
 //                        cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " <<
@@ -102,7 +102,7 @@ public:
 
         TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
         trackFrameInfo->imageInfo = imgInfo;
-        pre = trackFrameInfo->setPre(pre);
+//        pre = trackFrameInfo->setPre(pre);
         trackFrameInfo->setTrackInfoIdx(idx);
         trackFrameInfo->setIdx(trackFrameInfos->size());
         trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
@@ -110,12 +110,14 @@ public:
         append(trackFrameInfo);
         if (!getHeadTrackFrameInfo())
             setHead(trackFrameInfo);
+        else {
+            trackFrameInfo->setPre(_head->getTail());
+        }
         return trackFrameInfo;
     }
 
 protected:
     TrackFrameInfo *_head = nullptr;
-
     double _opacity = 1;
 private:
     int _trackFrameIdx = -1;

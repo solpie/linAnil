@@ -47,9 +47,6 @@ public:
         }
     }
 
-    void newTrackByImages(string name, vector<string> images) {
-
-    }
 
     TrackInfo *newTrackInfo(string name, string dirname = "") {
         TrackInfo *trackInfo = new TrackInfo(name);
@@ -63,27 +60,6 @@ public:
 
     }
 
-    TrackFrameInfo *newTrackFrameInfo(TrackInfo *trackInfo, string filename, string path, TrackFrameInfo *pre) {
-        ImageInfo *imgInfo = ImageLoader()._().load(path);
-        imgInfo->filename = filename;;
-//                        cout << typeid(this).name() << " setTrackInfo image: " << imgInfo->path << " " <<
-//                        imgInfo->width <<
-//                        " " <<
-//                        imgInfo->height << " id:" << imgInfo->id << endl;
-
-        TrackFrameInfo *trackFrameInfo = new TrackFrameInfo();
-        trackFrameInfo->imageInfo = imgInfo;
-        pre = trackFrameInfo->setPre(pre);
-        trackFrameInfo->setTrackInfoIdx(trackInfo->idx);
-        trackFrameInfo->setIdx(trackInfo->trackFrameInfos->size());
-        trackFrameInfo->setStartFrame(trackFrameInfo->getIdx() + 1);
-        trackFrameInfo->setHoldFrame(1);
-        trackInfo->append(trackFrameInfo);
-        if (!trackInfo->getHeadTrackFrameInfo())
-            trackInfo->setHead(trackFrameInfo);
-        return trackFrameInfo;
-    }
-
     void newTrack(string name, string dirname = "", int type = TrackType::Image) {
 //    Evt_add("type", func1);
         if (type == TrackType::Image) {
@@ -94,7 +70,7 @@ public:
                 boost::filesystem::recursive_directory_iterator itr(dirname);
                 while (itr != boost::filesystem::recursive_directory_iterator()) {
                     if (itr->path().extension() == ".png") {
-                        newTrackFrameInfo(trackInfo, itr->path().filename().string(), itr->path().string(), pre);
+                        trackInfo->newTrackFrameInfo(itr->path().filename().string(), itr->path().string());
                         ++itr;
                     }
                 }

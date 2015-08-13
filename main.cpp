@@ -11,7 +11,7 @@ void onInitContext(void *e) {
     stage = new Stage();
 
     ImageLoader()._().setContext(VG_CONTEXT);
-    _app.onTestProject(nullptr);
+//    _app.onTestProject(nullptr);
     testMain();
 }
 

@@ -76,10 +76,10 @@ public:
                     trackInfo->enable = trackInfoNode.attribute("enable").as_bool();
                     trackInfo->setOpacity(trackInfoNode.attribute("opacity").as_double());
 
-                    TrackFrameInfo *pre = nullptr;
+//                    TrackFrameInfo *pre = nullptr;
                     forChild(trackInfoNode, "frame", [&](xml_node node) {
                         trackInfo->newTrackFrameInfo(node.attribute("filename").value(),
-                                                     trackInfo->path + node.attribute("filename").value(), pre);
+                                                     trackInfo->path + node.attribute("filename").value());
                     });
 
                     BaseEvent *e = new BaseEvent;
