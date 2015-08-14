@@ -45,7 +45,4 @@ protected:
         VS_RENDER_CHILDREN();
     }
 
-
-//private:
-//    ProjectInfo *_projInfo;
 };
