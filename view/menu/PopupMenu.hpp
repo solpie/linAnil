@@ -2,7 +2,7 @@
 
 #include "Sprite.hpp"
 #include "MenuItem.hpp"
-#include "model/Settings.hpp"
+#include "model/Configs.hpp"
 #include "Theme.hpp"
 
 class PopupMenu : public Sprite, public Singleton<PopupMenu> {
@@ -16,8 +16,8 @@ public:
     }
 
     void onUp(void *e) {
-        if (mouseY() > _titleHeigh) {
-            int itemIdx = (mouseY() - _titleHeigh) / _itemHeight;
+        if (mouseY() > _titleHeight) {
+            int itemIdx = (mouseY() - _titleHeight) / _itemHeight;
             _menuItems->at(itemIdx)->select();
             hide();
 //            cout << typeid(this).name() << " menu item idx: " << itemIdx << endl;
@@ -25,12 +25,12 @@ public:
     }
 
     void show(std::string title, vector<MenuItem *> *menuItems, int width = 0) {
-        move(VS_CONTEXT.cursor.x - 20, VS_CONTEXT.cursor.y - _titleHeigh - 5);
+        move(VS_CONTEXT.cursor.x - 20, VS_CONTEXT.cursor.y - _titleHeight - 5);
         _menuItems = menuItems;
         _title = title.c_str();
         if (width)
             this->width = width;
-        height = _menuItems->size() * _itemHeight + 5 + _titleHeigh;
+        height = _menuItems->size() * _itemHeight + 5 + _titleHeight;
         visible = true;
 
     }
@@ -60,7 +60,7 @@ protected:
 
 
         //items
-        int textY = gY() + _titleHeigh + 2;
+        int textY = gY() + _titleHeight + 2;
         if (_menuItems) {
             int gmy = VS_CONTEXT.cursor.y;
             bool isSelect = false;
@@ -96,7 +96,7 @@ private:
     const char *_title;
     vector<MenuItem *> *_menuItems = nullptr;
     int _itemHeight = 20;
-    int _titleHeigh = 30;
+    int _titleHeight = 30;
 
 };
 

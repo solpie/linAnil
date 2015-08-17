@@ -42,7 +42,7 @@ model/ImageLoader.hpp
 model/BaseTrackInfo.hpp
 model/AudioTrackInfo.hpp
 model/ProjectInfo.hpp
-model/Settings.hpp
+model/Configs.hpp
 utils/Linker.hpp
 utils/pugixml/pugixml.cpp
 events/ActionEvent.hpp

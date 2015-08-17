@@ -9,7 +9,7 @@
 
 
 #include "sndfile.h"
-#include "model/Settings.hpp"
+#include "Configs.hpp"
 #include "math.h"
 
 #define  MAX_CHANNELS    2

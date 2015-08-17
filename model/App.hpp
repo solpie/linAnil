@@ -13,15 +13,19 @@
 #include "ProjectInfo.hpp"
 #include "vs/events/VsEvent.hpp"
 #include "AppExternal.hpp"
+#include "Configs.hpp"
 
 class App : public Singleton<App> {
 public:
     void start(int argc, char *argv[]) {
     }
 
+    Configs *conf;
     ProjectInfo *projInfo;
 
     void init() {
+        conf = new Configs;
+
         projInfo = new ProjectInfo;
         Evt_add(ActionEvent::PROJECT_TEST, onTestProject);
         Evt_add(ActionEvent::PROJECT_OPEN, onOpenProject);
@@ -29,10 +33,12 @@ public:
         Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
         //default Comp
     }
-    void initAterStage(){
+
+    void initAterStage() {
         //default comp
         projInfo->newComposition("comp1", 1280, 720, 24, 300);
     }
+
     void onExtEdit(void *e) {
         AppExternal::editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo->path);
     }
@@ -51,13 +57,11 @@ public:
     }
 
 
-    void onTestProject(void*e) {
+    void onTestProject(void *e) {
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
         projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
-        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
-        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
 
         //comp2
@@ -71,3 +75,4 @@ public:
 #define _app App()._()
 
 #define _proj App()._().projInfo
+#define _conf App()._().conf

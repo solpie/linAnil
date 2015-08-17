@@ -1,12 +1,11 @@
+#pragma once
 #include <view/tools/ColorWheel.hpp>
 #include "Sprite.hpp"
+#include "model/App.hpp"
 
 #define VIEWPORT_WIDTH 1280
 #define VIEWPORT_HEIGHT 720
-enum ScaleMode : int {
-    None = 1,
-    Fit
-};
+
 
 class Viewport : public VsObjContainer {
 
@@ -72,14 +71,10 @@ public:
 
     }
 
-    void setScaleMode(int mode) {
-        _scaleMode = mode;
-    }
 
     virtual void setSize(int w, int h) override;
 
 private:
-    int _scaleMode = ScaleMode::None;
     Splitter *hSplitter;
 //    int imagei;
     Sprite *transport;
@@ -90,11 +85,11 @@ void Viewport::setSize(int w, int h) {
     VsObj::setSize(w, h);
     float sx = float(w) / VIEWPORT_WIDTH;
 
-    if (_scaleMode == ScaleMode::Fit) {
+    if (_conf->viewport.scaleMode == ScaleMode::Fit) {
         scale = float(h) / VIEWPORT_HEIGHT;
         if (scale > sx)
             scale = sx;
     }
-    else if (_scaleMode == ScaleMode::None)
+    else if (_conf->viewport.scaleMode == ScaleMode::None)
         scale = 1;
 }
