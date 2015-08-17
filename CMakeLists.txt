@@ -100,7 +100,9 @@ view/playback/FFmpegTest.hpp
 view/playback/AudioPlayer.hpp
 view/playback/BasePlayback.hpp
 view/menu/MenuItem.hpp
-view/menu/PopupMenuInfo.hpp utils/pugixml/KissPugixml.hpp view/timeline/Composition.hpp)
+view/menu/PopupMenuInfo.hpp
+utils/pugixml/KissPugixml.hpp
+view/timeline/Composition.hpp)
 #SET_TARGET_PROPERTIES(linAnil PROPERTIES LINK_FLAGS    "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\" /SUBSYSTEM:WINDOWS")
 
 set(LIB_DIR ${CMAKE_CXX_COMPILER}/../../lib)
@@ -130,6 +132,7 @@ target_link_libraries(linAnil nanovg)
 #target_link_libraries(linAnil :libnanovg.a)
 target_link_libraries(linAnil sndfile)
 target_link_libraries(linAnil portaudio)
+target_link_libraries(linAnil libpng)
 #target_link_libraries(linAnil SDL2)
 #target_link_libraries(linAnil SDL2_mixer)
 

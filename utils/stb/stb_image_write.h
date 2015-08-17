@@ -61,7 +61,6 @@ extern "C" {
 extern int stbi_write_png(char const *filename, int w, int h, int comp, const void *data, int stride_in_bytes);
 extern int stbi_write_bmp(char const *filename, int w, int h, int comp, const void *data);
 extern int stbi_write_tga(char const *filename, int w, int h, int comp, const void *data);
-extern unsigned char * stbi_create_png_mem(int x,int y,int comp,const void *data,int stride_bytes,int len);
 #ifdef __cplusplus
 }
 #endif
@@ -498,9 +497,6 @@ int stbi_write_png(char const *filename, int x, int y, int comp, const void *dat
    fclose(f);
    free(png);
    return 1;
-}
-unsigned char * stbi_create_png_mem(int x,int y,int comp,const void *data,int stride_bytes,int len){
-   return stbi_write_png_to_mem((unsigned char *) data, stride_bytes, x, y, comp, &len);
 }
 #endif // STB_IMAGE_WRITE_IMPLEMENTATION
 

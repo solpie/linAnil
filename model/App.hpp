@@ -59,8 +59,9 @@ public:
     void onTestProject(void *e) {
 //        App()._().curCompInfo->walk();
 //        App()._().curCompInfo->newTrack("newTrack");
-        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
-        projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
+//        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
+//        projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        projInfo->curCompInfo->newTrack("1pix", "D:/projects/linAnil/test/pix1/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
 
         //comp2
