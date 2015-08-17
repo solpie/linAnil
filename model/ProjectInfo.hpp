@@ -39,13 +39,16 @@ public:
         return comp;
     }
 
-    void showCompositionInfo(int idx) {
+    bool showCompositionInfo(int idx) {
         if (idx < comps->size()) {
             ActionEvent *e = new ActionEvent();
             e->type = ActionEvent::PROJECT_SHOW_COMP;
             e->payload = comps->at(idx);
-            disEvent(e);
+
+                disEvent(e);
+            return  true;
         }
+        return  false;
     }
 
     //////////////////////////////////////// open //////////////////////////////////////

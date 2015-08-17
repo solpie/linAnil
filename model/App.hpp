@@ -56,12 +56,14 @@ public:
 //        App()._().curCompInfo->newTrack("newTrack");
         projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("curry", "D:/projects/linAnil/test/test10/");
+        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
+        projInfo->curCompInfo->newTrack("number1", "D:/projects/linAnil/test/test30/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
 
         //comp2
-        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
-        projInfo->curCompInfo = comp2;
-        comp2->newTrack("comp2number2", "D:/projects/linAnil/test/test30/");
+//        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
+//        projInfo->curCompInfo = comp2;
+//        comp2->newTrack("comp2number2", "D:/projects/linAnil/test/test30/");
     }
 
 };

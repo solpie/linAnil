@@ -125,12 +125,21 @@ public:
         }
     }
 
+    void swapChildRenderOrder() {
+        if (vsobjs->size() == 2) {
+            vsobjs->clear();
+            vsobjs->push_back(child2);
+            vsobjs->push_back(child1);
+        }
+    }
+
     virtual void render() override {
         VS_RENDER_CHILDREN();
         _bar->render();
     }
 
     int barWidth = 8;
+
 private:
     float spaceRatio = 1;
     int _dir;

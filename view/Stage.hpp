@@ -34,7 +34,6 @@ public:
         addChild(vSplitter);
 
         hSplitter = new Splitter(Direction::Horizontal);
-        addChild(hSplitter);
         hSplitter->height = 720;
         vSplitter->addChild(hSplitter);
 
@@ -47,6 +46,7 @@ public:
 
         timeline = new Timeline();
         vSplitter->addChild(timeline);
+//        vSplitter->swapChildRenderOrder();
 
         compTabs = new CompTabs();
         addChild(compTabs);

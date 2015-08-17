@@ -78,9 +78,13 @@ public:
 
 
     virtual void onDraw() override {
-        BaseTrack::drawBase();
-        drawTrackFrame();
-        VS_RENDER_CHILDREN();
+        if (y() + height > 0) {
+            if (y() < 0)
+                nvgScissor(vg, gX(), gY() - y(), width, y() + height);
+            BaseTrack::drawBase();
+            drawTrackFrame();
+            VS_RENDER_CHILDREN();
+        }
     }
 
     void setSelectTrackFrameInfo(TrackFrameInfo *sel) {

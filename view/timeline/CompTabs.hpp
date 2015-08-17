@@ -19,8 +19,8 @@ protected:
 
     void onUp(void *e) {
         int idx = (mouseX() - TIMELINE_TRACK_PANEL_DEF_WIDTH) / tabWidth;
-        _proj->showCompositionInfo(idx);
-        selectedX = idx * tabWidth + TIMELINE_TRACK_PANEL_DEF_WIDTH;
+        if (_proj->showCompositionInfo(idx))
+            selectedX = idx * tabWidth + TIMELINE_TRACK_PANEL_DEF_WIDTH;
     }
 
     virtual void onDraw() override {
@@ -39,7 +39,7 @@ protected:
             px += tabWidth;
         }
 
-        fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), gX() + selectedX, gY()+height - 2, tabWidth, 2)
+        fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER), gX() + selectedX, gY() + height - 2, tabWidth, 2)
 
 
         VS_RENDER_CHILDREN();
