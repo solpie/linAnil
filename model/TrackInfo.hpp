@@ -12,7 +12,7 @@
 
 #include "vs/VsColor.hpp"
 #include "BaseTrackInfo.hpp"
-
+#include "vector"
 using namespace std;
 
 

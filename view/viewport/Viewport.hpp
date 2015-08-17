@@ -1,4 +1,5 @@
 #pragma once
+
 #include <view/tools/ColorWheel.hpp>
 #include "Sprite.hpp"
 #include "model/App.hpp"
@@ -38,6 +39,10 @@ public:
                     if (imageInfo) {
                         nvgBeginPath(vg);
                         nvgRect(vg, gX(), gY(), imageInfo->width * scale, imageInfo->height * scale);
+//                        nvgFillPaint(vg,
+//                                     nvgImagePattern(vg, gX(), gY(), imageInfo->thumbW * scale,
+//                                                     imageInfo->thumbH * scale, 0,
+//                                                     imageInfo->thumbId, trkInfo->getOpacity()));
                         nvgFillPaint(vg,
                                      nvgImagePattern(vg, gX(), gY(), imageInfo->width * scale,
                                                      imageInfo->height * scale, 0,

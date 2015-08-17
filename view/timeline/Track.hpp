@@ -91,12 +91,13 @@ public:
         _selectedTrackFrameInfo = sel;
     }
 
+protected:
+    TrackFrameInfo *_selectedTrackFrameInfo = nullptr;
 private:
     int _trackDragBarHeight = 13;
     bool _isPress = false;
     bool _isPressFrameLeft, _isPressFrameRight;
     TrackFrameInfo *_handleTrackFrameInfo = nullptr;
-    TrackFrameInfo *_selectedTrackFrameInfo = nullptr;
     int frameHeight = 40;
 
     void drawTrackFrame() {
@@ -138,7 +139,8 @@ private:
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
-                thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
+                thumbHeight = frameWidth * tfi->imageInfo->thumbRatio;
+//                thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 thumbY = gY() + _trackDragBarHeight - (thumbHeight - frameHeight) * .5;
             }
 
@@ -197,7 +199,7 @@ private:
             nvgRect(vg, tx, thumbY, frameWidth, thumbHeight);
             nvgFillPaint(vg,
                          nvgImagePattern(vg, tx, thumbY, frameWidth, thumbHeight, 0,
-                                         tfi->imageInfo->id, 1));
+                                         tfi->imageInfo->thumbId, 1));
             nvgFill(vg);
 
             //frame
