@@ -2,17 +2,14 @@
 // Created by manoyuria on 2015/6/18.
 //
 #pragma once
-#ifndef SEQTRUAN_APP_H
-#define SEQTRUAN_APP_H
-
-#endif //SEQTRUAN_APP_H
 
 #include <events/ActionEvent.hpp>
+#include <events/Evt.hpp>
 #include "utils/Singleton.hpp"
 #include "CompositionInfo.hpp"
 #include "ProjectInfo.hpp"
 #include "vs/events/VsEvent.hpp"
-#include "AppExternal.hpp"
+#include "TheMachine.hpp"
 #include "Configs.hpp"
 
 class App : public Singleton<App> {
@@ -22,7 +19,7 @@ public:
 
     Configs *conf;
     ProjectInfo *projInfo;
-
+    TheMachine* tm;
     void init() {
         conf = new Configs;
 
@@ -30,8 +27,13 @@ public:
         Evt_add(ActionEvent::PROJECT_TEST, onTestProject);
         Evt_add(ActionEvent::PROJECT_OPEN, onOpenProject);
         Evt_add(ActionEvent::PROJECT_SAVE, onSaveProject);
-        Evt_add(ActionEvent::Ext_EDIT, onExtEdit);
-        //default Comp
+        //the machine
+        tm = new TheMachine;
+        Evt_add(ActionEvent::TM_EDIT, onExtEdit);
+    }
+
+    void onExtEdit(void *e) {
+        tm->editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo);
     }
 
     void initAterStage() {
@@ -39,9 +41,6 @@ public:
         projInfo->newComposition("comp1", 1280, 720, 24, 300);
     }
 
-    void onExtEdit(void *e) {
-        AppExternal::editExternal(projInfo->curCompInfo->selectedTrackFrameInfo->imageInfo->path);
-    }
 
     void onOpenProject(void *e) {
         string *path = get_paylaod(string);

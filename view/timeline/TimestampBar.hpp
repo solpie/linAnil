@@ -33,7 +33,7 @@ public:
     }
 
     void onRightUp(void *e) {
-        _popupMenu.show(_settingMenu->title(), _settingMenu->getMenuItems(),_settingMenu->width);
+        _popupMenu.show(_settingMenu->title(), _settingMenu->getMenuItems(), _settingMenu->width);
     }
 
     void onUp(void *e) {
@@ -42,9 +42,10 @@ public:
     }
 
     void onDown(void *e) {
-        cout << this << " mouseX: " << mouseX();
+        cout << typeid(this).name() << " mouseX: " << mouseX() << endl;
         if (mouseY() < scrollBarHeight) {
-            isPressScrollBar = true;
+            if (mouseX() > _value && mouseX() < _value + width * width / float(getContentWidth()))
+                isPressScrollBar = true;
             isPressTimestamp = false;
         }
         else {
@@ -91,11 +92,6 @@ public:
                 }
             }
             int barX = float(_value);
-
-
-
-
-
 
 //            nvgBeginPath(vg);
 //            nvgRoundedRect(vg, gX() + barX, gY() + 2, barWidth, scrollBarHeight, 5);
@@ -206,7 +202,7 @@ public:
     }
 
 private:
-    int _stepValue = 1;
+    float _stepValue = 1;
 
     int getContentWidth() {
         //todo count when changed

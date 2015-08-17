@@ -4,7 +4,7 @@
 #pragma once
 
 #include <utils/Linker.hpp>
-#include <model/AppExternal.hpp>
+#include "model/TheMachine.hpp"
 #include "Sprite.hpp"
 
 class BaseTrack : public Sprite, public OneLinker<BaseTrack> {
@@ -34,7 +34,7 @@ public:
     }
 
     void onDoubleClick(void *e) {
-//        AppExternal::editExternal("c:\\1.jpg");
+//        TheMachine::editExternal("c:\\1.jpg");
     }
 
     void setColor(int r, int g, int b) {

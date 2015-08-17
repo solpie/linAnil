@@ -2,16 +2,11 @@
 // Created by toramisu on 2015/7/7.
 //
 #pragma once
-#ifndef SEQTRUAN_APPEXTERNAL_HPP
-#define SEQTRUAN_APPEXTERNAL_HPP
-
-#endif //SEQTRUAN_APPEXTERNAL_HPP
 
 #include "stdlib.h"
 #include "windows.h"
 #include "FileWatcher.hpp"
-
-
+#include "model/ImageLoader.hpp"
 string &replace_all(string &str, const string &old_value, const string &new_value) {
     while (true) {
         string::size_type pos(0);
@@ -32,20 +27,45 @@ string &replace_all_distinct(string &str, const string &old_value, const string 
     return str;
 }
 
-class AppExternal {
+class TheMachine {
 public:
+    TheMachine() {
+        Evt_add(ActionEvent::TM_UPDATE, onUpdate);
+    }
 
-    static void editExternal(string path) {
+    void editExternal(ImageInfo *imageInfo) {
+        string path = imageInfo->path;
         string csp = "\"C:\\Program Files\\CELSYS\\CLIP STUDIO\\CLIP STUDIO PAINT\\CLIPStudioPaint.exe\"";
         replace_all_distinct(path, "/", "\\");
         string cmd = csp + " " + path;
         WinExec(cmd.c_str(), WM_SHOWWINDOW);
+        if (_watchlist.find(path) != _watchlist.end()) {
+
+        }
+        else
+            _watchlist[path] = imageInfo;
     }
 
     static void setCursorVisible(bool b) {
         //todo 记录光标隐藏位置 显示光标时候恢复位置
         ShowCursor(b);
     }
+
+    void onUpdate(void *e) {
+        update();
+    }
+
+    void update() {
+        cout << typeid(this).name() << " update watchlist: " << endl;
+        for (const auto &item : _watchlist) {
+            ImageInfo *imageInfo = item.second;
+            ImageLoader::_().update(imageInfo,item.first);
+            cout << typeid(this).name() << " path: " << imageInfo->path << endl;
+        }
+    }
+
+private:
+    map<string, ImageInfo *> _watchlist;
 
 //    static void startWatch(QString path) {
 //        //todo move to thread

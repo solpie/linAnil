@@ -43,6 +43,7 @@ model/BaseTrackInfo.hpp
 model/AudioTrackInfo.hpp
 model/ProjectInfo.hpp
 model/Configs.hpp
+model/TheMachine.hpp
 utils/Linker.hpp
 utils/pugixml/pugixml.cpp
 events/ActionEvent.hpp

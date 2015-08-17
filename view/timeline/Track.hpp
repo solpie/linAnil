@@ -11,7 +11,7 @@
 #include <vs/CheckBox.hpp>
 #include "BaseTrack.hpp"
 #include "TextField.hpp"
-#include "model/AppExternal.hpp"
+#include "model/TheMachine.hpp"
 
 enum PressFlag {
     Left = 1, Right
@@ -139,8 +139,8 @@ private:
         for (TrackFrameInfo *tfi:*_trackInfo->trackFrameInfos) {
             tx = gX() + left + trackStartX;
             if (thumbHeight == 0) {
-                thumbHeight = frameWidth * tfi->imageInfo->thumbRatio;
-//                thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
+//                thumbHeight = frameWidth * tfi->imageInfo->thumbRatio;
+                thumbHeight = frameWidth * tfi->imageInfo->height / tfi->imageInfo->width;
                 thumbY = gY() + _trackDragBarHeight - (thumbHeight - frameHeight) * .5;
             }
 
@@ -199,7 +199,7 @@ private:
             nvgRect(vg, tx, thumbY, frameWidth, thumbHeight);
             nvgFillPaint(vg,
                          nvgImagePattern(vg, tx, thumbY, frameWidth, thumbHeight, 0,
-                                         tfi->imageInfo->thumbId, 1));
+                                         tfi->imageInfo->id, 1));
             nvgFill(vg);
 
             //frame
@@ -262,7 +262,7 @@ private:
     }
 
     bool drawDragBar(int dragBarX, int dragWidth) {
-        if (_trackInfo->trackFrameInfos->size()) {
+        if (_trackInfo->trackFrameInfos->size() && dragWidth > 0) {
             fillRect(_3RGB(29), dragBarX, gY(), dragWidth, 1);
             fillRect(_3RGB(60), dragBarX, gY() + 1, dragWidth, 1);
             if (_isPress && isMouseInRect(dragBarX, gY(), dragWidth, _trackDragBarHeight + 2)) {

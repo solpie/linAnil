@@ -22,7 +22,8 @@ public:
     static constexpr const char *PROJECT_NEW_COMP = "PROJECT_NEW_COMP";
     static constexpr const char *PROJECT_SHOW_COMP = "PROJECT_SHOW_COMP";
     //edit image in external app
-    static constexpr const char *Ext_EDIT = "Ext_EDIT";
+    static constexpr const char *TM_EDIT = "TM_EDIT";
+    static constexpr const char *TM_UPDATE = "TM_UPDATE";
 
 //    void* payload;
 };

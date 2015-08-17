@@ -20,14 +20,15 @@ using namespace std;
 class ImageInfo {
 public:
     int id = -1;
-    int thumbId = -1;
     string path;
     string filename;
     int width;
     int height;
+    int thumbId = -1;
     int thumbW;
     int thumbH;
     double thumbRatio;
+
 };
 
 class ImageLoader : public Singleton<ImageLoader> {
@@ -43,9 +44,13 @@ public:
         imgInfo->id = nvgCreateImage(_vg, absPath.c_str(), 0);
         nvgImageSize(_vg, imgInfo->id, &imgInfo->width, &imgInfo->height);
         _images[absPath] = imgInfo;
-        //todo create thumb image
-        createThumb(absPath, imgInfo);
+//        createThumb(absPath, imgInfo);
         return imgInfo;
+    }
+
+    void update(ImageInfo *imgInfo, string absPath) {
+        imgInfo->path = absPath;
+        imgInfo->id = nvgCreateImage(_vg, absPath.c_str(), 0);
     }
 
     //
@@ -59,18 +64,19 @@ private:
         input_pixels = stbi_load(path.c_str(), &w, &h, &comp, 0);
 //        imgInfo->id = nvgCreateImageRGBA(_vg, imgInfo->width, imgInfo->height, 0, input_pixels);
 
-        int out_w = w * .5;
-        int out_h = h * 0.5;
+        int out_w = 40;
+        int out_h = h * out_w / double(w);
         imgInfo->thumbW = out_w;
         imgInfo->thumbH = out_h;
         imgInfo->thumbRatio = double(out_h) / out_w;
         output_pixels = (unsigned char *) malloc(out_w * out_h * comp);
         stbir_resize_uint8(input_pixels, w, h, 0, output_pixels, out_w, out_h, 0, comp);
+
         //
-        imgInfo->thumbId = nvgCreateImageRGBA(_vg, out_w, out_h, 0, output_pixels);
+//        imgInfo->thumbId = nvgCreateImageRGBA(_vg, out_w, out_h, 0, output_pixels);
 //        imgInfo->thumbId = nvgCreateImageMem(_vg, 0, output_pixels, out_w * out_h * comp);
-//        stbi_write_png("resize.png", out_w, out_h, comp, output_pixels,0);
-//        imgInfo->thumbId = nvgCreateImage(_vg, "resize.png", 0);
+        stbi_write_png("resize.png", out_w, out_h, comp, output_pixels, 0);
+        imgInfo->thumbId = nvgCreateImage(_vg, "resize.png", 0);
         free(output_pixels);
 
     }
