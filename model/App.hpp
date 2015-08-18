@@ -5,6 +5,7 @@
 
 #include <events/ActionEvent.hpp>
 #include <events/Evt.hpp>
+#include <view/dialog/OKDialog.hpp>
 #include "utils/Singleton.hpp"
 #include "CompositionInfo.hpp"
 #include "ProjectInfo.hpp"
@@ -19,7 +20,8 @@ public:
 
     Configs *conf;
     ProjectInfo *projInfo;
-    TheMachine* tm;
+    TheMachine *tm;
+
     void init() {
         conf = new Configs;
 
@@ -64,7 +66,13 @@ public:
         projInfo->curCompInfo->newTrack("1pix", "D:/projects/linAnil/test/pix1/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
 
-        ImageLoader::_().createPng("newFolder", "track1", 5, 100, 100);
+
+//        {//test new Track
+//        ImageLoader::_().createPng("newFolder", "track1", 5, 100, 100);
+
+//        }
+
+        OKDialog::_().show();
 
         //comp2
 //        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);

@@ -17,6 +17,7 @@
 #include "viewport/Viewport.hpp"
 #include "KeyInput.hpp"
 #include "menu/PopupMenu.hpp"
+#include "dialog/OKDialog.hpp"
 class Stage : public VsObjContainer {
 public:
     Stage() {
@@ -57,6 +58,8 @@ public:
         _popupMenu.init(popupLayer);
         _popupMenu.move(300, 300);
         _popupMenu.hide();
+        /////// dialog
+        _dialogOK.init(popupLayer);
 
         cout << typeid(this).name() << "init stage" << endl;
         VS_CONTEXT.add(VsEvent::RENDER, [this](void *e) { onRender(); });

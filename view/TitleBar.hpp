@@ -143,15 +143,10 @@ public:
     virtual void onDraw() override {
 
         onMove();
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), width, height);
-        nvgFillColor(vg, nvgRGB(22, 22, 22));
-        nvgFill(vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY() + height - 3, width, 3);
-        nvgFillColor(vg, nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER));
-        nvgFill(vg);
+        fillRect(_3RGB(22),gX(),gY(),width,height)
+
+        fillRect(nvgRGB(THEME_COLOR_TITLEBAR_BOTTOM_BORDER),gX(),gY() + height - 3,width,3)
 
         VS_RENDER_CHILDREN();
     }

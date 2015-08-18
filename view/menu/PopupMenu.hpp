@@ -8,11 +8,14 @@
 class PopupMenu : public Sprite, public Singleton<PopupMenu> {
 public:
     void init(VsObjContainer *parent) {
-        parent->addChild(this);
-        width = 320;
-        height = 480;
-        _title = "PopupMenu";
-        add_event(MouseEvent::UP, onUp)
+        if (!isInit) {
+            isInit = true;
+            parent->addChild(this);
+            width = 320;
+            height = 480;
+            _title = "PopupMenu";
+            add_event(MouseEvent::UP, onUp)
+        }
     }
 
     void onUp(void *e) {
@@ -41,6 +44,8 @@ public:
 
 
 protected:
+    bool isInit = false;
+
     virtual void onDraw() override {
         //auto hide
         if (mouseX() < -50 || mouseY() < -30 || mouseY() > height + 100 || mouseX() > width + 100) {
