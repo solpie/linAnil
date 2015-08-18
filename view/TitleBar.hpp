@@ -139,7 +139,9 @@ public:
 
     }
 
+
     virtual void onDraw() override {
+
         onMove();
         nvgBeginPath(vg);
         nvgRect(vg, gX(), gY(), width, height);

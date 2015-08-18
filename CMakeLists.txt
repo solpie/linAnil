@@ -132,7 +132,6 @@ target_link_libraries(linAnil nanovg)
 #target_link_libraries(linAnil :libnanovg.a)
 target_link_libraries(linAnil sndfile)
 target_link_libraries(linAnil portaudio)
-target_link_libraries(linAnil libpng)
 #target_link_libraries(linAnil SDL2)
 #target_link_libraries(linAnil SDL2_mixer)
 

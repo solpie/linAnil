@@ -64,7 +64,10 @@ public:
         cout << typeid(this).name() << " cursor frame: " << cursorFrame << endl;
     }
 
+
     virtual void onDraw() override {
+
+
         //bg
         fillRect(_3RGB(47), gX(), gY(), width, height);
 
