@@ -64,6 +64,8 @@ public:
         projInfo->curCompInfo->newTrack("1pix", "D:/projects/linAnil/test/pix1/");
         projInfo->curCompInfo->newTrack("audio track", "test/test.wav", TrackType::Audio);
 
+        ImageLoader::_().createPng("newFolder", "track1", 5, 100, 100);
+
         //comp2
 //        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
 //        projInfo->curCompInfo = comp2;

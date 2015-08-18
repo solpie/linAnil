@@ -18,10 +18,7 @@ using namespace std;
 
 #include "utils/stb/stb_image_resize.h"
 
-
-//#define NO_FREETYPE
-
-//#include "utils/pngwriter/pngwriter.h"
+#include "boost/filesystem.hpp"
 
 class ImageInfo {
 public:
@@ -53,13 +50,38 @@ public:
         nvgImageSize(_vg, imgInfo->id, &imgInfo->width, &imgInfo->height);
         _images[absPath] = imgInfo;
 
-        createPng("", "track1", 5, 100, 100);
         return imgInfo;
     }
 
     void update(ImageInfo *imgInfo, string absPath) {
         imgInfo->path = absPath;
         imgInfo->id = nvgCreateImage(_vg, absPath.c_str(), 0);
+    }
+
+
+    void createPng(string path, string name, int n, int w, int h) {
+        //mk dir
+        string cmd = "mkdir " + path;
+        system(cmd.c_str());
+
+        boost::filesystem::path path1(path);
+        path1 /= name;
+        name = path1.string();
+        ///
+        int comp = 4;//rgba
+        int ndata = w * h * comp;
+
+        char str[10];
+
+        unsigned char *zero_pixels = (unsigned char *) malloc(ndata);
+        memset(zero_pixels, 0, ndata);
+        string nname;
+        for (int i = 0; i < n; ++i) {
+            sprintf(str, "%03d", i + 1);
+            nname = name + "#" + str + ".png";
+            stbi_write_png(nname.c_str(), w, h, comp, zero_pixels, 0);
+        }
+        free(zero_pixels);
     }
 
 private:
@@ -87,28 +109,6 @@ private:
         stbi_write_png("resize.png", out_w, out_h, comp, output_pixels, 0);
         imgInfo->thumbId = nvgCreateImage(_vg, "resize.png", 0);
         free(output_pixels);
-
-//        pngCreator png(300,300,0,"test.png");
-//        png.close();
-//        pngCreator png;
-//        png.write_png_file("test.png", 300, 300);
-    }
-
-    void createPng(string path, string name, int n, int w, int h) {
-        int comp = 4;//rgba
-        int ndata = w * h * comp;
-
-        char str[10];
-
-        unsigned char *zero_pixels = (unsigned char *) malloc(ndata);
-        memset(zero_pixels, 0, ndata);
-        string nname;
-        for (int i = 0; i < n; ++i) {
-            sprintf(str, "%03d", i + 1);
-            nname = name + "#" + str + ".png";
-            stbi_write_png(nname.c_str(), w, h, comp, zero_pixels, 0);
-        }
-        free(zero_pixels);
     }
 
 
