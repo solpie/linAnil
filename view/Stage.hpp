@@ -14,6 +14,7 @@
 #include "TitleBar.hpp"
 #include <Splitter.hpp>
 #include <view/playback/FramesPlayback.hpp>
+#include <view/tools/WatchList.hpp>
 #include "viewport/Viewport.hpp"
 #include "KeyInput.hpp"
 #include "menu/PopupMenu.hpp"
@@ -22,7 +23,6 @@ class Stage : public VsObjContainer {
 public:
     Stage() {
         framesPlayback = new FramesPlayback(_proj);
-//        add_event_on_context(KeyEvent::DOWN,onKey)
         VS_CONTEXT.add(KeyEvent::DOWN, onKeyDown);
         VS_CONTEXT.add(KeyEvent::UP, onKeyUp);
 
@@ -41,9 +41,13 @@ public:
         viewport = new Viewport();
         hSplitter->addChild(viewport);
 
-        ColorWheel *colorWheel1 = new ColorWheel;
-        colorWheel1->setSize(300, 300);
-        hSplitter->addChild(colorWheel1);
+//        ColorWheel *colorWheel1 = new ColorWheel;
+//        colorWheel1->setSize(300, 300);
+        _watchList = new WatchList();
+        VsObjContainer *toolShelf = new VsObjContainer();
+        toolShelf->setSize(300, 300);
+        toolShelf->addChild(_watchList);
+        hSplitter->addChild(toolShelf);
 
         timeline = new Timeline();
         vSplitter->addChild(timeline);
@@ -80,11 +84,7 @@ public:
 
     void setSize(int w, int h) override {
         titleBar->resize(w, h);
-//        viewport->resize(w, h);
-//        hSplitter->setSize(w, -1);
-//        timeline->setSize(w, h);
         vSplitter->setSize(w, h - titleBar->height-compTabs->height);
-
         compTabs->setSize(w, -1);
         compTabs->setY(h - compTabs->height);
         popupLayer->setSize(w, h);
@@ -98,7 +98,7 @@ private:
     TitleBar *titleBar;
     Timeline *timeline;
     Viewport *viewport;
-
+    WatchList*_watchList;
     CompTabs *compTabs;
     //popup layer
     VsObjContainer* popupLayer;

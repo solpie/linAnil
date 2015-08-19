@@ -30,7 +30,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(view/ui)
 include_directories(view)
 include_directories(vs)
-set(SOURCE_FILES main.cpp vs/Button.hpp)
+set(SOURCE_FILES main.cpp vs/Button.hpp view/tools/WatchList.hpp)
 add_executable(linAnil ${SOURCE_FILES}
 events/Evt.hpp
 model/CompositionInfo.hpp

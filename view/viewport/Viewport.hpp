@@ -16,8 +16,6 @@ public:
 //        snprintf(file, 128, "test/thumb/image1.jpg", i + 1);
 //        imagei = nvgCreateImage(VG_CONTEXT, "test/thumb/image1.jpg", 0);
 
-        hSplitter = new Splitter(Direction::Horizontal);
-        addChild(hSplitter);
         width = VIEWPORT_WIDTH;
         height = VIEWPORT_HEIGHT;
     }
@@ -77,24 +75,21 @@ public:
     }
 
 
-    virtual void setSize(int w, int h) override;
+    virtual void setSize(int w, int h) override {
+        VsObj::setSize(w, h);
+        float sx = float(w) / VIEWPORT_WIDTH;
+
+        if (_conf->viewport.scaleMode == ScaleMode::Fit) {
+            scale = float(h) / VIEWPORT_HEIGHT;
+            if (scale > sx)
+                scale = sx;
+        }
+        else if (_conf->viewport.scaleMode == ScaleMode::None)
+            scale = 1;
+    }
 
 private:
-    Splitter *hSplitter;
-//    int imagei;
     Sprite *transport;
     float scale = 1;
 };
 
-void Viewport::setSize(int w, int h) {
-    VsObj::setSize(w, h);
-    float sx = float(w) / VIEWPORT_WIDTH;
-
-    if (_conf->viewport.scaleMode == ScaleMode::Fit) {
-        scale = float(h) / VIEWPORT_HEIGHT;
-        if (scale > sx)
-            scale = sx;
-    }
-    else if (_conf->viewport.scaleMode == ScaleMode::None)
-        scale = 1;
-}

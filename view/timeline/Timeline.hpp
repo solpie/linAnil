@@ -89,11 +89,8 @@ public:
     }
 
     virtual void render() override {
-        nvgBeginPath(vg);
-        nvgRect(vg, gX(), gY(), width, height);
-        nvgFillColor(vg, nvgRGB(29, 29, 29));
-        //
-        nvgFill(vg);
+
+//        fillRect(_3RGB(29), gX(), gY(), width, height)
 
         VsObjContainer::render();
         {//border
