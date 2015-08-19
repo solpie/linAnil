@@ -9,12 +9,19 @@
 #endif //LINANIL_BASEEVENT_HPP
 
 using namespace std;
+
 //template<class str>
 class BaseEvent {
 public:
     BaseEvent() { }
 
-    static BaseEvent create(void* dispatcher,string t) {
+    BaseEvent(void *dispatcher, string t, void *p = nullptr) {
+        this->target = dispatcher;
+        this->type = t;
+        payload = p;
+    }
+
+    static BaseEvent create(void *dispatcher, string t) {
         BaseEvent e;
         e.type = t;
         e.target = dispatcher;
@@ -30,5 +37,5 @@ public:
 
     void *target = nullptr;
     string type;
-    bool isAccept= false;
+    bool isAccept = false;
 };

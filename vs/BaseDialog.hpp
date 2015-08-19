@@ -4,13 +4,14 @@
 #pragma once
 
 
-#include "Sprite.hpp"
+#include "Button.hpp"
 
 class BaseDialog : public Sprite {
 public:
     BaseDialog() {
         width = 420;
         height = 185;
+
     }
 
     void setText(const char *text) {
@@ -22,6 +23,7 @@ public:
     }
 
 protected:
+
     const char *_text = nullptr;
     const char *_title = nullptr;
 
@@ -31,6 +33,7 @@ protected:
         fillRect(_3RGB(22), gX(), gY(), width, height)
 
         fillRect(nvgRGB(250, 240, 20), gX(), gY() + 25, width, 3)
+
 
 
         //title

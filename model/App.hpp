@@ -72,7 +72,7 @@ public:
 
 //        }
 
-        OKDialog::_().show();
+        OKDialog::_().show(300,300);
 
         //comp2
 //        CompositionInfo *comp2 = projInfo->newComposition("comp2", 1280, 720, 24, 300);
